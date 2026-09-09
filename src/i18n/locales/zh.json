@@ -1,0 +1,178 @@
+{
+  "tabs": { "home": "首页", "generate": "生成", "gallery": "相册", "profile": "我的" },
+  "common": {
+    "cancel": "取消", "ok": "确定", "save": "保存", "done": "完成", "back": "返回", "continue": "继续",
+    "loading": "加载中…", "retry": "重试", "delete": "删除", "share": "分享", "copy": "复制",
+    "copied": "已复制", "close": "关闭", "error": "出了点问题", "comingSoon": "即将推出"
+  },
+  "themeNames": {
+    "sunsetRose": "日落玫瑰", "midnightGreen": "午夜绿", "crimsonNoir": "绯红黑",
+    "obsidian": "黑曜石", "neonViolet": "霓虹紫"
+  },
+  "style": {
+    "realistic": "写实", "neon": "霓虹暗黑", "anime": "动漫", "cyberpunk": "赛博朋克",
+    "vintage": "复古35mm", "oil": "油画", "3d": "3D渲染", "watercolor": "水彩",
+    "fantasy": "梦幻光影", "cartoon": "3D卡通"
+  },
+  "auth": {
+    "welcomeBack": "欢迎回来", "createAccount": "创建账户", "signInSubtitle": "登录以与伴侣同步壁纸",
+    "signUpSubtitle": "加入Amora，开始合成你们的照片", "logIn": "登录", "signUp": "注册",
+    "emailPlaceholder": "you@example.com", "forgotPassword": "忘记密码？", "loggingIn": "登录中…",
+    "signingUp": "注册中…", "orContinueWith": "或使用以下方式继续", "continuing": "继续中…",
+    "continueWithGoogle": "使用Google继续", "continueWithApple": "使用Apple继续",
+    "noAccount": "还没有账户？", "haveAccount": "已经有账户？",
+    "logInFailedTitle": "登录失败", "signUpFailedTitle": "注册失败",
+    "verificationRequiredTitle": "需要额外验证",
+    "verificationRequiredBody": "此账户需要完成「{{status}}」，但当前版本尚不支持。",
+    "couldntSendCodeTitle": "无法发送验证码", "verificationFailedTitle": "验证失败",
+    "almostThereTitle": "就快好了",
+    "almostThereAccountBody": "完成账户创建还需要更多信息，但当前版本尚不支持。",
+    "almostThereGoogleBody": "此Google账户需要更多信息才能完成登录，但当前版本尚不支持。",
+    "couldntResendCodeTitle": "无法重新发送验证码", "codeSentTitle": "验证码已发送",
+    "codeSentBody": "新验证码已发送至{{email}}。", "appleTitle": "使用Apple继续",
+    "applePreviewBody": "Apple登录尚未接入 — 当前版本仅为预览。",
+    "googleFailedTitle": "Google登录失败", "forgotPasswordTitle": "忘记密码",
+    "forgotPasswordBody": "密码找回功能尚未接入 — 当前版本仅为预览。",
+    "checkEmail": "请查收邮件", "enterCodeSentTo": "请输入发送到{{email}}的验证码",
+    "verifying": "验证中…", "verify": "验证", "resendCode": "重新发送验证码"
+  },
+  "generate": {
+    "titleRecreate": "创作", "subtitleRecreate": "用你们的照片重现共同的场景",
+    "title": "创作", "subtitle": "设计一张情侣或个人壁纸", "recreatingTemplate": "正在重现模板",
+    "whoIsInThis": "照片里有谁？", "couple": "情侣", "solo": "个人", "you": "你", "partner": "伴侣",
+    "pickStyle": "选择风格", "addExtraDetail": "添加更多细节", "addDescription": "添加描述", "optional": "（可选）",
+    "promptPlaceholderTemplate": "调整{{template}}的氛围、光线或场景…",
+    "promptPlaceholder": "带有胶片颗粒和暖光的巴黎黄金时刻漫步…",
+    "surpriseMe": "给我惊喜", "recreateFusion": "重新生成合成", "generateFusion": "生成合成",
+    "creditsCaption": "消耗1个积分 · 约需30秒",
+    "suggestions": ["日落海滩", "霓虹东京", "雪中小屋", "复古胶片"]
+  },
+  "profile": {
+    "title": "我的", "amoraUser": "Amora用户", "guest": "访客", "signInToSync": "登录以同步壁纸",
+    "editProfile": "编辑资料", "signIn": "登录", "wallpapers": "壁纸", "creditsLeft": "剩余积分",
+    "paired": "已配对", "notPaired": "未配对", "pairedWith": "已与{{name}}配对", "defaultPartner": "你的伴侣",
+    "notPairedYet": "尚未配对", "pairedHint": "靠近时壁纸会自动同步",
+    "notPairedHint": "在情侣页面中配对，解锁距离感应壁纸", "premiumTitle": "Amora高级版",
+    "benefits": ["无限次生成", "导出无水印", "8K壁纸分辨率"], "upgrade": "升级 · $6.99/月",
+    "appearance": "外观", "appearanceSubtitle": "全暗色设计，没有浅色模式 — 挑一个喜欢的心情",
+    "avatarUpdatedTitle": "成功 ✨", "avatarUpdatedBody": "头像更新成功！",
+    "premiumAlertTitle": "Amora高级版 💎",
+    "premiumAlertBody": "解锁无限次8K AI壁纸生成、无水印导出和即时距离感应同步！",
+    "notNow": "暂不", "startTrial": "开始7天免费试用",
+    "inAppPurchasesPreview": "应用内购买尚未接入 — 当前版本仅为预览。",
+    "signOutTitle": "退出登录", "signOutBody": "确定要退出Amora吗？",
+    "notConnectedYet": "{{label}}尚未接入 — 当前版本仅为预览。",
+    "languagePicker": {
+      "title": "语言", "subtitle": "选择Amora在应用内显示的语言。",
+      "systemDefault": "跟随设备语言", "systemDefaultSub": "当前：{{language}}"
+    },
+    "settings": {
+      "myPosts": "分享我的作品", "security": "账户与安全", "notifications": "通知",
+      "privacy": "隐私与位置", "language": "语言", "help": "帮助与支持", "signOut": "退出登录"
+    }
+  },
+  "couple": {
+    "setup": {
+      "title": "情侣设置", "carriedPack": "在预览页面选择的礼包和角色，会在配对完成后自动应用。",
+      "or": "或", "codeCopied": "✓ 代码已复制", "shareMessage": "在Amora上成为我的情侣吧 💕\n我的代码：{{code}}",
+      "signInFirst": "请先登录才能与伴侣配对", "codeMustBe6": "代码为6位字符",
+      "declinedLocation": "你可以稍后在情侣仪表盘中开启位置共享",
+      "packAppliesFromDashboard": "在仪表盘中选择角色后，你所选的礼包才会生效",
+      "linked": "💕 已配对", "couldNotLink": "无法配对",
+      "privacyNote": "你的位置仅与已配对的伴侣共享。你可以随时在仪表盘中暂停共享或取消配对。",
+      "yourCodeTitle": "我是A方 — 这是我的代码", "yourCodeBody": "把这个代码分享给你的伴侣，让对方在手机上输入。",
+      "copy": "复制", "share": "分享", "continueToWaitingRoom": "继续 → 等待室",
+      "loadingCode": "正在加载你的代码…", "acceptTitle": "我是B方 — 我有代码",
+      "acceptBody": "请输入伴侣的6位代码。", "pickSide": "选择你的角色（可选）",
+      "pickSideHint": "保持「自动」，稍后可在仪表盘中选择角色，也可以现在就选。",
+      "auto": "🪄 自动", "sideA": "👈 A方", "sideB": "👉 B方", "linking": "配对中…", "linkWithPartner": "与伴侣配对"
+    },
+    "linking": {
+      "waiting": "正在等待你的伴侣…", "shareHint": "分享下方的代码。对方一输入，此页面就会跳转到情侣仪表盘。",
+      "cancel": "取消"
+    },
+    "dashboard": {
+      "notLinkedYet": "尚未配对", "openSetup": "打开设置", "title": "情侣", "together": "在一起",
+      "apart": "分开", "noDataYet": "暂无数据", "packSwitched": "✓ 礼包已切换",
+      "couldNotSave": "无法保存", "sharingResumed": "▶ 已恢复共享",
+      "sharingResumedWith": "▶ 已恢复共享 · {{stopped}}已暂停", "sharingPaused": "⏸ 已暂停共享",
+      "couldNotUpdate": "无法更新", "unlinkCoupleTitle": "确定取消情侣配对吗？",
+      "unlinkCoupleBody": "你将停止与{{name}}共享位置。你们各自会获得一个新代码，可以稍后重新配对。",
+      "cancel": "取消", "unlink": "取消配对", "unlinking": "正在取消配对…",
+      "unlinked": "已取消配对 — 请到首页选择新壁纸", "couldNotUnlink": "无法取消配对",
+      "coupleOptions": "情侣选项", "reportPartner": "举报伴侣",
+      "locationDeniedTitle": "位置权限被拒绝",
+      "locationDeniedBody": "请在设置中允许位置权限，以使用距离感应功能。", "openSettings": "打开设置",
+      "backgroundAccessTitle": "需要后台权限",
+      "backgroundAccessBody": "要在应用关闭时继续使用距离感应功能，需要开启后台位置权限（始终允许）。请在设置中开启。",
+      "later": "稍后", "locationActive": "✓ 位置共享已开启",
+      "pickSideFirst": "请先在上方选择你的角色，位置共享才会开启", "couldNotCheckPermission": "无法检查位置权限"
+    },
+    "format": {
+      "justNow": "刚刚", "secondsAgo": "几秒前", "minutesAgo": "{{count}}分钟前", "hoursAgo": "{{count}}小时前",
+      "daysAgo": "{{count}}天前", "never": "从未", "secondsAgoShort": "{{count}}秒前"
+    },
+    "diagnostics": {
+      "title": "连接状态", "myLocationSent": "我的位置已发送", "partnerLocationReceived": "已收到伴侣位置",
+      "distance": "距离", "proximity": "接近度"
+    },
+    "activeWallpaper": {
+      "onScreenNow": "当前屏幕显示", "togetherBothPhones": "在一起 — 两部手机", "soloRole": "个人（{{role}}）",
+      "togetherAppliesBoth": "合体图像 · 应用于两部手机", "yourHalf": "你的{{role}}半边",
+      "waitingBothSides": "正在等待双方上传信息。"
+    },
+    "packPicker": {
+      "title": "选择情侣礼包",
+      "subtitle": "任何一方都可以选择。礼包定义了合体图像和两个个人半边图像。角色标签（男孩/女孩、太阳/月亮等）由礼包决定 — 切换礼包时，你的角色保持不变。"
+    },
+    "partnerCard": { "you": "你", "them": "对方", "updated": "{{time}}更新", "pausedBanner": "位置共享已暂停 — 接近度将保持“分开”状态" },
+    "controls": { "resume": "恢复", "pauseSharing": "暂停共享", "checkGps": "检查GPS", "locationSharedWith": "位置仅与{{name}}共享。" },
+    "preview": {
+      "together": "在一起", "completeMoment": "完整的瞬间", "bothPhonesShow": "当你们靠近时，两部手机都会显示这张图。{{blurb}}",
+      "yourSide": "你的角色", "pickYourSide": "选择你的角色",
+      "sideHint": "分开时，你的手机显示你的半边，伴侣的手机显示对方的半边。两者合一即完成上方的图片。",
+      "thisIsMe": "✓ 这就是我", "tapToChoose": "点击选择", "onPhoneNow": "当前手机显示：",
+      "togetherImage": "合体图像", "halfSuffix": "{{role}}半边", "openDashboard": "打开情侣仪表盘",
+      "pairAs": "以{{role}}身份配对 →",
+      "pairingFootnote": "配对使用你Amora ID的配对代码：一方分享，另一方输入，随后这个礼包会对双方解锁。",
+      "nowRole": "✓ 你现在是{{role}}", "couldNotChangeSide": "无法更改角色"
+    }
+  },
+  "gallery": {
+    "title": "相册", "subtitle": "你的AI作品与情侣主题", "linkedWith": "已与{{name}}配对",
+    "defaultPartnerName": "伴侣", "pairCoupleTheme": "配对情侣主题", "proximitySyncActive": "距离感应同步已开启 · 点击管理",
+    "getCoupleCode": "获取情侣代码 · 靠近时自动匹配壁纸",
+    "filters": { "all": "全部", "creations": "作品", "couplePacks": "情侣礼包", "favorites": "收藏" },
+    "noCreationsYet": "还没有AI作品", "noWallpapersFound": "未找到壁纸",
+    "noCreationsBody": "生成一张壁纸，它会自动上传到这里！",
+    "noWallpapersBody": "试试切换筛选条件，或生成新的壁纸。", "generateWallpaper": "生成AI壁纸"
+  },
+  "home": {
+    "heroTitle": "合成你们的爱情故事", "heroSubtitle": "两张照片，几秒钟合成一张。", "tryNow": "立即体验",
+    "trendingFusions": "热门合成", "popularThisWeek": "本周热门", "emptyCategory": "该分类下暂无壁纸 — 试试其他分类。",
+    "categories": { "all": "全部", "sunset": "日落", "rain": "雨天", "beach": "海滩", "studio": "影棚", "festival": "节日" },
+    "sections": { "forCouples": "情侣专属", "soloVibes": "个人风格", "newThisWeek": "本周新品", "editorsPicks": "编辑精选" }
+  },
+  "onboarding": {
+    "profile": {
+      "welcome": "欢迎来到Amora", "subtitle": "来设置你的资料吧 — 这是配对后伴侣会看到的信息。",
+      "namePlaceholder": "你的名字", "continue": "继续"
+    },
+    "style": {
+      "headline": "你喜欢什么风格？", "subtitle": "选一个你喜欢的风格，每次生成都会优先推荐它。",
+      "whoFor": "这是为谁准备的？", "justMe": "只有我", "meAndPartner": "我和伴侣", "continue": "继续"
+    },
+    "code": {
+      "allSet": "一切就绪！", "settingUp": "正在设置你的账户", "generatingId": "正在生成你的Amora ID…",
+      "errorSuffix": "这不会影响你使用Amora — 你可以稍后再获取代码。",
+      "tryAgain": "重试", "yourAmoraId": "你的Amora ID", "pairedUp": "已经配对成功！",
+      "yourPairingCode": "你的配对代码 — 分享给你的伴侣", "shareCode": "分享代码",
+      "orEnterTheirs": "或输入对方的代码", "partnerCodePlaceholder": "伴侣的代码",
+      "linking": "配对中…", "link": "配对", "enterAmora": "进入Amora"
+    },
+    "couldntReachServer": "无法连接服务器。", "pairedAlertTitle": "配对成功！",
+    "pairedAlertBody": "你们的账户已配对 — 壁纸将自动同步。",
+    "couldntLinkTitle": "无法配对账户",
+    "shareCodeMessage": "快来Amora和我一起吧！用我的配对代码来连接：{{code}}"
+  }
+}

@@ -1,0 +1,178 @@
+{
+  "tabs": { "home": "ホーム", "generate": "生成", "gallery": "ギャラリー", "profile": "プロフィール" },
+  "common": {
+    "cancel": "キャンセル", "ok": "OK", "save": "保存", "done": "完了", "back": "戻る", "continue": "続ける",
+    "loading": "読み込み中…", "retry": "再試行", "delete": "削除", "share": "共有", "copy": "コピー",
+    "copied": "コピーしました", "close": "閉じる", "error": "問題が発生しました", "comingSoon": "近日公開"
+  },
+  "themeNames": {
+    "sunsetRose": "サンセットローズ", "midnightGreen": "ミッドナイトグリーン", "crimsonNoir": "クリムゾンノワール",
+    "obsidian": "オブシディアン", "neonViolet": "ネオンバイオレット"
+  },
+  "style": {
+    "realistic": "リアル", "neon": "ネオンノワール", "anime": "アニメ", "cyberpunk": "サイバーパンク",
+    "vintage": "ビンテージ35mm", "oil": "油絵", "3d": "3Dレンダー", "watercolor": "水彩画",
+    "fantasy": "ファンタジーグロー", "cartoon": "3Dトゥーン"
+  },
+  "auth": {
+    "welcomeBack": "おかえりなさい", "createAccount": "アカウント作成", "signInSubtitle": "ログインしてパートナーと壁紙を同期しましょう",
+    "signUpSubtitle": "Amoraに参加して写真の合成を始めましょう", "logIn": "ログイン", "signUp": "新規登録",
+    "emailPlaceholder": "you@example.com", "forgotPassword": "パスワードをお忘れですか？", "loggingIn": "ログイン中…",
+    "signingUp": "登録中…", "orContinueWith": "または次で続ける", "continuing": "続行中…",
+    "continueWithGoogle": "Googleで続ける", "continueWithApple": "Appleで続ける",
+    "noAccount": "アカウントをお持ちでないですか？", "haveAccount": "すでにアカウントをお持ちですか？",
+    "logInFailedTitle": "ログインに失敗しました", "signUpFailedTitle": "登録に失敗しました",
+    "verificationRequiredTitle": "追加の確認が必要です",
+    "verificationRequiredBody": "このアカウントは「{{status}}」を完了する必要がありますが、このビルドではまだ対応していません。",
+    "couldntSendCodeTitle": "コードを送信できませんでした", "verificationFailedTitle": "確認に失敗しました",
+    "almostThereTitle": "あと少しです",
+    "almostThereAccountBody": "このアカウントの作成を完了するには追加情報が必要ですが、このビルドではまだ対応していません。",
+    "almostThereGoogleBody": "このGoogleアカウントでログインを完了するには追加情報が必要ですが、このビルドではまだ対応していません。",
+    "couldntResendCodeTitle": "コードを再送信できませんでした", "codeSentTitle": "コードを送信しました",
+    "codeSentBody": "{{email}}に新しいコードを送信しました。", "appleTitle": "Appleで続ける",
+    "applePreviewBody": "Appleサインインはまだ接続されていません — このビルドはプレビューです。",
+    "googleFailedTitle": "Googleサインインに失敗しました", "forgotPasswordTitle": "パスワードをお忘れですか",
+    "forgotPasswordBody": "パスワードの復元はまだ接続されていません — このビルドはプレビューです。",
+    "checkEmail": "メールを確認してください", "enterCodeSentTo": "{{email}}に送信されたコードを入力してください",
+    "verifying": "確認中…", "verify": "確認", "resendCode": "コードを再送信"
+  },
+  "generate": {
+    "titleRecreate": "作成", "subtitleRecreate": "あなたの写真で共有の場面を再現します",
+    "title": "作成", "subtitle": "カップルまたはソロの壁紙をデザインしましょう", "recreatingTemplate": "テンプレートを再現中",
+    "whoIsInThis": "誰が写っていますか？", "couple": "カップル", "solo": "ソロ", "you": "あなた", "partner": "パートナー",
+    "pickStyle": "スタイルを選ぶ", "addExtraDetail": "詳細を追加", "addDescription": "説明を追加", "optional": "（任意）",
+    "promptPlaceholderTemplate": "{{template}}の雰囲気、照明、設定を調整…",
+    "promptPlaceholder": "フィルムグレインと暖かい光に包まれたパリの黄金時の散歩…",
+    "surpriseMe": "おまかせ", "recreateFusion": "合成を再生成", "generateFusion": "合成を生成",
+    "creditsCaption": "クレジット1個使用 · 約30秒",
+    "suggestions": ["夕暮れのビーチ", "ネオン東京", "雪のキャビン", "ビンテージフィルム"]
+  },
+  "profile": {
+    "title": "プロフィール", "amoraUser": "Amoraユーザー", "guest": "ゲスト", "signInToSync": "ログインして壁紙を同期",
+    "editProfile": "プロフィールを編集", "signIn": "ログイン", "wallpapers": "壁紙", "creditsLeft": "残りクレジット",
+    "paired": "ペア済み", "notPaired": "未ペア", "pairedWith": "{{name}}さんとペア中", "defaultPartner": "パートナー",
+    "notPairedYet": "まだペアになっていません", "pairedHint": "近くにいると壁紙が自動的に同期されます",
+    "notPairedHint": "カップルタブで連携すると近接壁紙が使えます", "premiumTitle": "Amoraプレミアム",
+    "benefits": ["無制限の生成", "エクスポート時の透かしなし", "8K壁紙解像度"], "upgrade": "アップグレード · $6.99/月",
+    "appearance": "外観", "appearanceSubtitle": "すべてダーク、ライトモードなし — お好みで選べます",
+    "avatarUpdatedTitle": "成功しました ✨", "avatarUpdatedBody": "プロフィール写真が更新されました！",
+    "premiumAlertTitle": "Amoraプレミアム 💎",
+    "premiumAlertBody": "無制限の8K AI壁紙生成、透かしなし、即時の近接同期をアンロックしましょう！",
+    "notNow": "今はしない", "startTrial": "7日間無料トライアルを開始",
+    "inAppPurchasesPreview": "アプリ内課金はまだ接続されていません — このビルドはプレビューです。",
+    "signOutTitle": "ログアウト", "signOutBody": "本当にAmoraからログアウトしますか？",
+    "notConnectedYet": "{{label}}はまだ接続されていません — このビルドはプレビューです。",
+    "languagePicker": {
+      "title": "言語", "subtitle": "Amora全体で表示する言語を選択してください。",
+      "systemDefault": "端末の言語に従う", "systemDefaultSub": "現在：{{language}}"
+    },
+    "settings": {
+      "myPosts": "作品をシェア", "security": "アカウントとセキュリティ", "notifications": "通知",
+      "privacy": "プライバシーと位置情報", "language": "言語", "help": "ヘルプとサポート", "signOut": "ログアウト"
+    }
+  },
+  "couple": {
+    "setup": {
+      "title": "カップル設定", "carriedPack": "プレビュー画面で選んだパックとサイドは、連携が完了すると適用されます。",
+      "or": "または", "codeCopied": "✓ コードをコピーしました", "shareMessage": "Amoraでカップルになりましょう 💕\n私のコード：{{code}}",
+      "signInFirst": "パートナーと連携するには、まずログインしてください", "codeMustBe6": "コードは6文字です",
+      "declinedLocation": "位置情報は後でカップルダッシュボードから有効にできます",
+      "packAppliesFromDashboard": "ダッシュボードでサイドを選ぶと、選択したパックが適用されます",
+      "linked": "💕 連携しました", "couldNotLink": "連携できませんでした",
+      "privacyNote": "位置情報は連携中のパートナーにのみ共有されます。共有の一時停止や連携解除はダッシュボードからいつでも行えます。",
+      "yourCodeTitle": "私はAです — コードをお渡しします", "yourCodeBody": "このコードをパートナーに共有してください。相手の端末に入力してもらいます。",
+      "copy": "コピー", "share": "共有", "continueToWaitingRoom": "続ける → 待機室",
+      "loadingCode": "コードを読み込み中…", "acceptTitle": "私はBです — コードを持っています",
+      "acceptBody": "パートナーの6文字のコードを入力してください。", "pickSide": "サイドを選択（任意）",
+      "pickSideHint": "「自動」のままにして後でダッシュボードから選ぶこともできます。今すぐ選んでも構いません。",
+      "auto": "🪄 自動", "sideA": "👈 サイドA", "sideB": "👉 サイドB", "linking": "連携中…", "linkWithPartner": "パートナーと連携"
+    },
+    "linking": {
+      "waiting": "パートナーを待っています…", "shareHint": "下のコードを共有してください。相手が入力した瞬間、カップルダッシュボードに移動します。",
+      "cancel": "キャンセル"
+    },
+    "dashboard": {
+      "notLinkedYet": "まだ連携していません", "openSetup": "設定を開く", "title": "カップル", "together": "一緒",
+      "apart": "離れている", "noDataYet": "データなし", "packSwitched": "✓ パックを切り替えました",
+      "couldNotSave": "保存できませんでした", "sharingResumed": "▶ 共有を再開しました",
+      "sharingResumedWith": "▶ 共有を再開しました · {{stopped}}を一時停止", "sharingPaused": "⏸ 共有を一時停止しました",
+      "couldNotUpdate": "更新できませんでした", "unlinkCoupleTitle": "カップル連携を解除しますか？",
+      "unlinkCoupleBody": "{{name}}さんとの位置共有が停止されます。お互いに新しいコードが発行され、後で再連携できます。",
+      "cancel": "キャンセル", "unlink": "連携解除", "unlinking": "連携解除中…",
+      "unlinked": "連携を解除しました — ホームから新しい壁紙を選んでください", "couldNotUnlink": "連携を解除できませんでした",
+      "coupleOptions": "カップルオプション", "reportPartner": "パートナーを報告",
+      "locationDeniedTitle": "位置情報が拒否されました",
+      "locationDeniedBody": "近接機能を使うには、設定で位置情報の許可を有効にしてください。", "openSettings": "設定を開く",
+      "backgroundAccessTitle": "バックグラウンドアクセスが必要です",
+      "backgroundAccessBody": "アプリを閉じていても近接機能を動かすにはバックグラウンド位置情報（常に許可）が必要です。設定から許可してください。",
+      "later": "後で", "locationActive": "✓ 位置情報の共有が有効になりました",
+      "pickSideFirst": "まず上でサイドを選ぶと位置情報の共有が始まります", "couldNotCheckPermission": "位置情報の権限を確認できませんでした"
+    },
+    "format": {
+      "justNow": "たった今", "secondsAgo": "数秒前", "minutesAgo": "{{count}}分前", "hoursAgo": "{{count}}時間前",
+      "daysAgo": "{{count}}日前", "never": "なし", "secondsAgoShort": "{{count}}秒前"
+    },
+    "diagnostics": {
+      "title": "接続状況", "myLocationSent": "自分の位置情報送信", "partnerLocationReceived": "パートナーの位置情報受信",
+      "distance": "距離", "proximity": "近接度"
+    },
+    "activeWallpaper": {
+      "onScreenNow": "現在の画面", "togetherBothPhones": "一緒 — 両方の端末", "soloRole": "ソロ（{{role}}）",
+      "togetherAppliesBoth": "一緒の画像 · 両方の端末に適用", "yourHalf": "あなたの{{role}}側の半分",
+      "waitingBothSides": "両方からの報告を待っています。"
+    },
+    "packPicker": {
+      "title": "カップルパックを選ぶ",
+      "subtitle": "どちらでも選べます。パックは一緒の画像と両方のソロの半分を定義します。役割ラベル（男の子/女の子、太陽/月など）はパックによって決まり、パックを切り替えてもあなたのサイドは変わりません。"
+    },
+    "partnerCard": { "you": "あなた", "them": "パートナー", "updated": "{{time}}に更新", "pausedBanner": "位置共有が一時停止中 — 近接度は「離れている」のままです" },
+    "controls": { "resume": "再開", "pauseSharing": "共有を一時停止", "checkGps": "GPSを確認", "locationSharedWith": "位置情報は{{name}}さんにのみ共有されます。" },
+    "preview": {
+      "together": "一緒", "completeMoment": "完成した瞬間", "bothPhonesShow": "近くにいると両方の端末にこの画像が表示されます。{{blurb}}",
+      "yourSide": "あなたのサイド", "pickYourSide": "サイドを選ぶ",
+      "sideHint": "離れているとき、あなたの端末は自分の半分を、パートナーの端末は相手の半分を表示します。二つが合わさると上の写真が完成します。",
+      "thisIsMe": "✓ これが自分です", "tapToChoose": "タップして選択", "onPhoneNow": "現在の端末には：",
+      "togetherImage": "一緒の画像", "halfSuffix": "{{role}}の半分", "openDashboard": "カップルダッシュボードを開く",
+      "pairAs": "{{role}}として連携する →",
+      "pairingFootnote": "連携にはAmora IDのペアリングコードを使います。片方が共有し、もう片方が入力すると、このパックが両方にアンロックされます。",
+      "nowRole": "✓ 現在{{role}}です", "couldNotChangeSide": "サイドを変更できませんでした"
+    }
+  },
+  "gallery": {
+    "title": "ギャラリー", "subtitle": "あなたのAI作品 & カップルテーマ", "linkedWith": "{{name}}さんと連携中",
+    "defaultPartnerName": "パートナー", "pairCoupleTheme": "カップルテーマを連携", "proximitySyncActive": "近接同期が有効 · タップして管理",
+    "getCoupleCode": "カップルコードを取得 · 近くにいると壁紙がマッチ",
+    "filters": { "all": "すべて", "creations": "作品", "couplePacks": "カップルパック", "favorites": "お気に入り" },
+    "noCreationsYet": "まだAI作品がありません", "noWallpapersFound": "壁紙が見つかりません",
+    "noCreationsBody": "壁紙を生成すると、自動的にここにアップロードされます！",
+    "noWallpapersBody": "フィルターを切り替えるか、新しい壁紙を生成してください。", "generateWallpaper": "AI壁紙を生成"
+  },
+  "home": {
+    "heroTitle": "あなたの恋物語を合成しよう", "heroSubtitle": "2枚の写真が数秒で1つになります。", "tryNow": "今すぐ試す",
+    "trendingFusions": "人気の合成", "popularThisWeek": "今週の人気", "emptyCategory": "このカテゴリにはまだ壁紙がありません — 他のカテゴリをお試しください。",
+    "categories": { "all": "すべて", "sunset": "夕焼け", "rain": "雨", "beach": "ビーチ", "studio": "スタジオ", "festival": "フェスティバル" },
+    "sections": { "forCouples": "カップル向け", "soloVibes": "ソロの雰囲気", "newThisWeek": "今週の新着", "editorsPicks": "編集部おすすめ" }
+  },
+  "onboarding": {
+    "profile": {
+      "welcome": "Amoraへようこそ", "subtitle": "プロフィールを設定しましょう — 連携時にパートナーに表示される内容です。",
+      "namePlaceholder": "お名前", "continue": "続ける"
+    },
+    "style": {
+      "headline": "好きな雰囲気は？", "subtitle": "好きなスタイルを選ぶと、生成のたびに最初に提案されます。",
+      "whoFor": "誰のためですか？", "justMe": "自分だけ", "meAndPartner": "自分とパートナー", "continue": "続ける"
+    },
+    "code": {
+      "allSet": "準備が整いました！", "settingUp": "アカウントを設定中", "generatingId": "Amora IDを生成中…",
+      "errorSuffix": "この問題でAmoraが使えなくなることはありません — コードは後で取得できます。",
+      "tryAgain": "再試行", "yourAmoraId": "あなたのAmora ID", "pairedUp": "連携済みです！",
+      "yourPairingCode": "あなたのペアリングコード — パートナーに共有してください", "shareCode": "コードを共有",
+      "orEnterTheirs": "またはパートナーのコードを入力", "partnerCodePlaceholder": "パートナーのコード",
+      "linking": "連携中…", "link": "連携", "enterAmora": "Amoraを始める"
+    },
+    "couldntReachServer": "サーバーに接続できませんでした。", "pairedAlertTitle": "連携しました！",
+    "pairedAlertBody": "アカウントが連携されました — 壁紙は自動的に同期されます。",
+    "couldntLinkTitle": "アカウントを連携できませんでした",
+    "shareCodeMessage": "Amoraで一緒に楽しみましょう！私のペアリングコードで連携してください：{{code}}"
+  }
+}

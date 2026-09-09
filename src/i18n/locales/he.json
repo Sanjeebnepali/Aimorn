@@ -1,0 +1,178 @@
+{
+  "tabs": { "home": "בית", "generate": "יצירה", "gallery": "גלריה", "profile": "פרופיל" },
+  "common": {
+    "cancel": "ביטול", "ok": "אישור", "save": "שמירה", "done": "סיום", "back": "חזרה", "continue": "המשך",
+    "loading": "טוען…", "retry": "נסה שוב", "delete": "מחיקה", "share": "שיתוף", "copy": "העתקה",
+    "copied": "הועתק", "close": "סגירה", "error": "משהו השתבש", "comingSoon": "בקרוב"
+  },
+  "themeNames": {
+    "sunsetRose": "ורד שקיעה", "midnightGreen": "ירוק חצות", "crimsonNoir": "אדום ארגמן",
+    "obsidian": "אובסידיאן", "neonViolet": "סגול ניאון"
+  },
+  "style": {
+    "realistic": "ריאליסטי", "neon": "ניאון נואר", "anime": "אנימה", "cyberpunk": "סייברפאנק",
+    "vintage": "וינטג' 35מ\"מ", "oil": "ציור שמן", "3d": "עיבוד תלת מימד", "watercolor": "צבעי מים",
+    "fantasy": "זוהר פנטזיה", "cartoon": "אנימציית תלת מימד"
+  },
+  "auth": {
+    "welcomeBack": "ברוך שובך", "createAccount": "יצירת חשבון", "signInSubtitle": "התחבר כדי לסנכרן טפטים עם בן/בת הזוג שלך",
+    "signUpSubtitle": "הצטרף ל-Amora והתחל למזג את התמונות שלך", "logIn": "התחברות", "signUp": "הרשמה",
+    "emailPlaceholder": "you@example.com", "forgotPassword": "שכחת סיסמה?", "loggingIn": "מתחבר…",
+    "signingUp": "נרשם…", "orContinueWith": "או המשך עם", "continuing": "ממשיך…",
+    "continueWithGoogle": "המשך עם Google", "continueWithApple": "המשך עם Apple",
+    "noAccount": "אין לך חשבון?", "haveAccount": "כבר יש לך חשבון?",
+    "logInFailedTitle": "ההתחברות נכשלה", "signUpFailedTitle": "ההרשמה נכשלה",
+    "verificationRequiredTitle": "נדרש אימות נוסף",
+    "verificationRequiredBody": "חשבון זה צריך להשלים את \"{{status}}\", מה שעדיין לא נתמך בגרסה זו.",
+    "couldntSendCodeTitle": "לא ניתן היה לשלוח קוד", "verificationFailedTitle": "האימות נכשל",
+    "almostThereTitle": "כמעט שם",
+    "almostThereAccountBody": "יש צורך בפרטים נוספים כדי להשלים חשבון זה, מה שעדיין לא נתמך בגרסה זו.",
+    "almostThereGoogleBody": "חשבון Google זה צריך פרטים נוספים כדי להשלים את ההתחברות, מה שעדיין לא נתמך בגרסה זו.",
+    "couldntResendCodeTitle": "לא ניתן היה לשלוח קוד שוב", "codeSentTitle": "הקוד נשלח",
+    "codeSentBody": "קוד חדש נשלח אל {{email}}.", "appleTitle": "המשך עם Apple",
+    "applePreviewBody": "ההתחברות עם Apple עדיין לא מחוברת — זוהי גרסת תצוגה מקדימה.",
+    "googleFailedTitle": "ההתחברות עם Google נכשלה", "forgotPasswordTitle": "שכחת סיסמה",
+    "forgotPasswordBody": "שחזור סיסמה עדיין לא מחובר — זוהי גרסת תצוגה מקדימה.",
+    "checkEmail": "בדוק את האימייל שלך", "enterCodeSentTo": "הזן את הקוד שנשלח אל {{email}}",
+    "verifying": "מאמת…", "verify": "אימות", "resendCode": "שלח קוד שוב"
+  },
+  "generate": {
+    "titleRecreate": "יצירה", "subtitleRecreate": "שחזור סצנה משותפת עם התמונות שלכם",
+    "title": "יצירה", "subtitle": "עצב טפט, ביחד או לבד", "recreatingTemplate": "משחזר תבנית",
+    "whoIsInThis": "מי בתמונה הזו?", "couple": "זוג", "solo": "יחיד", "you": "אתה/את", "partner": "בן/בת הזוג",
+    "pickStyle": "בחר סגנון", "addExtraDetail": "הוסף פרט נוסף", "addDescription": "הוסף תיאור", "optional": "(אופציונלי)",
+    "promptPlaceholderTemplate": "התאם את מצב הרוח, התאורה או הרקע של {{template}}…",
+    "promptPlaceholder": "טיול בפריז בשעת הזהב, גרעיניות פילם, אור חם…",
+    "surpriseMe": "הפתיעו אותי", "recreateFusion": "שחזר מיזוג", "generateFusion": "צור מיזוג",
+    "creditsCaption": "משתמש בקרדיט 1 · כ-30 שניות",
+    "suggestions": ["שקיעה על החוף", "טוקיו בניאון", "בקתת שלג", "פילם וינטג'"]
+  },
+  "profile": {
+    "title": "פרופיל", "amoraUser": "משתמש Amora", "guest": "אורח", "signInToSync": "התחבר כדי לסנכרן טפטים",
+    "editProfile": "עריכת פרופיל", "signIn": "התחברות", "wallpapers": "טפטים", "creditsLeft": "קרדיטים שנותרו",
+    "paired": "מזווג", "notPaired": "לא מזווג", "pairedWith": "מזווג עם {{name}}", "defaultPartner": "בן/בת הזוג שלך",
+    "notPairedYet": "עדיין לא מזווג", "pairedHint": "הטפט מסתנכרן אוטומטית כשאתם קרובים",
+    "notPairedHint": "התחבר בלשונית הזוג כדי לפתוח טפטי קרבה", "premiumTitle": "Amora Premium",
+    "benefits": ["יצירות ללא הגבלה", "ללא סימן מים בייצוא", "טפטים ברזולוציית 8K"], "upgrade": "שדרג · 6.99$/חודש",
+    "appearance": "מראה", "appearanceSubtitle": "הכל כהה, ללא מצב בהיר — בחר את מצב הרוח שלך",
+    "avatarUpdatedTitle": "הצלחה ✨", "avatarUpdatedBody": "תמונת הפרופיל עודכנה בהצלחה!",
+    "premiumAlertTitle": "Amora Premium 💎",
+    "premiumAlertBody": "פתח יצירת טפטים AI ב-8K ללא הגבלה, ללא סימני מים וסנכרון קרבה מיידי!",
+    "notNow": "לא עכשיו", "startTrial": "התחל ניסיון חינם ל-7 ימים",
+    "inAppPurchasesPreview": "רכישות באפליקציה עדיין לא מחוברות — זוהי גרסת תצוגה מקדימה.",
+    "signOutTitle": "התנתקות", "signOutBody": "האם אתה בטוח שברצונך להתנתק מ-Amora?",
+    "notConnectedYet": "{{label}} עדיין לא מחובר — זוהי גרסת תצוגה מקדימה.",
+    "languagePicker": {
+      "title": "שפה", "subtitle": "בחר את השפה שבה Amora תוצג בכל האפליקציה.",
+      "systemDefault": "בעקבות שפת המכשיר", "systemDefaultSub": "כרגע {{language}}"
+    },
+    "settings": {
+      "myPosts": "שתף את היצירה שלך", "security": "חשבון ואבטחה", "notifications": "התראות",
+      "privacy": "פרטיות ומיקום", "language": "שפה", "help": "עזרה ותמיכה", "signOut": "התנתקות"
+    }
+  },
+  "couple": {
+    "setup": {
+      "title": "הגדרת זוג", "carriedPack": "החבילה והצד שנבחרו במסך התצוגה המקדימה יוחלו ברגע שתתחברו.",
+      "or": "או", "codeCopied": "✓ הקוד הועתק", "shareMessage": "היה בן/בת הזוג שלי ב-Amora 💕\nהקוד שלי: {{code}}",
+      "signInFirst": "התחבר תחילה כדי להתחבר לבן/בת זוג", "codeMustBe6": "קודים הם באורך 6 תווים",
+      "declinedLocation": "אתה יכול להפעיל מיקום מאוחר יותר מלוח הזוג",
+      "packAppliesFromDashboard": "בחר צד מהלוח כדי להחיל את החבילה שנבחרה",
+      "linked": "💕 מחובר", "couldNotLink": "לא ניתן היה להתחבר",
+      "privacyNote": "המיקום שלך משותף רק עם בן/בת הזוג המחובר/ת שלך. תוכל להשהות שיתוף או להתנתק בכל עת מהלוח.",
+      "yourCodeTitle": "אני אדם A — תן לי קוד", "yourCodeBody": "שתף אותו עם בן/בת הזוג שלך. הם יזינו אותו בטלפון שלהם.",
+      "copy": "העתקה", "share": "שיתוף", "continueToWaitingRoom": "המשך → חדר המתנה",
+      "loadingCode": "טוען את הקוד שלך…", "acceptTitle": "אני אדם B — יש לי קוד",
+      "acceptBody": "הזן את קוד 6 התווים של בן/בת הזוג שלך.", "pickSide": "בחר את הצד שלך (אופציונלי)",
+      "pickSideHint": "השאר אותו על אוטומטי ובחר את הצד שלך מאוחר יותר מהלוח. או בחר עכשיו.",
+      "auto": "🪄 אוטומטי", "sideA": "👈 צד A", "sideB": "👉 צד B", "linking": "מתחבר…", "linkWithPartner": "התחבר עם בן/בת זוג"
+    },
+    "linking": {
+      "waiting": "ממתין לבן/בת הזוג שלך…", "shareHint": "שתף את הקוד שלך למטה. ברגע שהוא יוזן, מסך זה יעבור ללוח הזוג שלך.",
+      "cancel": "ביטול"
+    },
+    "dashboard": {
+      "notLinkedYet": "עדיין לא מחובר", "openSetup": "פתח הגדרה", "title": "זוג", "together": "יחד",
+      "apart": "בנפרד", "noDataYet": "אין נתונים עדיין", "packSwitched": "✓ החבילה הוחלפה",
+      "couldNotSave": "לא ניתן היה לשמור", "sharingResumed": "▶ השיתוף חודש",
+      "sharingResumedWith": "▶ השיתוף חודש · {{stopped}} מושהה", "sharingPaused": "⏸ השיתוף הופסק",
+      "couldNotUpdate": "לא ניתן היה לעדכן", "unlinkCoupleTitle": "לנתק את הזוג?",
+      "unlinkCoupleBody": "תפסיק לשתף את המיקום שלך עם {{name}}. שניכם תקבלו קוד חדש כדי להתחבר שוב מאוחר יותר.",
+      "cancel": "ביטול", "unlink": "נתק", "unlinking": "מנתק…",
+      "unlinked": "נותק — בחר טפט חדש מהבית", "couldNotUnlink": "לא ניתן היה לנתק",
+      "coupleOptions": "אפשרויות זוג", "reportPartner": "דווח על בן/בת הזוג",
+      "locationDeniedTitle": "המיקום נדחה",
+      "locationDeniedBody": "פתח הגדרות ואפשר הרשאת מיקום כדי שהקרבה תעבוד.", "openSettings": "פתח הגדרות",
+      "backgroundAccessTitle": "נדרשת גישת רקע",
+      "backgroundAccessBody": "קרבה זקוקה למיקום ברקע (\"אפשר תמיד\") כדי להמשיך לעבוד כשהאפליקציה סגורה. פתח הגדרות כדי לאפשר זאת.",
+      "later": "מאוחר יותר", "locationActive": "✓ שיתוף מיקום פעיל",
+      "pickSideFirst": "בחר תחילה את הצד שלך למעלה — אז שיתוף המיקום יופעל", "couldNotCheckPermission": "לא ניתן היה לבדוק הרשאת מיקום"
+    },
+    "format": {
+      "justNow": "הרגע", "secondsAgo": "לפני שניות ספורות", "minutesAgo": "לפני {{count}} דקות", "hoursAgo": "לפני {{count}} שעות",
+      "daysAgo": "לפני {{count}} ימים", "never": "אף פעם", "secondsAgoShort": "לפני {{count}} שנ'"
+    },
+    "diagnostics": {
+      "title": "מצב חיבור", "myLocationSent": "המיקום שלי נשלח", "partnerLocationReceived": "מיקום בן/בת הזוג התקבל",
+      "distance": "מרחק", "proximity": "קרבה"
+    },
+    "activeWallpaper": {
+      "onScreenNow": "על המסך שלך כעת", "togetherBothPhones": "יחד — בשני הטלפונים", "soloRole": "יחיד ({{role}})",
+      "togetherAppliesBoth": "תמונה יחד · חלה בשני הטלפונים", "yourHalf": "החצי שלך {{role}}",
+      "waitingBothSides": "ממתין לדיווח משני הצדדים."
+    },
+    "packPicker": {
+      "title": "בחר חבילת זוג",
+      "subtitle": "כל אחד מכם יכול לבחור. החבילה קובעת את התמונה המשותפת וגם את שני החצאים היחידים. תוויות תפקידים (בן/בת, שמש/ירח, …) מגיעות מהחבילה — הצד שלך נשאר זהה כשמחליפים חבילה."
+    },
+    "partnerCard": { "you": "אתה/את", "them": "הם", "updated": "עודכן {{time}}", "pausedBanner": "שיתוף המיקום הופסק — הקרבה נשארת \"בנפרד\"" },
+    "controls": { "resume": "המשך", "pauseSharing": "השהה שיתוף", "checkGps": "בדוק GPS", "locationSharedWith": "המיקום משותף רק עם {{name}}." },
+    "preview": {
+      "together": "יחד", "completeMoment": "הרגע השלם", "bothPhonesShow": "שני הטלפונים מציגים זאת כשאתם קרובים. {{blurb}}",
+      "yourSide": "הצד שלך", "pickYourSide": "בחר את הצד שלך",
+      "sideHint": "כשאתם בנפרד, הטלפון שלך מציג את החצי שלך — הטלפון של בן/בת הזוג שלך מציג את שלו/שלה. שניהם יחד משלימים את התמונה למעלה.",
+      "thisIsMe": "✓ זה אני", "tapToChoose": "הקש לבחירה", "onPhoneNow": "בטלפון שלך כעת: ",
+      "togetherImage": "תמונה יחד", "halfSuffix": "חצי {{role}}", "openDashboard": "פתח לוח זוג",
+      "pairAs": "התחבר כ-{{role}} →",
+      "pairingFootnote": "החיבור משתמש בקוד הזיווג של Amora ID שלך: אחד משתף, השני מזין — ואז חבילה זו נפתחת עבור שניכם.",
+      "nowRole": "✓ עכשיו אתה {{role}}", "couldNotChangeSide": "לא ניתן היה לשנות צד"
+    }
+  },
+  "gallery": {
+    "title": "גלריה", "subtitle": "יצירות ה-AI ונושאי הזוג שלך", "linkedWith": "מחובר עם {{name}}",
+    "defaultPartnerName": "בן/בת זוג", "pairCoupleTheme": "זווג נושא זוג", "proximitySyncActive": "סנכרון קרבה פעיל · הקש לניהול",
+    "getCoupleCode": "קבל קוד זוג · טפטים תואמים כשאתם קרובים",
+    "filters": { "all": "הכל", "creations": "יצירות", "couplePacks": "חבילות זוג", "favorites": "מועדפים" },
+    "noCreationsYet": "עדיין אין יצירות AI", "noWallpapersFound": "לא נמצאו טפטים",
+    "noCreationsBody": "צור טפט והוא יופיע כאן אוטומטית!",
+    "noWallpapersBody": "שנה את המסננים או צור טפטים חדשים.", "generateWallpaper": "צור טפט AI"
+  },
+  "home": {
+    "heroTitle": "מזג את סיפור האהבה שלכם", "heroSubtitle": "שתי תמונות הופכות לאחת, תוך שניות.", "tryNow": "נסה עכשיו",
+    "trendingFusions": "מיזוגים פופולריים", "popularThisWeek": "פופולרי השבוע", "emptyCategory": "אין עדיין טפטים בקטגוריה זו — נסה קטגוריה אחרת.",
+    "categories": { "all": "הכל", "sunset": "שקיעה", "rain": "גשם", "beach": "חוף", "studio": "סטודיו", "festival": "פסטיבל" },
+    "sections": { "forCouples": "לזוגות", "soloVibes": "אווירה יחידה", "newThisWeek": "חדש השבוע", "editorsPicks": "בחירות העורכים" }
+  },
+  "onboarding": {
+    "profile": {
+      "welcome": "ברוך הבא ל-Amora", "subtitle": "בוא נגדיר את הפרופיל שלך — זה מה שבן/בת הזוג שלך יראה ברגע שתתחברו.",
+      "namePlaceholder": "השם שלך", "continue": "המשך"
+    },
+    "style": {
+      "headline": "מה הסגנון שלך?", "subtitle": "בחר סגנון שאתה אוהב — נציע אותו ראשון בכל פעם שתיצור.",
+      "whoFor": "עבור מי זה?", "justMe": "רק אני", "meAndPartner": "אני ובן/בת הזוג שלי", "continue": "המשך"
+    },
+    "code": {
+      "allSet": "הכל מוכן!", "settingUp": "מגדיר את החשבון שלך", "generatingId": "יוצר את Amora ID שלך…",
+      "errorSuffix": "זה לא ימנע ממך להשתמש ב-Amora — תוכל לקבל את הקודים שלך מאוחר יותר.",
+      "tryAgain": "נסה שוב", "yourAmoraId": "ה-Amora ID שלך", "pairedUp": "אתם מזווגים!",
+      "yourPairingCode": "קוד הזיווג שלך — שתף אותו עם בן/בת הזוג שלך", "shareCode": "שתף קוד",
+      "orEnterTheirs": "או הזן את שלהם", "partnerCodePlaceholder": "קוד בן/בת הזוג",
+      "linking": "מתחבר…", "link": "התחבר", "enterAmora": "היכנס ל-Amora"
+    },
+    "couldntReachServer": "לא ניתן היה להגיע לשרת.", "pairedAlertTitle": "אתם מזווגים!",
+    "pairedAlertBody": "החשבונות שלכם התחברו — טפטים יסתנכרנו אוטומטית.",
+    "couldntLinkTitle": "לא ניתן היה לחבר חשבונות",
+    "shareCodeMessage": "בוא אליי ל-Amora! השתמש בקוד הזיווג שלי כדי להתחבר: {{code}}"
+  }
+}

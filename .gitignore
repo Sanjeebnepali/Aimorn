@@ -30,7 +30,9 @@ yarn-error.*
 .DS_Store
 *.pem
 
-# local env files
+# local env files — .env holds the real Clerk publishable key (not secret,
+# but still instance-specific config that shouldn't be forced on every clone)
+.env
 .env*.local
 
 # typescript
@@ -41,3 +43,9 @@ example
 # generated native folders
 /ios
 /android
+build/
+android/build/
+modules/*/android/build/
+modules/*/build/
+*.apk
+*.dex

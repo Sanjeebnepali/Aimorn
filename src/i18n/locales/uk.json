@@ -1,0 +1,178 @@
+{
+  "tabs": { "home": "Головна", "generate": "Створити", "gallery": "Галерея", "profile": "Профіль" },
+  "common": {
+    "cancel": "Скасувати", "ok": "Гаразд", "save": "Зберегти", "done": "Готово", "back": "Назад", "continue": "Продовжити",
+    "loading": "Завантаження…", "retry": "Повторити", "delete": "Видалити", "share": "Поділитися", "copy": "Копіювати",
+    "copied": "Скопійовано", "close": "Закрити", "error": "Щось пішло не так", "comingSoon": "Незабаром"
+  },
+  "themeNames": {
+    "sunsetRose": "Трояндовий Захід", "midnightGreen": "Опівнічний Зелений", "crimsonNoir": "Багряний Нуар",
+    "obsidian": "Обсидіан", "neonViolet": "Неоновий Фіолетовий"
+  },
+  "style": {
+    "realistic": "Реалістичний", "neon": "Неоновий Нуар", "anime": "Аніме", "cyberpunk": "Кіберпанк",
+    "vintage": "Вінтаж 35мм", "oil": "Олійний живопис", "3d": "3D-рендер", "watercolor": "Акварель",
+    "fantasy": "Фентезійне Сяйво", "cartoon": "3D-мультфільм"
+  },
+  "auth": {
+    "welcomeBack": "З поверненням", "createAccount": "Створити акаунт", "signInSubtitle": "Увійдіть, щоб синхронізувати шпалери з партнером",
+    "signUpSubtitle": "Приєднуйтесь до Amora та почніть об'єднувати свої фото", "logIn": "Увійти", "signUp": "Зареєструватися",
+    "emailPlaceholder": "you@example.com", "forgotPassword": "Забули пароль?", "loggingIn": "Вхід…",
+    "signingUp": "Реєстрація…", "orContinueWith": "або продовжити з", "continuing": "Продовжуємо…",
+    "continueWithGoogle": "Продовжити з Google", "continueWithApple": "Продовжити з Apple",
+    "noAccount": "Немає акаунта?", "haveAccount": "Вже є акаунт?",
+    "logInFailedTitle": "Не вдалося увійти", "signUpFailedTitle": "Не вдалося зареєструватися",
+    "verificationRequiredTitle": "Потрібна додаткова перевірка",
+    "verificationRequiredBody": "Цьому акаунту потрібно завершити «{{status}}», що поки не підтримується в цій версії.",
+    "couldntSendCodeTitle": "Не вдалося надіслати код", "verificationFailedTitle": "Перевірка не вдалася",
+    "almostThereTitle": "Майже готово",
+    "almostThereAccountBody": "Для створення цього акаунта потрібні додаткові дані, що поки не підтримується в цій версії.",
+    "almostThereGoogleBody": "Цьому акаунту Google потрібні додаткові дані для завершення входу, що поки не підтримується в цій версії.",
+    "couldntResendCodeTitle": "Не вдалося повторно надіслати код", "codeSentTitle": "Код надіслано",
+    "codeSentBody": "Новий код надіслано на {{email}}.", "appleTitle": "Продовжити з Apple",
+    "applePreviewBody": "Вхід через Apple ще не підключено — це попередня версія.",
+    "googleFailedTitle": "Не вдалося увійти через Google", "forgotPasswordTitle": "Забули пароль",
+    "forgotPasswordBody": "Відновлення пароля ще не підключено — це попередня версія.",
+    "checkEmail": "Перевірте пошту", "enterCodeSentTo": "Введіть код, надісланий на {{email}}",
+    "verifying": "Перевірка…", "verify": "Підтвердити", "resendCode": "Надіслати код повторно"
+  },
+  "generate": {
+    "titleRecreate": "Створити", "subtitleRecreate": "Відтворення спільної миті за вашими фото",
+    "title": "Створити", "subtitle": "Створіть шпалери разом або самостійно", "recreatingTemplate": "Відтворення шаблону",
+    "whoIsInThis": "Хто на фото?", "couple": "Пара", "solo": "Соло", "you": "Ви", "partner": "Партнер",
+    "pickStyle": "Оберіть стиль", "addExtraDetail": "Додати деталь", "addDescription": "Додати опис", "optional": "(необов'язково)",
+    "promptPlaceholderTemplate": "Змініть атмосферу, освітлення чи обстановку {{template}}…",
+    "promptPlaceholder": "Прогулянка Парижем у золоту годину, зернистість плівки, тепле світло…",
+    "surpriseMe": "Здивуйте мене", "recreateFusion": "Відтворити злиття", "generateFusion": "Створити злиття",
+    "creditsCaption": "Використовує 1 кредит · близько 30 секунд",
+    "suggestions": ["Пляж на заході сонця", "Неоновий Токіо", "Засніжена хатина", "Вінтажна плівка"]
+  },
+  "profile": {
+    "title": "Профіль", "amoraUser": "Користувач Amora", "guest": "Гість", "signInToSync": "Увійдіть, щоб синхронізувати шпалери",
+    "editProfile": "Редагувати профіль", "signIn": "Увійти", "wallpapers": "Шпалери", "creditsLeft": "Залишилось кредитів",
+    "paired": "У парі", "notPaired": "Не в парі", "pairedWith": "У парі з {{name}}", "defaultPartner": "вашим партнером",
+    "notPairedYet": "Ще не в парі", "pairedHint": "Шпалери автоматично синхронізуються, коли ви поруч",
+    "notPairedHint": "З'єднайтесь у вкладці «Пара», щоб розблокувати шпалери за близькістю", "premiumTitle": "Amora Преміум",
+    "benefits": ["Необмежена генерація", "Без водяних знаків при експорті", "Роздільна здатність шпалер 8K"], "upgrade": "Покращити · $6.99/міс",
+    "appearance": "Зовнішній вигляд", "appearanceSubtitle": "Все темне, без світлого режиму — оберіть свій настрій",
+    "avatarUpdatedTitle": "Успішно ✨", "avatarUpdatedBody": "Фото профілю успішно оновлено!",
+    "premiumAlertTitle": "Amora Преміум 💎",
+    "premiumAlertBody": "Розблокуйте необмежену генерацію шпалер AI 8K, відсутність водяних знаків і миттєву синхронізацію близькості!",
+    "notNow": "Не зараз", "startTrial": "Почати 7-денний безкоштовний період",
+    "inAppPurchasesPreview": "Покупки в додатку ще не підключено — це попередня версія.",
+    "signOutTitle": "Вийти", "signOutBody": "Ви впевнені, що хочете вийти з Amora?",
+    "notConnectedYet": "{{label}} ще не підключено — це попередня версія.",
+    "languagePicker": {
+      "title": "Мова", "subtitle": "Оберіть мову, яку Amora показуватиме всюди в додатку.",
+      "systemDefault": "Використовувати мову пристрою", "systemDefaultSub": "Зараз {{language}}"
+    },
+    "settings": {
+      "myPosts": "Поділитися своєю роботою", "security": "Акаунт і безпека", "notifications": "Сповіщення",
+      "privacy": "Конфіденційність і місцезнаходження", "language": "Мова", "help": "Допомога і підтримка", "signOut": "Вийти"
+    }
+  },
+  "couple": {
+    "setup": {
+      "title": "Налаштування пари", "carriedPack": "Набір і сторона, обрані на екрані попереднього перегляду, застосуються після з'єднання.",
+      "or": "або", "codeCopied": "✓ Код скопійовано", "shareMessage": "Стань моєю парою в Amora 💕\nМій код: {{code}}",
+      "signInFirst": "Спочатку увійдіть, щоб з'єднатися з партнером", "codeMustBe6": "Коди складаються з 6 символів",
+      "declinedLocation": "Ви можете увімкнути геолокацію пізніше на панелі «Пара»",
+      "packAppliesFromDashboard": "Оберіть сторону на панелі, щоб застосувати обраний набір",
+      "linked": "💕 З'єднано", "couldNotLink": "Не вдалося з'єднатися",
+      "privacyNote": "Ваше місцезнаходження передається лише з'єднаному партнеру. Ви можете призупинити обмін або роз'єднатися будь-коли на панелі.",
+      "yourCodeTitle": "Я — Особа A, дайте мені код", "yourCodeBody": "Поділіться цим з партнером. Він(вона) введе код на своєму телефоні.",
+      "copy": "Копіювати", "share": "Поділитися", "continueToWaitingRoom": "Продовжити → Кімната очікування",
+      "loadingCode": "Завантаження вашого коду…", "acceptTitle": "Я — Особа B, у мене є код",
+      "acceptBody": "Введіть 6-значний код вашого партнера.", "pickSide": "Оберіть сторону (необов'язково)",
+      "pickSideHint": "Залиште «Авто» і оберіть сторону пізніше на панелі. Або оберіть зараз.",
+      "auto": "🪄 Авто", "sideA": "👈 Сторона A", "sideB": "👉 Сторона B", "linking": "З'єднання…", "linkWithPartner": "З'єднатися з партнером"
+    },
+    "linking": {
+      "waiting": "Очікування партнера…", "shareHint": "Поділіться кодом нижче. Щойно партнер його введе, цей екран перейде на панель «Пара».",
+      "cancel": "Скасувати"
+    },
+    "dashboard": {
+      "notLinkedYet": "Ще не з'єднано", "openSetup": "Відкрити налаштування", "title": "Пара", "together": "Разом",
+      "apart": "Нарізно", "noDataYet": "поки немає даних", "packSwitched": "✓ Набір змінено",
+      "couldNotSave": "Не вдалося зберегти", "sharingResumed": "▶ Обмін відновлено",
+      "sharingResumedWith": "▶ Обмін відновлено · {{stopped}} на паузі", "sharingPaused": "⏸ Обмін призупинено",
+      "couldNotUpdate": "Не вдалося оновити", "unlinkCoupleTitle": "Роз'єднати пару?",
+      "unlinkCoupleBody": "Ви перестанете ділитися місцезнаходженням із {{name}}. Кожен отримає новий код, щоб з'єднатися знову пізніше.",
+      "cancel": "Скасувати", "unlink": "Роз'єднати", "unlinking": "Роз'єднання…",
+      "unlinked": "Роз'єднано — оберіть нові шпалери на Головній", "couldNotUnlink": "Не вдалося роз'єднати",
+      "coupleOptions": "Опції пари", "reportPartner": "Поскаржитися на партнера",
+      "locationDeniedTitle": "Доступ до геолокації відхилено",
+      "locationDeniedBody": "Відкрийте Налаштування та надайте дозвіл на геолокацію для роботи близькості.", "openSettings": "Відкрити налаштування",
+      "backgroundAccessTitle": "Потрібен фоновий доступ",
+      "backgroundAccessBody": "Для роботи близькості при закритому додатку потрібна фонова геолокація («Дозволити завжди»). Відкрийте Налаштування, щоб надати дозвіл.",
+      "later": "Пізніше", "locationActive": "✓ Обмін геолокацією активний",
+      "pickSideFirst": "Спочатку оберіть сторону вище — тоді увімкнеться обмін геолокацією", "couldNotCheckPermission": "Не вдалося перевірити дозвіл на геолокацію"
+    },
+    "format": {
+      "justNow": "щойно", "secondsAgo": "кілька секунд тому", "minutesAgo": "{{count}} хв тому", "hoursAgo": "{{count}} год тому",
+      "daysAgo": "{{count}} дн тому", "never": "ніколи", "secondsAgoShort": "{{count}} с тому"
+    },
+    "diagnostics": {
+      "title": "Стан з'єднання", "myLocationSent": "Моя геолокація надіслана", "partnerLocationReceived": "Геолокацію партнера отримано",
+      "distance": "Відстань", "proximity": "Близькість"
+    },
+    "activeWallpaper": {
+      "onScreenNow": "Зараз на екрані", "togetherBothPhones": "Разом — обидва телефони", "soloRole": "Соло ({{role}})",
+      "togetherAppliesBoth": "Спільне зображення · застосовується на обох телефонах", "yourHalf": "Ваша половина {{role}}",
+      "waitingBothSides": "Очікування даних з обох сторін."
+    },
+    "packPicker": {
+      "title": "Оберіть набір для пари",
+      "subtitle": "Обрати може будь-хто з вас. Набір визначає спільне зображення ТА обидві одиночні половини. Позначення ролей (Хлопець/Дівчина, Сонце/Місяць тощо) визначаються набором — ваша сторона залишається незмінною при зміні набору."
+    },
+    "partnerCard": { "you": "Ви", "them": "Партнер", "updated": "Оновлено {{time}}", "pausedBanner": "Обмін геолокацією призупинено — близькість залишається «нарізно»" },
+    "controls": { "resume": "Відновити", "pauseSharing": "Призупинити обмін", "checkGps": "Перевірити GPS", "locationSharedWith": "Геолокація передається лише {{name}}." },
+    "preview": {
+      "together": "Разом", "completeMoment": "Цілісна мить", "bothPhonesShow": "Обидва телефони показують це, коли ви поруч. {{blurb}}",
+      "yourSide": "Ваша сторона", "pickYourSide": "Оберіть свою сторону",
+      "sideHint": "Коли ви нарізно, ваш телефон показує вашу половину — телефон партнера показує його половину. Разом вони доповнюють зображення вище.",
+      "thisIsMe": "✓ Це я", "tapToChoose": "Торкніться, щоб обрати", "onPhoneNow": "Зараз на вашому телефоні: ",
+      "togetherImage": "Спільне зображення", "halfSuffix": "половина {{role}}", "openDashboard": "Відкрити панель пари",
+      "pairAs": "З'єднатися як {{role}} →",
+      "pairingFootnote": "З'єднання використовує код парування вашого Amora ID: один ділиться кодом, інший вводить його — після цього набір розблоковується для обох.",
+      "nowRole": "✓ Тепер ви {{role}}", "couldNotChangeSide": "Не вдалося змінити сторону"
+    }
+  },
+  "gallery": {
+    "title": "Галерея", "subtitle": "Ваші роботи з ШІ та теми для пар", "linkedWith": "З'єднано з {{name}}",
+    "defaultPartnerName": "Партнер", "pairCoupleTheme": "З'єднати тему для пари", "proximitySyncActive": "Синхронізація за близькістю активна · Торкніться для керування",
+    "getCoupleCode": "Отримати код пари · Відповідні шпалери, коли ви поруч",
+    "filters": { "all": "Усі", "creations": "Роботи", "couplePacks": "Набори для пар", "favorites": "Обране" },
+    "noCreationsYet": "Поки немає робіт з ШІ", "noWallpapersFound": "Шпалер не знайдено",
+    "noCreationsBody": "Створіть шпалери, і вони автоматично з'являться тут!",
+    "noWallpapersBody": "Змініть фільтри або створіть нові шпалери.", "generateWallpaper": "Створити шпалери з ШІ"
+  },
+  "home": {
+    "heroTitle": "Об'єднайте свою історію кохання", "heroSubtitle": "Два фото стають одним за кілька секунд.", "tryNow": "Спробувати зараз",
+    "trendingFusions": "Популярні злиття", "popularThisWeek": "Популярне цього тижня", "emptyCategory": "У цій категорії поки немає шпалер — спробуйте іншу.",
+    "categories": { "all": "Усі", "sunset": "Захід сонця", "rain": "Дощ", "beach": "Пляж", "studio": "Студія", "festival": "Фестиваль" },
+    "sections": { "forCouples": "Для пар", "soloVibes": "Соло настрій", "newThisWeek": "Нове цього тижня", "editorsPicks": "Вибір редакції" }
+  },
+  "onboarding": {
+    "profile": {
+      "welcome": "Ласкаво просимо до Amora", "subtitle": "Налаштуємо ваш профіль — це побачить ваш партнер після з'єднання.",
+      "namePlaceholder": "Ваше ім'я", "continue": "Продовжити"
+    },
+    "style": {
+      "headline": "Який ваш стиль?", "subtitle": "Оберіть стиль, який вам подобається — ми будемо пропонувати його першим при кожній генерації.",
+      "whoFor": "Для кого це?", "justMe": "Тільки я", "meAndPartner": "Я та мій партнер", "continue": "Продовжити"
+    },
+    "code": {
+      "allSet": "Все готово!", "settingUp": "Налаштування вашого акаунта", "generatingId": "Створення вашого Amora ID…",
+      "errorSuffix": "Це не завадить вам користуватися Amora — коди можна отримати пізніше.",
+      "tryAgain": "Спробувати знову", "yourAmoraId": "Ваш Amora ID", "pairedUp": "Ви з'єднані!",
+      "yourPairingCode": "Ваш код з'єднання — поділіться з партнером", "shareCode": "Поділитися кодом",
+      "orEnterTheirs": "або введіть код партнера", "partnerCodePlaceholder": "Код партнера",
+      "linking": "З'єднання…", "link": "З'єднати", "enterAmora": "Увійти в Amora"
+    },
+    "couldntReachServer": "Не вдалося підключитися до сервера.", "pairedAlertTitle": "З'єднано!",
+    "pairedAlertBody": "Ваші акаунти пов'язані — шпалери будуть синхронізуватися автоматично.",
+    "couldntLinkTitle": "Не вдалося пов'язати акаунти",
+    "shareCodeMessage": "Приєднуйся до мене в Amora! Використай мій код з'єднання: {{code}}"
+  }
+}

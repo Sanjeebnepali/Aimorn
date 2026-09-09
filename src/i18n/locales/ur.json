@@ -1,0 +1,178 @@
+{
+  "tabs": { "home": "ہوم", "generate": "بنائیں", "gallery": "گیلری", "profile": "پروفائل" },
+  "common": {
+    "cancel": "منسوخ کریں", "ok": "ٹھیک ہے", "save": "محفوظ کریں", "done": "مکمل", "back": "پیچھے", "continue": "جاری رکھیں",
+    "loading": "لوڈ ہو رہا ہے…", "retry": "دوبارہ کوشش کریں", "delete": "حذف کریں", "share": "شیئر کریں", "copy": "کاپی کریں",
+    "copied": "کاپی ہو گیا", "close": "بند کریں", "error": "کچھ غلط ہو گیا", "comingSoon": "جلد آ رہا ہے"
+  },
+  "themeNames": {
+    "sunsetRose": "سنسیٹ روز", "midnightGreen": "مڈنائٹ گرین", "crimsonNoir": "کرمسن نوآر",
+    "obsidian": "اوبسیڈیئن", "neonViolet": "نیون وائلٹ"
+  },
+  "style": {
+    "realistic": "حقیقت پسندانہ", "neon": "نیون نوآر", "anime": "اینیمے", "cyberpunk": "سائبرپنک",
+    "vintage": "ونٹیج 35mm", "oil": "آئل پینٹنگ", "3d": "3D رینڈر", "watercolor": "واٹر کلر",
+    "fantasy": "فینٹسی گلو", "cartoon": "3D کارٹون"
+  },
+  "auth": {
+    "welcomeBack": "دوبارہ خوش آمدید", "createAccount": "اکاؤنٹ بنائیں", "signInSubtitle": "اپنے پارٹنر کے ساتھ وال پیپر ہم آہنگ کرنے کے لیے سائن ان کریں",
+    "signUpSubtitle": "Amora میں شامل ہوں اور اپنی تصاویر ملانا شروع کریں", "logIn": "لاگ ان", "signUp": "سائن اپ",
+    "emailPlaceholder": "you@example.com", "forgotPassword": "پاس ورڈ بھول گئے؟", "loggingIn": "لاگ ان ہو رہا ہے…",
+    "signingUp": "سائن اپ ہو رہا ہے…", "orContinueWith": "یا اس کے ساتھ جاری رکھیں", "continuing": "جاری ہے…",
+    "continueWithGoogle": "Google کے ساتھ جاری رکھیں", "continueWithApple": "Apple کے ساتھ جاری رکھیں",
+    "noAccount": "اکاؤنٹ نہیں ہے؟", "haveAccount": "پہلے سے اکاؤنٹ ہے؟",
+    "logInFailedTitle": "لاگ ان ناکام ہوا", "signUpFailedTitle": "سائن اپ ناکام ہوا",
+    "verificationRequiredTitle": "اضافی تصدیق درکار ہے",
+    "verificationRequiredBody": "اس اکاؤنٹ کو \"{{status}}\" مکمل کرنا ہوگا، جو اس ورژن میں ابھی سپورٹڈ نہیں ہے۔",
+    "couldntSendCodeTitle": "کوڈ نہیں بھیجا جا سکا", "verificationFailedTitle": "تصدیق ناکام ہوئی",
+    "almostThereTitle": "تقریباً ہو گیا",
+    "almostThereAccountBody": "یہ اکاؤنٹ بنانے کے لیے مزید معلومات درکار ہیں، جو اس ورژن میں ابھی سپورٹڈ نہیں ہیں۔",
+    "almostThereGoogleBody": "اس Google اکاؤنٹ کو لاگ ان مکمل کرنے کے لیے مزید معلومات درکار ہیں، جو اس ورژن میں ابھی سپورٹڈ نہیں ہیں۔",
+    "couldntResendCodeTitle": "کوڈ دوبارہ نہیں بھیجا جا سکا", "codeSentTitle": "کوڈ بھیج دیا گیا",
+    "codeSentBody": "{{email}} پر ایک نیا کوڈ بھیج دیا گیا ہے۔", "appleTitle": "Apple کے ساتھ جاری رکھیں",
+    "applePreviewBody": "Apple سائن ان ابھی منسلک نہیں ہے — یہ ورژن صرف ایک پیش نظارہ ہے۔",
+    "googleFailedTitle": "Google سائن ان ناکام ہوا", "forgotPasswordTitle": "پاس ورڈ بھول گئے",
+    "forgotPasswordBody": "پاس ورڈ بازیابی ابھی منسلک نہیں ہے — یہ ورژن صرف ایک پیش نظارہ ہے۔",
+    "checkEmail": "اپنا ای میل چیک کریں", "enterCodeSentTo": "{{email}} پر بھیجا گیا کوڈ درج کریں",
+    "verifying": "تصدیق ہو رہی ہے…", "verify": "تصدیق کریں", "resendCode": "کوڈ دوبارہ بھیجیں"
+  },
+  "generate": {
+    "titleRecreate": "بنائیں", "subtitleRecreate": "آپ کی تصاویر کے ساتھ ایک مشترکہ منظر دوبارہ بنایا جا رہا ہے",
+    "title": "بنائیں", "subtitle": "ایک ساتھ یا اکیلے وال پیپر ڈیزائن کریں", "recreatingTemplate": "ٹیمپلیٹ دوبارہ بنایا جا رہا ہے",
+    "whoIsInThis": "اس میں کون ہے؟", "couple": "جوڑا", "solo": "اکیلا", "you": "آپ", "partner": "پارٹنر",
+    "pickStyle": "ایک اسٹائل منتخب کریں", "addExtraDetail": "اضافی تفصیل شامل کریں", "addDescription": "تفصیل شامل کریں", "optional": "(اختیاری)",
+    "promptPlaceholderTemplate": "{{template}} کا موڈ، روشنی یا ماحول ایڈجسٹ کریں…",
+    "promptPlaceholder": "فلم گرین اور گرم روشنی کے ساتھ پیرس میں گولڈن آور کی سیر…",
+    "surpriseMe": "مجھے حیران کریں", "recreateFusion": "فیوژن دوبارہ بنائیں", "generateFusion": "فیوژن بنائیں",
+    "creditsCaption": "1 کریڈٹ استعمال ہوتا ہے · تقریباً 30 سیکنڈ",
+    "suggestions": ["غروب آفتاب ساحل", "نیون ٹوکیو", "برفیلی جھونپڑی", "ونٹیج فلم"]
+  },
+  "profile": {
+    "title": "پروفائل", "amoraUser": "Amora صارف", "guest": "مہمان", "signInToSync": "وال پیپر ہم آہنگ کرنے کے لیے سائن ان کریں",
+    "editProfile": "پروفائل میں ترمیم کریں", "signIn": "سائن ان", "wallpapers": "وال پیپرز", "creditsLeft": "باقی کریڈٹس",
+    "paired": "منسلک", "notPaired": "غیر منسلک", "pairedWith": "{{name}} کے ساتھ منسلک", "defaultPartner": "آپ کے پارٹنر",
+    "notPairedYet": "ابھی تک منسلک نہیں", "pairedHint": "قریب ہونے پر وال پیپر خودکار طور پر ہم آہنگ ہو جاتا ہے",
+    "notPairedHint": "قربت والے وال پیپرز کھولنے کے لیے Couple ٹیب میں جڑیں", "premiumTitle": "Amora پریمیم",
+    "benefits": ["لامحدود جنریشن", "ایکسپورٹ پر واٹر مارک نہیں", "8K وال پیپر ریزولوشن"], "upgrade": "اپ گریڈ کریں · $6.99/ماہ",
+    "appearance": "ظاہری شکل", "appearanceSubtitle": "سب کچھ ڈارک، کوئی لائٹ موڈ نہیں — اپنا موڈ منتخب کریں",
+    "avatarUpdatedTitle": "کامیاب ✨", "avatarUpdatedBody": "پروفائل تصویر کامیابی سے اپ ڈیٹ ہو گئی!",
+    "premiumAlertTitle": "Amora پریمیم 💎",
+    "premiumAlertBody": "لامحدود 8K AI وال پیپر جنریشن، بغیر واٹر مارک، اور فوری قربت ہم آہنگی کھولیں!",
+    "notNow": "ابھی نہیں", "startTrial": "7 دن کا مفت ٹرائل شروع کریں",
+    "inAppPurchasesPreview": "ان-ایپ خریداری ابھی منسلک نہیں ہے — یہ ورژن صرف ایک پیش نظارہ ہے۔",
+    "signOutTitle": "سائن آؤٹ", "signOutBody": "کیا آپ واقعی Amora سے سائن آؤٹ کرنا چاہتے ہیں؟",
+    "notConnectedYet": "{{label}} ابھی منسلک نہیں ہے — یہ ورژن صرف ایک پیش نظارہ ہے۔",
+    "languagePicker": {
+      "title": "زبان", "subtitle": "وہ زبان منتخب کریں جو Amora پوری ایپ میں دکھائے گی۔",
+      "systemDefault": "ڈیوائس کی زبان کی پیروی کریں", "systemDefaultSub": "فی الحال {{language}}"
+    },
+    "settings": {
+      "myPosts": "اپنی تخلیق شیئر کریں", "security": "اکاؤنٹ اور سیکیورٹی", "notifications": "اطلاعات",
+      "privacy": "رازداری اور مقام", "language": "زبان", "help": "مدد اور معاونت", "signOut": "سائن آؤٹ"
+    }
+  },
+  "couple": {
+    "setup": {
+      "title": "کپل سیٹ اپ", "carriedPack": "پیش نظارہ اسکرین پر منتخب کردہ پیک اور سائیڈ منسلک ہونے کے بعد لاگو ہوں گے۔",
+      "or": "یا", "codeCopied": "✓ کوڈ کاپی ہو گیا", "shareMessage": "Amora پر میرے کپل بنیں 💕\nمیرا کوڈ: {{code}}",
+      "signInFirst": "پارٹنر کے ساتھ منسلک ہونے کے لیے پہلے سائن ان کریں", "codeMustBe6": "کوڈز 6 حروف کے ہوتے ہیں",
+      "declinedLocation": "آپ بعد میں Couple ڈیش بورڈ سے مقام فعال کر سکتے ہیں",
+      "packAppliesFromDashboard": "اپنا منتخب کردہ پیک لاگو کرنے کے لیے ڈیش بورڈ سے ایک سائیڈ منتخب کریں",
+      "linked": "💕 منسلک ہو گیا", "couldNotLink": "منسلک نہیں ہو سکا",
+      "privacyNote": "آپ کا مقام صرف آپ کے منسلک پارٹنر کے ساتھ شیئر کیا جاتا ہے۔ آپ کسی بھی وقت ڈیش بورڈ سے شیئرنگ روک سکتے ہیں یا منسلکی ختم کر سکتے ہیں۔",
+      "yourCodeTitle": "میں شخص A ہوں — مجھے ایک کوڈ دیں", "yourCodeBody": "یہ اپنے پارٹنر کے ساتھ شیئر کریں۔ وہ اسے اپنے فون پر درج کریں گے۔",
+      "copy": "کاپی کریں", "share": "شیئر کریں", "continueToWaitingRoom": "جاری رکھیں → انتظار کا کمرہ",
+      "loadingCode": "آپ کا کوڈ لوڈ ہو رہا ہے…", "acceptTitle": "میں شخص B ہوں — میرے پاس ایک کوڈ ہے",
+      "acceptBody": "اپنے پارٹنر کا 6 حروف کا کوڈ درج کریں۔", "pickSide": "اپنی سائیڈ منتخب کریں (اختیاری)",
+      "pickSideHint": "اسے آٹو پر چھوڑیں اور بعد میں ڈیش بورڈ سے اپنی سائیڈ منتخب کریں۔ یا ابھی منتخب کریں۔",
+      "auto": "🪄 آٹو", "sideA": "👈 سائیڈ A", "sideB": "👉 سائیڈ B", "linking": "منسلک ہو رہا ہے…", "linkWithPartner": "پارٹنر کے ساتھ منسلک ہوں"
+    },
+    "linking": {
+      "waiting": "آپ کے پارٹنر کا انتظار ہے…", "shareHint": "نیچے اپنا کوڈ شیئر کریں۔ جیسے ہی وہ اسے درج کریں گے، یہ اسکرین آپ کے Couple ڈیش بورڈ پر چلی جائے گی۔",
+      "cancel": "منسوخ کریں"
+    },
+    "dashboard": {
+      "notLinkedYet": "ابھی تک منسلک نہیں", "openSetup": "سیٹ اپ کھولیں", "title": "کپل", "together": "ساتھ میں",
+      "apart": "الگ", "noDataYet": "ابھی تک کوئی ڈیٹا نہیں", "packSwitched": "✓ پیک تبدیل ہو گیا",
+      "couldNotSave": "محفوظ نہیں ہو سکا", "sharingResumed": "▶ شیئرنگ دوبارہ شروع ہوئی",
+      "sharingResumedWith": "▶ شیئرنگ دوبارہ شروع ہوئی · {{stopped}} روک دیا گیا", "sharingPaused": "⏸ شیئرنگ روک دی گئی",
+      "couldNotUpdate": "اپ ڈیٹ نہیں ہو سکا", "unlinkCoupleTitle": "کپل منسلکی ختم کریں؟",
+      "unlinkCoupleBody": "آپ {{name}} کے ساتھ مقام شیئر کرنا بند کر دیں گے۔ آپ دونوں کو بعد میں دوبارہ منسلک ہونے کے لیے ایک نیا کوڈ ملے گا۔",
+      "cancel": "منسوخ کریں", "unlink": "منسلکی ختم کریں", "unlinking": "منسلکی ختم ہو رہی ہے…",
+      "unlinked": "منسلکی ختم ہو گئی — ہوم سے نیا وال پیپر منتخب کریں", "couldNotUnlink": "منسلکی ختم نہیں ہو سکی",
+      "coupleOptions": "کپل کے اختیارات", "reportPartner": "پارٹنر کی رپورٹ کریں",
+      "locationDeniedTitle": "مقام مسترد",
+      "locationDeniedBody": "قربت کام کرنے کے لیے سیٹنگز میں جا کر مقام کی اجازت دیں۔", "openSettings": "سیٹنگز کھولیں",
+      "backgroundAccessTitle": "بیک گراؤنڈ رسائی درکار ہے",
+      "backgroundAccessBody": "ایپ بند ہونے پر بھی قربت کو کام جاری رکھنے کے لیے بیک گراؤنڈ مقام (ہمیشہ اجازت دیں) درکار ہے۔ اجازت دینے کے لیے سیٹنگز کھولیں۔",
+      "later": "بعد میں", "locationActive": "✓ مقام شیئرنگ فعال",
+      "pickSideFirst": "پہلے اوپر اپنی سائیڈ منتخب کریں — پھر مقام شیئرنگ فعال ہو جائے گی", "couldNotCheckPermission": "مقام کی اجازت چیک نہیں ہو سکی"
+    },
+    "format": {
+      "justNow": "ابھی ابھی", "secondsAgo": "چند سیکنڈ پہلے", "minutesAgo": "{{count}} منٹ پہلے", "hoursAgo": "{{count}} گھنٹے پہلے",
+      "daysAgo": "{{count}} دن پہلے", "never": "کبھی نہیں", "secondsAgoShort": "{{count}} سیکنڈ پہلے"
+    },
+    "diagnostics": {
+      "title": "کنکشن کی حالت", "myLocationSent": "میرا مقام بھیج دیا گیا", "partnerLocationReceived": "پارٹنر کا مقام موصول ہوا",
+      "distance": "فاصلہ", "proximity": "قربت"
+    },
+    "activeWallpaper": {
+      "onScreenNow": "اب آپ کی اسکرین پر", "togetherBothPhones": "ساتھ میں — دونوں فون", "soloRole": "اکیلا ({{role}})",
+      "togetherAppliesBoth": "ساتھ کی تصویر · دونوں فونز پر لاگو", "yourHalf": "آپ کا {{role}} آدھا حصہ",
+      "waitingBothSides": "دونوں طرف سے اطلاع کا انتظار ہے۔"
+    },
+    "packPicker": {
+      "title": "کپل پیک منتخب کریں",
+      "subtitle": "آپ دونوں میں سے کوئی بھی منتخب کر سکتا ہے۔ پیک ساتھ کی تصویر اور دونوں اکیلے آدھے حصے طے کرتا ہے۔ کردار کے لیبل (لڑکا/لڑکی، سورج/چاند، …) پیک سے آتے ہیں — پیک تبدیل کرنے پر آپ کی سائیڈ وہی رہتی ہے۔"
+    },
+    "partnerCard": { "you": "آپ", "them": "وہ", "updated": "{{time}} اپ ڈیٹ ہوا", "pausedBanner": "مقام شیئرنگ روک دی گئی — قربت “الگ” پر رہے گی" },
+    "controls": { "resume": "دوبارہ شروع کریں", "pauseSharing": "شیئرنگ روکیں", "checkGps": "GPS چیک کریں", "locationSharedWith": "مقام صرف {{name}} کے ساتھ شیئر کیا جاتا ہے۔" },
+    "preview": {
+      "together": "ساتھ میں", "completeMoment": "مکمل لمحہ", "bothPhonesShow": "جب آپ قریب ہوں تو دونوں فون یہ دکھاتے ہیں۔ {{blurb}}",
+      "yourSide": "آپ کی سائیڈ", "pickYourSide": "اپنی سائیڈ منتخب کریں",
+      "sideHint": "جب آپ الگ ہوں تو آپ کا فون آپ کا آدھا حصہ دکھاتا ہے — آپ کے پارٹنر کا فون ان کا آدھا حصہ دکھاتا ہے۔ دونوں مل کر اوپر کی تصویر مکمل کرتے ہیں۔",
+      "thisIsMe": "✓ یہ میں ہوں", "tapToChoose": "منتخب کرنے کے لیے ٹیپ کریں", "onPhoneNow": "اب آپ کے فون پر: ",
+      "togetherImage": "ساتھ کی تصویر", "halfSuffix": "{{role}} آدھا حصہ", "openDashboard": "کپل ڈیش بورڈ کھولیں",
+      "pairAs": "{{role}} کے طور پر منسلک ہوں →",
+      "pairingFootnote": "منسلک ہونے کے لیے آپ کی Amora ID کا پیئرنگ کوڈ استعمال ہوتا ہے: ایک شیئر کرتا ہے، دوسرا درج کرتا ہے — پھر یہ پیک دونوں کے لیے کھل جاتا ہے۔",
+      "nowRole": "✓ اب آپ {{role}} ہیں", "couldNotChangeSide": "سائیڈ تبدیل نہیں ہو سکی"
+    }
+  },
+  "gallery": {
+    "title": "گیلری", "subtitle": "آپ کی AI تخلیقات اور کپل تھیمز", "linkedWith": "{{name}} کے ساتھ منسلک",
+    "defaultPartnerName": "پارٹنر", "pairCoupleTheme": "کپل تھیم منسلک کریں", "proximitySyncActive": "قربت ہم آہنگی فعال · منظم کرنے کے لیے ٹیپ کریں",
+    "getCoupleCode": "کپل کوڈ حاصل کریں · قریب ہونے پر مماثل وال پیپرز",
+    "filters": { "all": "تمام", "creations": "تخلیقات", "couplePacks": "کپل پیکس", "favorites": "پسندیدہ" },
+    "noCreationsYet": "ابھی تک کوئی AI تخلیق نہیں", "noWallpapersFound": "کوئی وال پیپر نہیں ملا",
+    "noCreationsBody": "ایک وال پیپر بنائیں اور یہ خودکار طور پر یہاں اپ لوڈ ہو جائے گا!",
+    "noWallpapersBody": "فلٹرز تبدیل کریں یا نئے وال پیپرز بنائیں۔", "generateWallpaper": "AI وال پیپر بنائیں"
+  },
+  "home": {
+    "heroTitle": "اپنی محبت کی کہانی کو یکجا کریں", "heroSubtitle": "دو تصاویر سیکنڈوں میں ایک بن جاتی ہیں۔", "tryNow": "ابھی آزمائیں",
+    "trendingFusions": "ٹرینڈنگ فیوژنز", "popularThisWeek": "اس ہفتے مقبول", "emptyCategory": "اس زمرے میں ابھی تک کوئی وال پیپر نہیں ہے — کوئی اور آزمائیں۔",
+    "categories": { "all": "تمام", "sunset": "غروب آفتاب", "rain": "بارش", "beach": "ساحل", "studio": "اسٹوڈیو", "festival": "تہوار" },
+    "sections": { "forCouples": "جوڑوں کے لیے", "soloVibes": "اکیلے کا موڈ", "newThisWeek": "اس ہفتے نیا", "editorsPicks": "ایڈیٹر کی پسند" }
+  },
+  "onboarding": {
+    "profile": {
+      "welcome": "Amora میں خوش آمدید", "subtitle": "آئیے آپ کا پروفائل سیٹ اپ کریں — منسلک ہونے پر آپ کا پارٹنر یہی دیکھے گا۔",
+      "namePlaceholder": "آپ کا نام", "continue": "جاری رکھیں"
+    },
+    "style": {
+      "headline": "آپ کا انداز کیا ہے؟", "subtitle": "ایک ایسا اسٹائل منتخب کریں جو آپ کو پسند ہو — ہم اسے ہر بار جنریٹ کرنے پر پہلے تجویز کریں گے۔",
+      "whoFor": "یہ کس کے لیے ہے؟", "justMe": "صرف میں", "meAndPartner": "میں اور میرا پارٹنر", "continue": "جاری رکھیں"
+    },
+    "code": {
+      "allSet": "سب تیار ہے!", "settingUp": "آپ کا اکاؤنٹ سیٹ اپ ہو رہا ہے", "generatingId": "آپ کی Amora ID بن رہی ہے…",
+      "errorSuffix": "یہ آپ کو Amora استعمال کرنے سے نہیں روکے گا — آپ بعد میں اپنے کوڈز حاصل کر سکتے ہیں۔",
+      "tryAgain": "دوبارہ کوشش کریں", "yourAmoraId": "آپ کی Amora ID", "pairedUp": "آپ منسلک ہو گئے ہیں!",
+      "yourPairingCode": "آپ کا پیئرنگ کوڈ — اپنے پارٹنر کے ساتھ شیئر کریں", "shareCode": "کوڈ شیئر کریں",
+      "orEnterTheirs": "یا ان کا کوڈ درج کریں", "partnerCodePlaceholder": "پارٹنر کا کوڈ",
+      "linking": "منسلک ہو رہا ہے…", "link": "منسلک ہوں", "enterAmora": "Amora میں داخل ہوں"
+    },
+    "couldntReachServer": "سرور تک نہیں پہنچا جا سکا۔", "pairedAlertTitle": "منسلک ہو گیا!",
+    "pairedAlertBody": "آپ کے اکاؤنٹس منسلک ہو گئے ہیں — وال پیپرز خودکار طور پر ہم آہنگ ہوں گے۔",
+    "couldntLinkTitle": "اکاؤنٹس منسلک نہیں ہو سکے",
+    "shareCodeMessage": "Amora پر میرے ساتھ شامل ہوں! جڑنے کے لیے میرا پیئرنگ کوڈ استعمال کریں: {{code}}"
+  }
+}

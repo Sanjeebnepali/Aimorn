@@ -1,0 +1,178 @@
+{
+  "tabs": { "home": "Главная", "generate": "Создать", "gallery": "Галерея", "profile": "Профиль" },
+  "common": {
+    "cancel": "Отмена", "ok": "ОК", "save": "Сохранить", "done": "Готово", "back": "Назад", "continue": "Продолжить",
+    "loading": "Загрузка…", "retry": "Повторить", "delete": "Удалить", "share": "Поделиться", "copy": "Копировать",
+    "copied": "Скопировано", "close": "Закрыть", "error": "Что-то пошло не так", "comingSoon": "Скоро"
+  },
+  "themeNames": {
+    "sunsetRose": "Закатная Роза", "midnightGreen": "Полуночный Зелёный", "crimsonNoir": "Багровый Нуар",
+    "obsidian": "Обсидиан", "neonViolet": "Неоновый Фиолетовый"
+  },
+  "style": {
+    "realistic": "Реализм", "neon": "Неоновый Нуар", "anime": "Аниме", "cyberpunk": "Киберпанк",
+    "vintage": "Винтаж 35мм", "oil": "Масляная живопись", "3d": "3D-рендер", "watercolor": "Акварель",
+    "fantasy": "Фэнтезийное Сияние", "cartoon": "3D-мультфильм"
+  },
+  "auth": {
+    "welcomeBack": "С возвращением", "createAccount": "Создать аккаунт", "signInSubtitle": "Войдите, чтобы синхронизировать обои с партнёром",
+    "signUpSubtitle": "Присоединяйтесь к Amora и начните объединять свои фото", "logIn": "Войти", "signUp": "Регистрация",
+    "emailPlaceholder": "you@example.com", "forgotPassword": "Забыли пароль?", "loggingIn": "Вход…",
+    "signingUp": "Регистрация…", "orContinueWith": "или продолжить с", "continuing": "Продолжаем…",
+    "continueWithGoogle": "Продолжить с Google", "continueWithApple": "Продолжить с Apple",
+    "noAccount": "Нет аккаунта?", "haveAccount": "Уже есть аккаунт?",
+    "logInFailedTitle": "Не удалось войти", "signUpFailedTitle": "Не удалось зарегистрироваться",
+    "verificationRequiredTitle": "Требуется дополнительная проверка",
+    "verificationRequiredBody": "Этому аккаунту нужно завершить «{{status}}», что пока не поддерживается в этой версии.",
+    "couldntSendCodeTitle": "Не удалось отправить код", "verificationFailedTitle": "Проверка не удалась",
+    "almostThereTitle": "Почти готово",
+    "almostThereAccountBody": "Для создания этого аккаунта нужны дополнительные данные, что пока не поддерживается в этой версии.",
+    "almostThereGoogleBody": "Этому аккаунту Google нужны дополнительные данные для завершения входа, что пока не поддерживается в этой версии.",
+    "couldntResendCodeTitle": "Не удалось отправить код повторно", "codeSentTitle": "Код отправлен",
+    "codeSentBody": "Новый код отправлен на {{email}}.", "appleTitle": "Продолжить с Apple",
+    "applePreviewBody": "Вход через Apple пока не подключён — это предварительная версия.",
+    "googleFailedTitle": "Не удалось войти через Google", "forgotPasswordTitle": "Забыли пароль",
+    "forgotPasswordBody": "Восстановление пароля пока не подключено — это предварительная версия.",
+    "checkEmail": "Проверьте почту", "enterCodeSentTo": "Введите код, отправленный на {{email}}",
+    "verifying": "Проверка…", "verify": "Подтвердить", "resendCode": "Отправить код повторно"
+  },
+  "generate": {
+    "titleRecreate": "Создать", "subtitleRecreate": "Воссоздание общего момента по вашим фото",
+    "title": "Создать", "subtitle": "Создайте обои вместе или соло", "recreatingTemplate": "Воссоздание шаблона",
+    "whoIsInThis": "Кто на фото?", "couple": "Пара", "solo": "Соло", "you": "Вы", "partner": "Партнёр",
+    "pickStyle": "Выберите стиль", "addExtraDetail": "Добавить деталь", "addDescription": "Добавить описание", "optional": "(необязательно)",
+    "promptPlaceholderTemplate": "Измените настроение, свет или обстановку {{template}}…",
+    "promptPlaceholder": "Прогулка по Парижу в золотой час, зернистость плёнки, тёплый свет…",
+    "surpriseMe": "Удивите меня", "recreateFusion": "Пересоздать слияние", "generateFusion": "Создать слияние",
+    "creditsCaption": "Использует 1 кредит · около 30 секунд",
+    "suggestions": ["Пляж на закате", "Неоновый Токио", "Заснеженная хижина", "Винтажная плёнка"]
+  },
+  "profile": {
+    "title": "Профиль", "amoraUser": "Пользователь Amora", "guest": "Гость", "signInToSync": "Войдите, чтобы синхронизировать обои",
+    "editProfile": "Редактировать профиль", "signIn": "Войти", "wallpapers": "Обои", "creditsLeft": "Осталось кредитов",
+    "paired": "В паре", "notPaired": "Не в паре", "pairedWith": "В паре с {{name}}", "defaultPartner": "вашим партнёром",
+    "notPairedYet": "Ещё не в паре", "pairedHint": "Обои автоматически синхронизируются, когда вы рядом",
+    "notPairedHint": "Свяжитесь во вкладке «Пара», чтобы разблокировать обои по близости", "premiumTitle": "Amora Премиум",
+    "benefits": ["Безлимитная генерация", "Без водяных знаков при экспорте", "Разрешение обоев 8K"], "upgrade": "Улучшить · $6,99/мес",
+    "appearance": "Оформление", "appearanceSubtitle": "Всё в тёмных тонах, без светлого режима — выберите настроение",
+    "avatarUpdatedTitle": "Успешно ✨", "avatarUpdatedBody": "Фото профиля успешно обновлено!",
+    "premiumAlertTitle": "Amora Премиум 💎",
+    "premiumAlertBody": "Разблокируйте безлимитную генерацию 8K обоев с ИИ, отсутствие водяных знаков и мгновенную синхронизацию по близости!",
+    "notNow": "Не сейчас", "startTrial": "Начать 7-дневный бесплатный период",
+    "inAppPurchasesPreview": "Покупки внутри приложения пока не подключены — это предварительная версия.",
+    "signOutTitle": "Выйти", "signOutBody": "Вы уверены, что хотите выйти из Amora?",
+    "notConnectedYet": "{{label}} пока не подключено — это предварительная версия.",
+    "languagePicker": {
+      "title": "Язык", "subtitle": "Выберите язык, который Amora будет использовать везде в приложении.",
+      "systemDefault": "Использовать язык устройства", "systemDefaultSub": "Сейчас {{language}}"
+    },
+    "settings": {
+      "myPosts": "Поделиться своей работой", "security": "Аккаунт и безопасность", "notifications": "Уведомления",
+      "privacy": "Конфиденциальность и геолокация", "language": "Язык", "help": "Помощь и поддержка", "signOut": "Выйти"
+    }
+  },
+  "couple": {
+    "setup": {
+      "title": "Настройка пары", "carriedPack": "Набор и сторона, выбранные на экране предпросмотра, применятся после соединения.",
+      "or": "или", "codeCopied": "✓ Код скопирован", "shareMessage": "Стань моей парой в Amora 💕\nМой код: {{code}}",
+      "signInFirst": "Сначала войдите, чтобы соединиться с партнёром", "codeMustBe6": "Код состоит из 6 символов",
+      "declinedLocation": "Вы можете включить геолокацию позже в панели «Пара»",
+      "packAppliesFromDashboard": "Выберите сторону в панели, чтобы применить выбранный набор",
+      "linked": "💕 Соединены", "couldNotLink": "Не удалось соединиться",
+      "privacyNote": "Ваша геолокация передаётся только соединённому партнёру. Вы можете приостановить обмен или разъединиться в любое время в панели.",
+      "yourCodeTitle": "Я — Человек A, дайте мне код", "yourCodeBody": "Поделитесь этим с партнёром. Он(а) введёт код на своём телефоне.",
+      "copy": "Копировать", "share": "Поделиться", "continueToWaitingRoom": "Продолжить → Комната ожидания",
+      "loadingCode": "Загрузка вашего кода…", "acceptTitle": "Я — Человек B, у меня есть код",
+      "acceptBody": "Введите 6-значный код вашего партнёра.", "pickSide": "Выберите сторону (необязательно)",
+      "pickSideHint": "Оставьте «Авто» и выберите сторону позже в панели. Или выберите сейчас.",
+      "auto": "🪄 Авто", "sideA": "👈 Сторона A", "sideB": "👉 Сторона B", "linking": "Соединение…", "linkWithPartner": "Соединиться с партнёром"
+    },
+    "linking": {
+      "waiting": "Ожидание партнёра…", "shareHint": "Поделитесь кодом ниже. Как только партнёр его введёт, экран перейдёт в панель «Пара».",
+      "cancel": "Отмена"
+    },
+    "dashboard": {
+      "notLinkedYet": "Ещё не соединены", "openSetup": "Открыть настройку", "title": "Пара", "together": "Вместе",
+      "apart": "Порознь", "noDataYet": "пока нет данных", "packSwitched": "✓ Набор переключён",
+      "couldNotSave": "Не удалось сохранить", "sharingResumed": "▶ Обмен возобновлён",
+      "sharingResumedWith": "▶ Обмен возобновлён · {{stopped}} на паузе", "sharingPaused": "⏸ Обмен на паузе",
+      "couldNotUpdate": "Не удалось обновить", "unlinkCoupleTitle": "Разъединить пару?",
+      "unlinkCoupleBody": "Вы перестанете делиться геолокацией с {{name}}. Каждый получит новый код, чтобы позже соединиться снова.",
+      "cancel": "Отмена", "unlink": "Разъединить", "unlinking": "Разъединение…",
+      "unlinked": "Разъединено — выберите новые обои на главной", "couldNotUnlink": "Не удалось разъединить",
+      "coupleOptions": "Настройки пары", "reportPartner": "Пожаловаться на партнёра",
+      "locationDeniedTitle": "Доступ к геолокации отклонён",
+      "locationDeniedBody": "Откройте настройки и разрешите доступ к геолокации для работы функции близости.", "openSettings": "Открыть настройки",
+      "backgroundAccessTitle": "Требуется фоновый доступ",
+      "backgroundAccessBody": "Для работы функции близости при закрытом приложении нужна фоновая геолокация («Разрешать всегда»). Откройте настройки, чтобы разрешить.",
+      "later": "Позже", "locationActive": "✓ Обмен геолокацией активен",
+      "pickSideFirst": "Сначала выберите свою сторону выше — тогда включится обмен геолокацией", "couldNotCheckPermission": "Не удалось проверить разрешение на геолокацию"
+    },
+    "format": {
+      "justNow": "только что", "secondsAgo": "несколько секунд назад", "minutesAgo": "{{count}} мин назад", "hoursAgo": "{{count}} ч назад",
+      "daysAgo": "{{count}} дн назад", "never": "никогда", "secondsAgoShort": "{{count}} с назад"
+    },
+    "diagnostics": {
+      "title": "Статус соединения", "myLocationSent": "Моя геолокация отправлена", "partnerLocationReceived": "Геолокация партнёра получена",
+      "distance": "Расстояние", "proximity": "Близость"
+    },
+    "activeWallpaper": {
+      "onScreenNow": "Сейчас на экране", "togetherBothPhones": "Вместе — оба телефона", "soloRole": "Соло ({{role}})",
+      "togetherAppliesBoth": "Общее изображение · применяется на обоих телефонах", "yourHalf": "Ваша половина {{role}}",
+      "waitingBothSides": "Ожидание данных с обеих сторон."
+    },
+    "packPicker": {
+      "title": "Выберите набор для пары",
+      "subtitle": "Выбрать может любой из вас. Набор определяет общее изображение И обе одиночные половины. Обозначения ролей (Парень/Девушка, Солнце/Луна и т. д.) заданы набором — при смене набора ваша сторона остаётся прежней."
+    },
+    "partnerCard": { "you": "Вы", "them": "Партнёр", "updated": "Обновлено {{time}}", "pausedBanner": "Обмен геолокацией приостановлен — близость остаётся «порознь»" },
+    "controls": { "resume": "Возобновить", "pauseSharing": "Приостановить обмен", "checkGps": "Проверить GPS", "locationSharedWith": "Геолокация передаётся только {{name}}." },
+    "preview": {
+      "together": "Вместе", "completeMoment": "Целостный момент", "bothPhonesShow": "Оба телефона показывают это, когда вы рядом. {{blurb}}",
+      "yourSide": "Ваша сторона", "pickYourSide": "Выберите свою сторону",
+      "sideHint": "Когда вы порознь, ваш телефон показывает вашу половину — телефон партнёра показывает его половину. Вместе они дополняют изображение выше.",
+      "thisIsMe": "✓ Это я", "tapToChoose": "Нажмите, чтобы выбрать", "onPhoneNow": "Сейчас на вашем телефоне: ",
+      "togetherImage": "Общее изображение", "halfSuffix": "половина {{role}}", "openDashboard": "Открыть панель пары",
+      "pairAs": "Соединиться как {{role}} →",
+      "pairingFootnote": "Для соединения используется код вашего Amora ID: один делится кодом, другой вводит его — после этого набор разблокируется для обоих.",
+      "nowRole": "✓ Теперь вы {{role}}", "couldNotChangeSide": "Не удалось изменить сторону"
+    }
+  },
+  "gallery": {
+    "title": "Галерея", "subtitle": "Ваши работы с ИИ и темы для пар", "linkedWith": "Соединено с {{name}}",
+    "defaultPartnerName": "Партнёр", "pairCoupleTheme": "Соединить тему для пары", "proximitySyncActive": "Синхронизация по близости активна · Нажмите для управления",
+    "getCoupleCode": "Получить код пары · Совпадающие обои рядом друг с другом",
+    "filters": { "all": "Все", "creations": "Работы", "couplePacks": "Наборы для пар", "favorites": "Избранное" },
+    "noCreationsYet": "Пока нет работ с ИИ", "noWallpapersFound": "Обои не найдены",
+    "noCreationsBody": "Создайте обои, и они автоматически появятся здесь!",
+    "noWallpapersBody": "Смените фильтры или создайте новые обои.", "generateWallpaper": "Создать обои с ИИ"
+  },
+  "home": {
+    "heroTitle": "Слейте вашу историю любви воедино", "heroSubtitle": "Два фото становятся одним за несколько секунд.", "tryNow": "Попробовать сейчас",
+    "trendingFusions": "Популярные слияния", "popularThisWeek": "Популярное на этой неделе", "emptyCategory": "В этой категории пока нет обоев — попробуйте другую.",
+    "categories": { "all": "Все", "sunset": "Закат", "rain": "Дождь", "beach": "Пляж", "studio": "Студия", "festival": "Фестиваль" },
+    "sections": { "forCouples": "Для пар", "soloVibes": "Соло настроение", "newThisWeek": "Новое на этой неделе", "editorsPicks": "Выбор редакции" }
+  },
+  "onboarding": {
+    "profile": {
+      "welcome": "Добро пожаловать в Amora", "subtitle": "Настроим ваш профиль — это увидит ваш партнёр после соединения.",
+      "namePlaceholder": "Ваше имя", "continue": "Продолжить"
+    },
+    "style": {
+      "headline": "Какой стиль вам нравится?", "subtitle": "Выберите любимый стиль — мы будем предлагать его первым при каждой генерации.",
+      "whoFor": "Для кого это?", "justMe": "Только я", "meAndPartner": "Я и партнёр", "continue": "Продолжить"
+    },
+    "code": {
+      "allSet": "Всё готово!", "settingUp": "Настройка аккаунта", "generatingId": "Создание вашего Amora ID…",
+      "errorSuffix": "Это не помешает вам пользоваться Amora — коды можно получить позже.",
+      "tryAgain": "Повторить", "yourAmoraId": "Ваш Amora ID", "pairedUp": "Вы соединены!",
+      "yourPairingCode": "Ваш код соединения — поделитесь с партнёром", "shareCode": "Поделиться кодом",
+      "orEnterTheirs": "или введите код партнёра", "partnerCodePlaceholder": "Код партнёра",
+      "linking": "Соединение…", "link": "Соединить", "enterAmora": "Войти в Amora"
+    },
+    "couldntReachServer": "Не удалось подключиться к серверу.", "pairedAlertTitle": "Соединены!",
+    "pairedAlertBody": "Ваши аккаунты связаны — обои будут синхронизироваться автоматически.",
+    "couldntLinkTitle": "Не удалось связать аккаунты",
+    "shareCodeMessage": "Присоединяйся ко мне в Amora! Используй мой код соединения: {{code}}"
+  }
+}

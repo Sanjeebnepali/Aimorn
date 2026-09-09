@@ -1,0 +1,178 @@
+{
+  "tabs": { "home": "Domů", "generate": "Vytvořit", "gallery": "Galerie", "profile": "Profil" },
+  "common": {
+    "cancel": "Zrušit", "ok": "OK", "save": "Uložit", "done": "Hotovo", "back": "Zpět", "continue": "Pokračovat",
+    "loading": "Načítání…", "retry": "Zkusit znovu", "delete": "Smazat", "share": "Sdílet", "copy": "Kopírovat",
+    "copied": "Zkopírováno", "close": "Zavřít", "error": "Něco se pokazilo", "comingSoon": "Již brzy"
+  },
+  "themeNames": {
+    "sunsetRose": "Růžový západ slunce", "midnightGreen": "Půlnoční zelená", "crimsonNoir": "Karmínová noir",
+    "obsidian": "Obsidián", "neonViolet": "Neonová fialová"
+  },
+  "style": {
+    "realistic": "Realistický", "neon": "Neon Noir", "anime": "Anime", "cyberpunk": "Kyberpunk",
+    "vintage": "Vintage 35mm", "oil": "Olejomalba", "3d": "3D vykreslení", "watercolor": "Akvarel",
+    "fantasy": "Fantasy záře", "cartoon": "3D animace"
+  },
+  "auth": {
+    "welcomeBack": "Vítej zpět", "createAccount": "Vytvořit účet", "signInSubtitle": "Přihlas se a synchronizuj tapety se svým partnerem",
+    "signUpSubtitle": "Připoj se k Amora a začni prolínat své fotky", "logIn": "Přihlásit se", "signUp": "Registrovat se",
+    "emailPlaceholder": "ty@priklad.cz", "forgotPassword": "Zapomněl(a) jsi heslo?", "loggingIn": "Přihlašování…",
+    "signingUp": "Registrace…", "orContinueWith": "nebo pokračuj s", "continuing": "Pokračování…",
+    "continueWithGoogle": "Pokračovat s Google", "continueWithApple": "Pokračovat s Apple",
+    "noAccount": "Nemáš účet?", "haveAccount": "Už máš účet?",
+    "logInFailedTitle": "Přihlášení se nezdařilo", "signUpFailedTitle": "Registrace se nezdařila",
+    "verificationRequiredTitle": "Je vyžadováno další ověření",
+    "verificationRequiredBody": "Tento účet musí dokončit \"{{status}}\", což v této verzi ještě není podporováno.",
+    "couldntSendCodeTitle": "Nepodařilo se odeslat kód", "verificationFailedTitle": "Ověření se nezdařilo",
+    "almostThereTitle": "Už jsi skoro tam",
+    "almostThereAccountBody": "K dokončení tohoto účtu je potřeba více informací, což v této verzi ještě není podporováno.",
+    "almostThereGoogleBody": "Tento účet Google potřebuje více informací k dokončení přihlášení, což v této verzi ještě není podporováno.",
+    "couldntResendCodeTitle": "Nepodařilo se znovu odeslat kód", "codeSentTitle": "Kód odeslán",
+    "codeSentBody": "Nový kód byl odeslán na {{email}}.", "appleTitle": "Pokračovat s Apple",
+    "applePreviewBody": "Přihlášení přes Apple ještě není propojeno — toto je náhledová verze.",
+    "googleFailedTitle": "Přihlášení přes Google se nezdařilo", "forgotPasswordTitle": "Zapomenuté heslo",
+    "forgotPasswordBody": "Obnovení hesla ještě není propojeno — toto je náhledová verze.",
+    "checkEmail": "Zkontroluj svůj e-mail", "enterCodeSentTo": "Zadej kód odeslaný na {{email}}",
+    "verifying": "Ověřování…", "verify": "Ověřit", "resendCode": "Odeslat kód znovu"
+  },
+  "generate": {
+    "titleRecreate": "Vytvořit", "subtitleRecreate": "Znovuvytvoření společné scény s vašimi fotkami",
+    "title": "Vytvořit", "subtitle": "Navrhni tapetu, spolu nebo sám/sama", "recreatingTemplate": "Znovuvytváření šablony",
+    "whoIsInThis": "Kdo je na této fotce?", "couple": "Pár", "solo": "Sólo", "you": "Ty", "partner": "Partner/ka",
+    "pickStyle": "Vyber styl", "addExtraDetail": "Přidat detail navíc", "addDescription": "Přidat popis", "optional": "(volitelné)",
+    "promptPlaceholderTemplate": "Uprav náladu, světlo nebo prostředí {{template}}…",
+    "promptPlaceholder": "Procházka Paříží za zlaté hodiny, filmové zrno, teplé světlo…",
+    "surpriseMe": "Překvap mě", "recreateFusion": "Znovuvytvořit fúzi", "generateFusion": "Vytvořit fúzi",
+    "creditsCaption": "Použije 1 kredit · ~30 sekund",
+    "suggestions": ["Západ slunce na pláži", "Neonové Tokio", "Zasněžená chata", "Vintage film"]
+  },
+  "profile": {
+    "title": "Profil", "amoraUser": "Uživatel Amora", "guest": "Host", "signInToSync": "Přihlas se pro synchronizaci tapet",
+    "editProfile": "Upravit profil", "signIn": "Přihlásit se", "wallpapers": "Tapety", "creditsLeft": "Zbývající kredity",
+    "paired": "Spárováno", "notPaired": "Nespárováno", "pairedWith": "Spárováno s {{name}}", "defaultPartner": "tvým partnerem/partnerkou",
+    "notPairedYet": "Zatím nespárováno", "pairedHint": "Tapeta se automaticky synchronizuje, když jste blízko sebe",
+    "notPairedHint": "Připoj se na kartě Pár a odemkni tapety podle blízkosti", "premiumTitle": "Amora Premium",
+    "benefits": ["Neomezené vytváření", "Bez vodoznaku při exportu", "Rozlišení tapet 8K"], "upgrade": "Upgradovat · 6,99 $/měsíc",
+    "appearance": "Vzhled", "appearanceSubtitle": "Vše tmavé, žádný světlý režim — vyber si svou náladu",
+    "avatarUpdatedTitle": "Úspěch ✨", "avatarUpdatedBody": "Profilová fotka byla úspěšně aktualizována!",
+    "premiumAlertTitle": "Amora Premium 💎",
+    "premiumAlertBody": "Odemkni neomezené vytváření AI tapet v 8K, bez vodoznaků a okamžitou synchronizaci blízkosti!",
+    "notNow": "Teď ne", "startTrial": "Začít 7denní zkušební verzi zdarma",
+    "inAppPurchasesPreview": "Nákupy v aplikaci ještě nejsou propojeny — toto je náhledová verze.",
+    "signOutTitle": "Odhlásit se", "signOutBody": "Opravdu se chceš odhlásit z Amora?",
+    "notConnectedYet": "{{label}} ještě není propojeno — toto je náhledová verze.",
+    "languagePicker": {
+      "title": "Jazyk", "subtitle": "Vyber jazyk, ve kterém se Amora bude zobrazovat v celé aplikaci.",
+      "systemDefault": "Podle jazyka zařízení", "systemDefaultSub": "Aktuálně {{language}}"
+    },
+    "settings": {
+      "myPosts": "Sdílej svou tvorbu", "security": "Účet a zabezpečení", "notifications": "Oznámení",
+      "privacy": "Soukromí a poloha", "language": "Jazyk", "help": "Nápověda a podpora", "signOut": "Odhlásit se"
+    }
+  },
+  "couple": {
+    "setup": {
+      "title": "Nastavení páru", "carriedPack": "Balíček a strana zvolené na obrazovce náhledu budou použity, jakmile se spárujete.",
+      "or": "nebo", "codeCopied": "✓ Kód zkopírován", "shareMessage": "Buď mým partnerem v Amora 💕\nMůj kód: {{code}}",
+      "signInFirst": "Nejprve se přihlas, abys mohl(a) spárovat partnera", "codeMustBe6": "Kódy mají 6 znaků",
+      "declinedLocation": "Polohu můžeš zapnout později z nástěnky páru",
+      "packAppliesFromDashboard": "Vyber stranu z nástěnky pro použití vybraného balíčku",
+      "linked": "💕 Spárováno", "couldNotLink": "Nepodařilo se spárovat",
+      "privacyNote": "Tvá poloha se sdílí pouze s tvým spárovaným partnerem. Sdílení můžeš kdykoli pozastavit nebo se odpárovat z nástěnky.",
+      "yourCodeTitle": "Jsem osoba A — dej mi kód", "yourCodeBody": "Sdílej ho se svým partnerem. Zadá ho do svého telefonu.",
+      "copy": "Kopírovat", "share": "Sdílet", "continueToWaitingRoom": "Pokračovat → Čekárna",
+      "loadingCode": "Načítání tvého kódu…", "acceptTitle": "Jsem osoba B — mám kód",
+      "acceptBody": "Zadej 6místný kód svého partnera.", "pickSide": "Vyber svou stranu (volitelné)",
+      "pickSideHint": "Nech na Automaticky a stranu vyber později z nástěnky. Nebo vyber teď.",
+      "auto": "🪄 Automaticky", "sideA": "👈 Strana A", "sideB": "👉 Strana B", "linking": "Spárovávání…", "linkWithPartner": "Spárovat s partnerem"
+    },
+    "linking": {
+      "waiting": "Čekání na tvého partnera…", "shareHint": "Sdílej svůj kód níže. Jakmile ho zadá, tato obrazovka přejde na tvou nástěnku páru.",
+      "cancel": "Zrušit"
+    },
+    "dashboard": {
+      "notLinkedYet": "Zatím nespárováno", "openSetup": "Otevřít nastavení", "title": "Pár", "together": "Spolu",
+      "apart": "Odděleně", "noDataYet": "zatím žádná data", "packSwitched": "✓ Balíček přepnut",
+      "couldNotSave": "Nepodařilo se uložit", "sharingResumed": "▶ Sdílení obnoveno",
+      "sharingResumedWith": "▶ Sdílení obnoveno · {{stopped}} pozastaveno", "sharingPaused": "⏸ Sdílení pozastaveno",
+      "couldNotUpdate": "Nepodařilo se aktualizovat", "unlinkCoupleTitle": "Odpárovat pár?",
+      "unlinkCoupleBody": "Přestaneš sdílet svou polohu s {{name}}. Oba dostanete nový kód pro pozdější opětovné spárování.",
+      "cancel": "Zrušit", "unlink": "Odpárovat", "unlinking": "Odpárovávání…",
+      "unlinked": "Odpárováno — vyber novou tapetu z Domů", "couldNotUnlink": "Nepodařilo se odpárovat",
+      "coupleOptions": "Možnosti páru", "reportPartner": "Nahlásit partnera",
+      "locationDeniedTitle": "Poloha zamítnuta",
+      "locationDeniedBody": "Otevři Nastavení a povol oprávnění polohy, aby blízkost fungovala.", "openSettings": "Otevřít nastavení",
+      "backgroundAccessTitle": "Vyžadován přístup na pozadí",
+      "backgroundAccessBody": "Blízkost potřebuje polohu na pozadí (\"Vždy povolit\"), aby fungovala i se zavřenou aplikací. Otevři Nastavení a povol to.",
+      "later": "Později", "locationActive": "✓ Sdílení polohy je aktivní",
+      "pickSideFirst": "Nejprve vyber svou stranu výše — pak se zapne sdílení polohy", "couldNotCheckPermission": "Nepodařilo se zkontrolovat oprávnění polohy"
+    },
+    "format": {
+      "justNow": "právě teď", "secondsAgo": "před pár sekundami", "minutesAgo": "před {{count}} min", "hoursAgo": "před {{count}} hod",
+      "daysAgo": "před {{count}} dny", "never": "nikdy", "secondsAgoShort": "před {{count}} s"
+    },
+    "diagnostics": {
+      "title": "Stav připojení", "myLocationSent": "Moje poloha odeslána", "partnerLocationReceived": "Poloha partnera přijata",
+      "distance": "Vzdálenost", "proximity": "Blízkost"
+    },
+    "activeWallpaper": {
+      "onScreenNow": "Nyní na tvé obrazovce", "togetherBothPhones": "Spolu — oba telefony", "soloRole": "Sólo ({{role}})",
+      "togetherAppliesBoth": "Společný obrázek · platí pro oba telefony", "yourHalf": "Tvá polovina {{role}}",
+      "waitingBothSides": "Čekání na hlášení z obou stran."
+    },
+    "packPicker": {
+      "title": "Vyber balíček páru",
+      "subtitle": "Vybrat může kdokoli z vás. Balíček určuje společný obrázek I obě sólo poloviny. Štítky rolí (Kluk/Holka, Slunce/Měsíc, …) pocházejí z balíčku — tvá strana zůstává stejná při změně balíčku."
+    },
+    "partnerCard": { "you": "Ty", "them": "Oni", "updated": "Aktualizováno {{time}}", "pausedBanner": "Sdílení polohy zastaveno — blízkost zůstává „odděleně“" },
+    "controls": { "resume": "Obnovit", "pauseSharing": "Pozastavit sdílení", "checkGps": "Zkontrolovat GPS", "locationSharedWith": "Poloha se sdílí pouze s {{name}}." },
+    "preview": {
+      "together": "Spolu", "completeMoment": "Kompletní okamžik", "bothPhonesShow": "Oba telefony toto zobrazí, když jste blízko. {{blurb}}",
+      "yourSide": "Tvá strana", "pickYourSide": "Vyber svou stranu",
+      "sideHint": "Když jste odděleně, tvůj telefon zobrazuje tvou polovinu — telefon tvého partnera zobrazuje tu jeho/její. Obě dohromady doplňují obrázek výše.",
+      "thisIsMe": "✓ To jsem já", "tapToChoose": "Klepnutím vyber", "onPhoneNow": "Na tvém telefonu nyní: ",
+      "togetherImage": "Společný obrázek", "halfSuffix": "polovina {{role}}", "openDashboard": "Otevřít nástěnku páru",
+      "pairAs": "Spárovat jako {{role}} →",
+      "pairingFootnote": "Párování používá párovací kód tvého Amora ID: jeden ho sdílí, druhý ho zadá — pak se tento balíček odemkne pro oba.",
+      "nowRole": "✓ Nyní jsi {{role}}", "couldNotChangeSide": "Nepodařilo se změnit stranu"
+    }
+  },
+  "gallery": {
+    "title": "Galerie", "subtitle": "Tvé AI výtvory a témata páru", "linkedWith": "Spárováno s {{name}}",
+    "defaultPartnerName": "Partner/ka", "pairCoupleTheme": "Spárovat téma páru", "proximitySyncActive": "Synchronizace blízkosti aktivní · Klepnutím spravuj",
+    "getCoupleCode": "Získat kód páru · Vhodné tapety, když jste blízko",
+    "filters": { "all": "Vše", "creations": "Výtvory", "couplePacks": "Balíčky páru", "favorites": "Oblíbené" },
+    "noCreationsYet": "Zatím žádné AI výtvory", "noWallpapersFound": "Nebyly nalezeny žádné tapety",
+    "noCreationsBody": "Vytvoř tapetu a automaticky se zobrazí zde!",
+    "noWallpapersBody": "Změň filtry nebo vytvoř nové tapety.", "generateWallpaper": "Vytvořit AI tapetu"
+  },
+  "home": {
+    "heroTitle": "Prolni svůj milostný příběh", "heroSubtitle": "Dvě fotky se stanou jednou za pár sekund.", "tryNow": "Vyzkoušet nyní",
+    "trendingFusions": "Populární fúze", "popularThisWeek": "Populární tento týden", "emptyCategory": "V této kategorii zatím nejsou žádné tapety — zkus jinou.",
+    "categories": { "all": "Vše", "sunset": "Západ slunce", "rain": "Déšť", "beach": "Pláž", "studio": "Studio", "festival": "Festival" },
+    "sections": { "forCouples": "Pro páry", "soloVibes": "Sólo nálada", "newThisWeek": "Nové tento týden", "editorsPicks": "Tipy redakce" }
+  },
+  "onboarding": {
+    "profile": {
+      "welcome": "Vítej v Amora", "subtitle": "Nastavme si tvůj profil — to je to, co tvůj partner uvidí, jakmile se spárujete.",
+      "namePlaceholder": "Tvé jméno", "continue": "Pokračovat"
+    },
+    "style": {
+      "headline": "Jaký je tvůj styl?", "subtitle": "Vyber styl, který se ti líbí — nabídneme ho jako první při každém vytváření.",
+      "whoFor": "Pro koho to je?", "justMe": "Jen já", "meAndPartner": "Já a můj partner/ka", "continue": "Pokračovat"
+    },
+    "code": {
+      "allSet": "Vše připraveno!", "settingUp": "Nastavování tvého účtu", "generatingId": "Generování tvého Amora ID…",
+      "errorSuffix": "To ti nezabrání v používání Amora — své kódy můžeš získat později.",
+      "tryAgain": "Zkusit znovu", "yourAmoraId": "Tvé Amora ID", "pairedUp": "Jste spárováni!",
+      "yourPairingCode": "Tvůj párovací kód — sdílej ho se svým partnerem", "shareCode": "Sdílet kód",
+      "orEnterTheirs": "nebo zadej ten jeho/její", "partnerCodePlaceholder": "Kód partnera",
+      "linking": "Spárovávání…", "link": "Spárovat", "enterAmora": "Vstoupit do Amora"
+    },
+    "couldntReachServer": "Nepodařilo se spojit se serverem.", "pairedAlertTitle": "Jste spárováni!",
+    "pairedAlertBody": "Vaše účty jsou propojeny — tapety se budou automaticky synchronizovat.",
+    "couldntLinkTitle": "Nepodařilo se propojit účty",
+    "shareCodeMessage": "Přidej se ke mně v Amora! Použij můj párovací kód pro spárování: {{code}}"
+  }
+}

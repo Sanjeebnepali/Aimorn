@@ -1,0 +1,162 @@
+// Standard Postgres via Prisma — this is deliberately host-agnostic. The
+// same schema/migrations apply whether DATABASE_URL points at Neon (free,
+// now) or AWS RDS (later); nothing here is Neon- or Render-specific.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  // Neon recommends migrations run over the unpooled connection (PgBouncer's
+  // transaction pooling can't hold the advisory lock `migrate dev` needs).
+  // Only consulted for migrate/db push — the app's runtime queries still go
+  // through `url` above. A future non-Neon host (e.g. RDS) with no pooled/
+  // unpooled split must still set DATABASE_URL_UNPOOLED (equal to
+  // DATABASE_URL is fine) — Prisma requires the referenced env var to exist.
+  directUrl = env("DATABASE_URL_UNPOOLED")
+}
+
+/// Mirrors a Clerk user. Clerk is the source of truth for identity/session —
+/// this row exists so generations/credits have something in OUR database to
+/// foreign-key against. Created on first authenticated request (see
+/// src/middleware/auth.ts) rather than via a webhook, to avoid depending on
+/// Clerk webhooks being reachable during early self-hosted testing.
+model User {
+  /// Clerk's user id (e.g. "user_2abc..."), used as-is — no separate id.
+  id          String       @id
+  email       String?      @unique
+  displayName String?
+  /// Starter balance so a new signup can try one generation immediately.
+  /// This is a placeholder economy, not a real purchases/ledger system yet.
+  credits     Int          @default(3)
+  createdAt   DateTime     @default(now())
+  generations Generation[]
+
+  /// Set once the post-signup onboarding flow (name/photo, style survey,
+  /// personal + pairing codes) is completed — null gates the app's root
+  /// layout into showing /onboarding instead of the main tabs. Deliberately
+  /// a timestamp rather than a boolean so "when" is available for free if
+  /// it's ever needed (funnel analytics, re-prompting after a long gap).
+  onboardedAt     DateTime?
+  /// A short, human-shareable handle ("Your Amora ID") distinct from the
+  /// pairing code below — this one identifies the account itself and isn't
+  /// consumed/invalidated by use, unlike a pairing code.
+  username        String?      @unique
+  /// S3/R2 object key for the onboarding profile photo. Named `avatarKey`
+  /// (not `avatarUrl`) to match `photoAKey`/`outputKey` below — a stored
+  /// object key the client resolves through the same publicUrlFor() as
+  /// everything else in src/lib/storage.ts, not a pre-built URL.
+  avatarKey       String?
+  /// Matches a StyleOption.key from amora/src/components/primitives/style-swatch.tsx
+  /// — the onboarding survey's taste question, doubles later as a default
+  /// style suggestion on the Generate screen.
+  stylePreference String?
+  /// The onboarding survey's other question: does this person expect to use
+  /// Amora solo or with a partner. Reuses SubjectMode rather than a new enum
+  /// since it's the same solo/couple distinction Generation already tracks.
+  usageMode       SubjectMode?
+  /// One-time code this user generated to hand to a partner — cleared once
+  /// consumed via POST /profile/pair so a code can't be reused by a third
+  /// party after the intended partner has already redeemed it.
+  pairingCode     String?      @unique
+  /// The other half of a linked pair. Single-sided FK (not mirrored on both
+  /// rows) is enough for a 1:1 relation — Prisma resolves the reverse
+  /// direction through `partnerOf` below, and `@unique` guarantees no third
+  /// user can also claim the same partner.
+  partnerId       String?      @unique
+  partner         User?        @relation("Partnership", fields: [partnerId], references: [id])
+  partnerOf       User?        @relation("Partnership")
+
+  /// Which wallpaper-pack slot this account renders when apart from its
+  /// partner (see Couple.packId / constants in src/couple/packs.ts). Set via
+  /// PATCH /couple/role, once per couple per slot — see couple.ts route for
+  /// the "first pick creates the Couple row, second pick joins it" logic.
+  coupleRole CoupleRole?
+  coupleId   String?
+  couple     Couple?         @relation(fields: [coupleId], references: [id])
+  /// Live GPS for the proximity check — one row per user, not per couple, so
+  /// each side writes only its own row (see POST /couple/location).
+  location   CoupleLocation?
+}
+
+enum CoupleRole {
+  A
+  B
+}
+
+/// Shared state for one linked pair's proximity-wallpaper feature. Deliberately
+/// separate from the User.partnerId relation above (which only says "these two
+/// accounts are linked") — a couple can be linked for months before ever
+/// turning proximity wallpapers on, so this row is created lazily, the first
+/// time either side picks a role (see PATCH /couple/role), not at pairing time.
+model Couple {
+  id         String   @id @default(cuid())
+  /// Matches a CouplePack.id from src/couple/packs.ts. Null until either
+  /// partner picks one.
+  packId     String?
+  /// When true, proximity always reads 'far' — see server/src/routes/couple.ts
+  /// GET handler and the client's recomputeDistance, which both need to honor
+  /// this independently (server for the partner-location read, client for its
+  /// own store's proximity calc).
+  paused     Boolean  @default(false)
+  thresholdM Int      @default(100)
+  createdAt  DateTime @default(now())
+  members    User[]
+}
+
+/// One row per user — NOT per couple — because each side only ever writes its
+/// own position; the other side's row is read via their User.partnerId.
+model CoupleLocation {
+  userId    String   @id
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lat       Float
+  lng       Float
+  accuracyM Float?
+  updatedAt DateTime @updatedAt
+}
+
+enum SubjectMode {
+  SOLO
+  COUPLE
+}
+
+enum GenerationStatus {
+  PENDING
+  PROCESSING
+  COMPLETE
+  FAILED
+}
+
+/// One "fuse these photo(s) into this theme+style" job. Deliberately carries
+/// `provider`/`model` per row (not a global config) so we can A/B different
+/// AI providers per generation later without a schema change — same idea
+/// this app's design docs flagged as useful when comparing providers.
+model Generation {
+  id          String            @id @default(cuid())
+  user        User              @relation(fields: [userId], references: [id])
+  userId      String
+  /// Matches a Template.id from amora/src/data/templates.ts, when the user
+  /// started from a template rather than a freeform prompt.
+  templateId  String?
+  /// Matches a StyleOption.key from style-swatch.tsx (e.g. "realistic").
+  styleKey    String
+  subjectMode SubjectMode
+  description String?
+  /// S3/R2 object key for the "You" photo.
+  photoAKey   String
+  /// S3/R2 object key for the "Partner" photo — null when subjectMode=SOLO.
+  photoBKey   String?
+  provider    String
+  model       String
+  status      GenerationStatus  @default(PENDING)
+  /// S3/R2 object key of the result image, set only once status=COMPLETE.
+  outputKey   String?
+  errorMessage String?
+  creditCost  Int               @default(1)
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+
+  @@index([userId, createdAt])
+}

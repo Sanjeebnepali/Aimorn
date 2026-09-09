@@ -1,0 +1,178 @@
+{
+  "tabs": { "home": "Accueil", "generate": "Créer", "gallery": "Galerie", "profile": "Profil" },
+  "common": {
+    "cancel": "Annuler", "ok": "OK", "save": "Enregistrer", "done": "Terminé", "back": "Retour", "continue": "Continuer",
+    "loading": "Chargement…", "retry": "Réessayer", "delete": "Supprimer", "share": "Partager", "copy": "Copier",
+    "copied": "Copié", "close": "Fermer", "error": "Un problème est survenu", "comingSoon": "Bientôt disponible"
+  },
+  "themeNames": {
+    "sunsetRose": "Rose Coucher de Soleil", "midnightGreen": "Vert Minuit", "crimsonNoir": "Cramoisi Noir",
+    "obsidian": "Obsidienne", "neonViolet": "Violet Néon"
+  },
+  "style": {
+    "realistic": "Réaliste", "neon": "Néon Noir", "anime": "Anime", "cyberpunk": "Cyberpunk",
+    "vintage": "Vintage 35mm", "oil": "Peinture à l'huile", "3d": "Rendu 3D", "watercolor": "Aquarelle",
+    "fantasy": "Lueur Fantastique", "cartoon": "Toon 3D"
+  },
+  "auth": {
+    "welcomeBack": "Bon retour", "createAccount": "Créer un compte", "signInSubtitle": "Connectez-vous pour synchroniser les fonds d'écran avec votre partenaire",
+    "signUpSubtitle": "Rejoignez Amora pour fusionner vos photos", "logIn": "Connexion", "signUp": "S'inscrire",
+    "emailPlaceholder": "vous@exemple.com", "forgotPassword": "Mot de passe oublié ?", "loggingIn": "Connexion…",
+    "signingUp": "Inscription…", "orContinueWith": "ou continuer avec", "continuing": "Poursuite…",
+    "continueWithGoogle": "Continuer avec Google", "continueWithApple": "Continuer avec Apple",
+    "noAccount": "Pas de compte ?", "haveAccount": "Déjà un compte ?",
+    "logInFailedTitle": "Échec de la connexion", "signUpFailedTitle": "Échec de l'inscription",
+    "verificationRequiredTitle": "Vérification supplémentaire requise",
+    "verificationRequiredBody": "Ce compte doit compléter « {{status}} », ce qui n'est pas encore pris en charge dans cette version.",
+    "couldntSendCodeTitle": "Impossible d'envoyer le code", "verificationFailedTitle": "Échec de la vérification",
+    "almostThereTitle": "Presque terminé",
+    "almostThereAccountBody": "Des informations supplémentaires sont nécessaires pour créer ce compte, ce qui n'est pas encore pris en charge dans cette version.",
+    "almostThereGoogleBody": "Ce compte Google nécessite plus d'informations pour terminer la connexion, ce qui n'est pas encore pris en charge dans cette version.",
+    "couldntResendCodeTitle": "Impossible de renvoyer le code", "codeSentTitle": "Code envoyé",
+    "codeSentBody": "Un nouveau code a été envoyé à {{email}}.", "appleTitle": "Continuer avec Apple",
+    "applePreviewBody": "La connexion Apple n'est pas encore connectée — cette version est un aperçu.",
+    "googleFailedTitle": "Échec de la connexion Google", "forgotPasswordTitle": "Mot de passe oublié",
+    "forgotPasswordBody": "La récupération de mot de passe n'est pas encore connectée — cette version est un aperçu.",
+    "checkEmail": "Vérifiez votre e-mail", "enterCodeSentTo": "Entrez le code envoyé à {{email}}",
+    "verifying": "Vérification…", "verify": "Vérifier", "resendCode": "Renvoyer le code"
+  },
+  "generate": {
+    "titleRecreate": "Créer", "subtitleRecreate": "Recréer une scène partagée avec vos photos",
+    "title": "Créer", "subtitle": "Concevez un fond d'écran, à deux ou seul", "recreatingTemplate": "Recréation du modèle",
+    "whoIsInThis": "Qui figure sur la photo ?", "couple": "Couple", "solo": "Seul", "you": "Vous", "partner": "Partenaire",
+    "pickStyle": "Choisir un style", "addExtraDetail": "Ajouter un détail", "addDescription": "Ajouter une description", "optional": "(facultatif)",
+    "promptPlaceholderTemplate": "Ajustez l'ambiance, la lumière ou le décor de {{template}}…",
+    "promptPlaceholder": "Une balade à Paris à l'heure dorée, grain de film, lumière chaude…",
+    "surpriseMe": "Surprenez-moi", "recreateFusion": "Recréer la fusion", "generateFusion": "Générer la fusion",
+    "creditsCaption": "Utilise 1 crédit · environ 30 secondes",
+    "suggestions": ["Plage au coucher du soleil", "Tokyo néon", "Cabane enneigée", "Film vintage"]
+  },
+  "profile": {
+    "title": "Profil", "amoraUser": "Utilisateur Amora", "guest": "Invité", "signInToSync": "Connectez-vous pour synchroniser les fonds d'écran",
+    "editProfile": "Modifier le profil", "signIn": "Connexion", "wallpapers": "Fonds d'écran", "creditsLeft": "Crédits restants",
+    "paired": "Jumelé", "notPaired": "Non jumelé", "pairedWith": "Jumelé avec {{name}}", "defaultPartner": "votre partenaire",
+    "notPairedYet": "Pas encore jumelé", "pairedHint": "Le fond d'écran se synchronise automatiquement quand vous êtes proches",
+    "notPairedHint": "Connectez-vous dans l'onglet Couple pour débloquer les fonds d'écran de proximité", "premiumTitle": "Amora Premium",
+    "benefits": ["Générations illimitées", "Aucun filigrane à l'export", "Résolution 8K"], "upgrade": "Passer premium · 6,99 $/mois",
+    "appearance": "Apparence", "appearanceSubtitle": "Tout en sombre, aucun mode clair — choisissez votre ambiance",
+    "avatarUpdatedTitle": "Succès ✨", "avatarUpdatedBody": "Photo de profil mise à jour avec succès !",
+    "premiumAlertTitle": "Amora Premium 💎",
+    "premiumAlertBody": "Débloquez des générations de fonds d'écran IA 8K illimitées, sans filigrane, et une synchronisation de proximité instantanée !",
+    "notNow": "Pas maintenant", "startTrial": "Démarrer l'essai gratuit de 7 jours",
+    "inAppPurchasesPreview": "Les achats intégrés ne sont pas encore connectés — cette version est un aperçu.",
+    "signOutTitle": "Déconnexion", "signOutBody": "Voulez-vous vraiment vous déconnecter d'Amora ?",
+    "notConnectedYet": "{{label}} n'est pas encore connecté — cette version est un aperçu.",
+    "languagePicker": {
+      "title": "Langue", "subtitle": "Choisissez la langue affichée partout dans Amora.",
+      "systemDefault": "Suivre la langue de l'appareil", "systemDefaultSub": "Actuellement {{language}}"
+    },
+    "settings": {
+      "myPosts": "Partager votre création", "security": "Compte et sécurité", "notifications": "Notifications",
+      "privacy": "Confidentialité et localisation", "language": "Langue", "help": "Aide et assistance", "signOut": "Déconnexion"
+    }
+  },
+  "couple": {
+    "setup": {
+      "title": "Configuration du couple", "carriedPack": "Le pack et le côté choisis sur l'aperçu s'appliqueront une fois jumelés.",
+      "or": "ou", "codeCopied": "✓ Code copié", "shareMessage": "Deviens mon couple sur Amora 💕\nMon code : {{code}}",
+      "signInFirst": "Connectez-vous d'abord pour vous jumeler avec un partenaire", "codeMustBe6": "Les codes comportent 6 caractères",
+      "declinedLocation": "Vous pouvez activer la localisation plus tard depuis le tableau de bord Couple",
+      "packAppliesFromDashboard": "Choisissez un côté depuis le tableau de bord pour appliquer votre pack",
+      "linked": "💕 Jumelé", "couldNotLink": "Impossible de jumeler",
+      "privacyNote": "Votre position n'est partagée qu'avec votre partenaire jumelé. Vous pouvez suspendre le partage ou vous déjumeler à tout moment depuis le tableau de bord.",
+      "yourCodeTitle": "Je suis la Personne A — donnez-moi un code", "yourCodeBody": "Partagez ceci avec votre partenaire. Il·elle le saisira sur son téléphone.",
+      "copy": "Copier", "share": "Partager", "continueToWaitingRoom": "Continuer → Salle d'attente",
+      "loadingCode": "Chargement de votre code…", "acceptTitle": "Je suis la Personne B — j'ai un code",
+      "acceptBody": "Entrez le code à 6 caractères de votre partenaire.", "pickSide": "Choisissez votre côté (facultatif)",
+      "pickSideHint": "Laissez sur Auto et choisissez votre côté plus tard depuis le tableau de bord. Ou choisissez maintenant.",
+      "auto": "🪄 Auto", "sideA": "👈 Côté A", "sideB": "👉 Côté B", "linking": "Jumelage…", "linkWithPartner": "Se jumeler avec le partenaire"
+    },
+    "linking": {
+      "waiting": "En attente de votre partenaire…", "shareHint": "Partagez votre code ci-dessous. Dès qu'il·elle le saisit, cet écran passe à votre tableau de bord Couple.",
+      "cancel": "Annuler"
+    },
+    "dashboard": {
+      "notLinkedYet": "Pas encore jumelé", "openSetup": "Ouvrir la configuration", "title": "Couple", "together": "Ensemble",
+      "apart": "Séparés", "noDataYet": "aucune donnée pour l'instant", "packSwitched": "✓ Pack changé",
+      "couldNotSave": "Impossible d'enregistrer", "sharingResumed": "▶ Partage repris",
+      "sharingResumedWith": "▶ Partage repris · {{stopped}} en pause", "sharingPaused": "⏸ Partage en pause",
+      "couldNotUpdate": "Impossible de mettre à jour", "unlinkCoupleTitle": "Déjumeler le couple ?",
+      "unlinkCoupleBody": "Vous cesserez de partager votre position avec {{name}}. Vous recevrez chacun un nouveau code pour vous rejumeler plus tard.",
+      "cancel": "Annuler", "unlink": "Déjumeler", "unlinking": "Déjumelage…",
+      "unlinked": "Déjumelé — choisissez un nouveau fond d'écran depuis l'Accueil", "couldNotUnlink": "Impossible de déjumeler",
+      "coupleOptions": "Options du couple", "reportPartner": "Signaler le partenaire",
+      "locationDeniedTitle": "Localisation refusée",
+      "locationDeniedBody": "Ouvrez les Réglages et accordez l'autorisation de localisation pour que la proximité fonctionne.", "openSettings": "Ouvrir les réglages",
+      "backgroundAccessTitle": "Accès en arrière-plan requis",
+      "backgroundAccessBody": "La proximité a besoin de la localisation en arrière-plan (Toujours autoriser) pour continuer à fonctionner app fermée. Ouvrez les Réglages pour l'accorder.",
+      "later": "Plus tard", "locationActive": "✓ Partage de position actif",
+      "pickSideFirst": "Choisissez d'abord votre côté ci-dessus — le partage de position s'activera ensuite", "couldNotCheckPermission": "Impossible de vérifier l'autorisation de localisation"
+    },
+    "format": {
+      "justNow": "à l'instant", "secondsAgo": "il y a quelques secondes", "minutesAgo": "il y a {{count}} min", "hoursAgo": "il y a {{count}} h",
+      "daysAgo": "il y a {{count}} j", "never": "jamais", "secondsAgoShort": "il y a {{count}} s"
+    },
+    "diagnostics": {
+      "title": "État de la connexion", "myLocationSent": "Ma position envoyée", "partnerLocationReceived": "Position du partenaire reçue",
+      "distance": "Distance", "proximity": "Proximité"
+    },
+    "activeWallpaper": {
+      "onScreenNow": "Sur votre écran maintenant", "togetherBothPhones": "Ensemble — les deux téléphones", "soloRole": "Solo ({{role}})",
+      "togetherAppliesBoth": "Image ensemble · s'applique aux deux téléphones", "yourHalf": "Votre moitié {{role}}",
+      "waitingBothSides": "En attente que les deux côtés se signalent."
+    },
+    "packPicker": {
+      "title": "Choisir un pack couple",
+      "subtitle": "L'un ou l'autre peut choisir. Le pack définit l'image ensemble ET les deux moitiés solo. Les libellés de rôle (Garçon/Fille, Soleil/Lune, …) viennent du pack — votre côté reste le même en changeant de pack."
+    },
+    "partnerCard": { "you": "Vous", "them": "Eux", "updated": "Mis à jour {{time}}", "pausedBanner": "Partage de position en pause — la proximité reste « séparés »" },
+    "controls": { "resume": "Reprendre", "pauseSharing": "Suspendre le partage", "checkGps": "Vérifier le GPS", "locationSharedWith": "Position partagée uniquement avec {{name}}." },
+    "preview": {
+      "together": "Ensemble", "completeMoment": "Le moment complet", "bothPhonesShow": "Les deux téléphones affichent ceci quand vous êtes proches. {{blurb}}",
+      "yourSide": "Votre côté", "pickYourSide": "Choisissez votre côté",
+      "sideHint": "Quand vous êtes séparés, votre téléphone affiche votre moitié — celui de votre partenaire affiche la sienne. Les deux complètent l'image ci-dessus.",
+      "thisIsMe": "✓ C'est moi", "tapToChoose": "Touchez pour choisir", "onPhoneNow": "Sur votre téléphone maintenant : ",
+      "togetherImage": "Image ensemble", "halfSuffix": "moitié {{role}}", "openDashboard": "Ouvrir le tableau de bord Couple",
+      "pairAs": "Se jumeler en tant que {{role}} →",
+      "pairingFootnote": "Le jumelage utilise le code de jumelage de votre ID Amora : l'un le partage, l'autre le saisit — puis ce pack se débloque pour les deux.",
+      "nowRole": "✓ Vous êtes maintenant {{role}}", "couldNotChangeSide": "Impossible de changer de côté"
+    }
+  },
+  "gallery": {
+    "title": "Galerie", "subtitle": "Vos créations IA et thèmes de couple", "linkedWith": "Jumelé avec {{name}}",
+    "defaultPartnerName": "Partenaire", "pairCoupleTheme": "Jumeler un thème de couple", "proximitySyncActive": "Synchro de proximité active · Touchez pour gérer",
+    "getCoupleCode": "Obtenir un code couple · Fonds d'écran assortis quand vous êtes proches",
+    "filters": { "all": "Tout", "creations": "Créations", "couplePacks": "Packs couple", "favorites": "Favoris" },
+    "noCreationsYet": "Aucune création IA pour l'instant", "noWallpapersFound": "Aucun fond d'écran trouvé",
+    "noCreationsBody": "Générez un fond d'écran et il sera automatiquement téléversé ici !",
+    "noWallpapersBody": "Changez les filtres ou générez de nouveaux fonds d'écran.", "generateWallpaper": "Générer un fond d'écran IA"
+  },
+  "home": {
+    "heroTitle": "Fusionnez votre histoire d'amour", "heroSubtitle": "Deux photos deviennent une, en quelques secondes.", "tryNow": "Essayer maintenant",
+    "trendingFusions": "Fusions tendance", "popularThisWeek": "Populaire cette semaine", "emptyCategory": "Aucun fond d'écran dans cette catégorie pour l'instant — essayez-en une autre.",
+    "categories": { "all": "Tout", "sunset": "Coucher de soleil", "rain": "Pluie", "beach": "Plage", "studio": "Studio", "festival": "Festival" },
+    "sections": { "forCouples": "Pour les couples", "soloVibes": "Ambiance solo", "newThisWeek": "Nouveau cette semaine", "editorsPicks": "Sélection de la rédaction" }
+  },
+  "onboarding": {
+    "profile": {
+      "welcome": "Bienvenue sur Amora", "subtitle": "Configurons votre profil — voici ce que votre partenaire verra une fois jumelés.",
+      "namePlaceholder": "Votre nom", "continue": "Continuer"
+    },
+    "style": {
+      "headline": "Quel est votre style ?", "subtitle": "Choisissez un style que vous aimez — nous vous le suggérerons en premier à chaque génération.",
+      "whoFor": "Pour qui est-ce ?", "justMe": "Juste moi", "meAndPartner": "Moi et mon/ma partenaire", "continue": "Continuer"
+    },
+    "code": {
+      "allSet": "Tout est prêt !", "settingUp": "Configuration de votre compte", "generatingId": "Génération de votre ID Amora…",
+      "errorSuffix": "Cela ne vous empêchera pas d'utiliser Amora — vous pourrez récupérer vos codes plus tard.",
+      "tryAgain": "Réessayer", "yourAmoraId": "Votre ID Amora", "pairedUp": "Vous êtes jumelés !",
+      "yourPairingCode": "Votre code de jumelage — partagez-le avec votre partenaire", "shareCode": "Partager le code",
+      "orEnterTheirs": "ou saisissez le sien", "partnerCodePlaceholder": "Code du partenaire",
+      "linking": "Jumelage…", "link": "Jumeler", "enterAmora": "Entrer dans Amora"
+    },
+    "couldntReachServer": "Impossible de contacter le serveur.", "pairedAlertTitle": "Jumelés !",
+    "pairedAlertBody": "Vos comptes sont liés — les fonds d'écran se synchroniseront automatiquement.",
+    "couldntLinkTitle": "Impossible de lier les comptes",
+    "shareCodeMessage": "Rejoignez-moi sur Amora ! Utilisez mon code de jumelage pour vous connecter : {{code}}"
+  }
+}

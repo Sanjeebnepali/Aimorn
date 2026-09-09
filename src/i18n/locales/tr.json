@@ -1,0 +1,178 @@
+{
+  "tabs": { "home": "Ana Sayfa", "generate": "Oluştur", "gallery": "Galeri", "profile": "Profil" },
+  "common": {
+    "cancel": "İptal", "ok": "Tamam", "save": "Kaydet", "done": "Tamamlandı", "back": "Geri", "continue": "Devam Et",
+    "loading": "Yükleniyor…", "retry": "Tekrar Dene", "delete": "Sil", "share": "Paylaş", "copy": "Kopyala",
+    "copied": "Kopyalandı", "close": "Kapat", "error": "Bir şeyler ters gitti", "comingSoon": "Yakında"
+  },
+  "themeNames": {
+    "sunsetRose": "Gün Batımı Gülü", "midnightGreen": "Gece Yarısı Yeşili", "crimsonNoir": "Koyu Kızıl Noir",
+    "obsidian": "Obsidyen", "neonViolet": "Neon Mor"
+  },
+  "style": {
+    "realistic": "Gerçekçi", "neon": "Neon Noir", "anime": "Anime", "cyberpunk": "Cyberpunk",
+    "vintage": "Vintage 35mm", "oil": "Yağlı Boya", "3d": "3D Render", "watercolor": "Suluboya",
+    "fantasy": "Fantastik Parıltı", "cartoon": "3D Çizgi Film"
+  },
+  "auth": {
+    "welcomeBack": "Tekrar hoş geldin", "createAccount": "Hesap oluştur", "signInSubtitle": "Partnerinle duvar kağıtlarını senkronize etmek için giriş yap",
+    "signUpSubtitle": "Amora'ya katıl ve fotoğraflarını birleştirmeye başla", "logIn": "Giriş Yap", "signUp": "Kaydol",
+    "emailPlaceholder": "sen@ornek.com", "forgotPassword": "Şifreni mi unuttun?", "loggingIn": "Giriş yapılıyor…",
+    "signingUp": "Kaydolunuyor…", "orContinueWith": "veya şununla devam et", "continuing": "Devam ediliyor…",
+    "continueWithGoogle": "Google ile devam et", "continueWithApple": "Apple ile devam et",
+    "noAccount": "Hesabın yok mu?", "haveAccount": "Zaten hesabın var mı?",
+    "logInFailedTitle": "Giriş başarısız", "signUpFailedTitle": "Kayıt başarısız",
+    "verificationRequiredTitle": "Ek doğrulama gerekli",
+    "verificationRequiredBody": "Bu hesabın \"{{status}}\" adımını tamamlaması gerekiyor, bu ise bu sürümde henüz desteklenmiyor.",
+    "couldntSendCodeTitle": "Kod gönderilemedi", "verificationFailedTitle": "Doğrulama başarısız",
+    "almostThereTitle": "Neredeyse tamam",
+    "almostThereAccountBody": "Bu hesabı oluşturmayı tamamlamak için daha fazla bilgi gerekiyor, bu ise bu sürümde henüz desteklenmiyor.",
+    "almostThereGoogleBody": "Bu Google hesabının girişi tamamlaması için daha fazla bilgi gerekiyor, bu ise bu sürümde henüz desteklenmiyor.",
+    "couldntResendCodeTitle": "Kod yeniden gönderilemedi", "codeSentTitle": "Kod gönderildi",
+    "codeSentBody": "{{email}} adresine yeni bir kod gönderildi.", "appleTitle": "Apple ile devam et",
+    "applePreviewBody": "Apple ile giriş henüz bağlı değil — bu sürüm bir önizlemedir.",
+    "googleFailedTitle": "Google ile giriş başarısız", "forgotPasswordTitle": "Şifremi unuttum",
+    "forgotPasswordBody": "Şifre kurtarma henüz bağlı değil — bu sürüm bir önizlemedir.",
+    "checkEmail": "E-postanı kontrol et", "enterCodeSentTo": "{{email}} adresine gönderilen kodu gir",
+    "verifying": "Doğrulanıyor…", "verify": "Doğrula", "resendCode": "Kodu yeniden gönder"
+  },
+  "generate": {
+    "titleRecreate": "Oluştur", "subtitleRecreate": "Fotoğraflarınla paylaşılan bir sahne yeniden oluşturuluyor",
+    "title": "Oluştur", "subtitle": "Birlikte ya da tek başına bir duvar kağıdı tasarla", "recreatingTemplate": "Şablon yeniden oluşturuluyor",
+    "whoIsInThis": "Bunda kim var?", "couple": "Çift", "solo": "Tek", "you": "Sen", "partner": "Partner",
+    "pickStyle": "Bir stil seç", "addExtraDetail": "Ekstra detay ekle", "addDescription": "Açıklama ekle", "optional": "(isteğe bağlı)",
+    "promptPlaceholderTemplate": "{{template}} atmosferini, ışığını veya ortamını ayarla…",
+    "promptPlaceholder": "Paris'te altın saatte bir yürüyüş, film tanesi, sıcak ışık…",
+    "surpriseMe": "Beni şaşırt", "recreateFusion": "Füzyonu yeniden oluştur", "generateFusion": "Füzyon oluştur",
+    "creditsCaption": "1 kredi kullanır · yaklaşık 30 saniye",
+    "suggestions": ["Gün batımı sahili", "Neon Tokyo", "Karlı kulübe", "Vintage film"]
+  },
+  "profile": {
+    "title": "Profil", "amoraUser": "Amora Kullanıcısı", "guest": "Misafir", "signInToSync": "Duvar kağıtlarını senkronize etmek için giriş yap",
+    "editProfile": "Profili düzenle", "signIn": "Giriş Yap", "wallpapers": "Duvar Kağıtları", "creditsLeft": "Kalan Kredi",
+    "paired": "Eşleşti", "notPaired": "Eşleşmedi", "pairedWith": "{{name}} ile eşleşti", "defaultPartner": "partnerin",
+    "notPairedYet": "Henüz eşleşmedi", "pairedHint": "Yakınken duvar kağıdı otomatik olarak senkronize olur",
+    "notPairedHint": "Yakınlık duvar kağıtlarının kilidini açmak için Çift sekmesinden bağlan", "premiumTitle": "Amora Premium",
+    "benefits": ["Sınırsız oluşturma", "Dışa aktarmada filigran yok", "8K duvar kağıdı çözünürlüğü"], "upgrade": "Yükselt · $6.99/ay",
+    "appearance": "Görünüm", "appearanceSubtitle": "Tamamen koyu, açık mod yok — modunu seç",
+    "avatarUpdatedTitle": "Başarılı ✨", "avatarUpdatedBody": "Profil fotoğrafı başarıyla güncellendi!",
+    "premiumAlertTitle": "Amora Premium 💎",
+    "premiumAlertBody": "Sınırsız 8K yapay zeka duvar kağıdı oluşturmanın, filigransız içeriklerin ve anlık yakınlık senkronizasyonunun kilidini aç!",
+    "notNow": "Şimdi değil", "startTrial": "7 günlük ücretsiz denemeyi başlat",
+    "inAppPurchasesPreview": "Uygulama içi satın almalar henüz bağlı değil — bu sürüm bir önizlemedir.",
+    "signOutTitle": "Çıkış Yap", "signOutBody": "Amora'dan çıkış yapmak istediğine emin misin?",
+    "notConnectedYet": "{{label}} henüz bağlı değil — bu sürüm bir önizlemedir.",
+    "languagePicker": {
+      "title": "Dil", "subtitle": "Amora'nın uygulama genelinde göstereceği dili seç.",
+      "systemDefault": "Cihaz dilini kullan", "systemDefaultSub": "Şu anda {{language}}"
+    },
+    "settings": {
+      "myPosts": "Eserini paylaş", "security": "Hesap ve güvenlik", "notifications": "Bildirimler",
+      "privacy": "Gizlilik ve konum", "language": "Dil", "help": "Yardım ve destek", "signOut": "Çıkış Yap"
+    }
+  },
+  "couple": {
+    "setup": {
+      "title": "Çift Kurulumu", "carriedPack": "Önizleme ekranında seçilen paket ve taraf, eşleştikten sonra uygulanır.",
+      "or": "veya", "codeCopied": "✓ Kod kopyalandı", "shareMessage": "Amora'da benim çiftim ol 💕\nKodum: {{code}}",
+      "signInFirst": "Bir partnerle eşleşmek için önce giriş yap", "codeMustBe6": "Kodlar 6 karakterlidir",
+      "declinedLocation": "Konumu daha sonra Çift panosundan etkinleştirebilirsin",
+      "packAppliesFromDashboard": "Seçtiğin paketi uygulamak için panodan bir taraf seç",
+      "linked": "💕 Eşleşti", "couldNotLink": "Eşleştirilemedi",
+      "privacyNote": "Konumun yalnızca eşleştiğin partnerinle paylaşılır. Paylaşımı istediğin zaman panodan duraklatabilir veya eşleşmeyi kaldırabilirsin.",
+      "yourCodeTitle": "Ben A Kişisiyim — bana bir kod ver", "yourCodeBody": "Bunu partnerinle paylaş. Telefonuna girecek.",
+      "copy": "Kopyala", "share": "Paylaş", "continueToWaitingRoom": "Devam Et → Bekleme Odası",
+      "loadingCode": "Kodun yükleniyor…", "acceptTitle": "Ben B Kişisiyim — bir kodum var",
+      "acceptBody": "Partnerinin 6 karakterlik kodunu gir.", "pickSide": "Tarafını seç (isteğe bağlı)",
+      "pickSideHint": "Otomatik'te bırak ve tarafını daha sonra panodan seç. Ya da şimdi seç.",
+      "auto": "🪄 Otomatik", "sideA": "👈 A Tarafı", "sideB": "👉 B Tarafı", "linking": "Eşleştiriliyor…", "linkWithPartner": "Partnerle eşleştir"
+    },
+    "linking": {
+      "waiting": "Partnerin bekleniyor…", "shareHint": "Kodunu aşağıda paylaş. Girdiği anda bu ekran Çift panona atlar.",
+      "cancel": "İptal"
+    },
+    "dashboard": {
+      "notLinkedYet": "Henüz eşleşmedi", "openSetup": "Kurulumu Aç", "title": "Çift", "together": "Birlikte",
+      "apart": "Ayrı", "noDataYet": "henüz veri yok", "packSwitched": "✓ Paket değiştirildi",
+      "couldNotSave": "Kaydedilemedi", "sharingResumed": "▶ Paylaşım devam ettirildi",
+      "sharingResumedWith": "▶ Paylaşım devam ettirildi · {{stopped}} duraklatıldı", "sharingPaused": "⏸ Paylaşım duraklatıldı",
+      "couldNotUpdate": "Güncellenemedi", "unlinkCoupleTitle": "Çift eşleşmesi kaldırılsın mı?",
+      "unlinkCoupleBody": "{{name}} ile konum paylaşımını durduracaksın. İkiniz de daha sonra tekrar eşleşmek için yeni bir kod alacaksınız.",
+      "cancel": "İptal", "unlink": "Eşleşmeyi Kaldır", "unlinking": "Eşleşme kaldırılıyor…",
+      "unlinked": "Eşleşme kaldırıldı — Ana Sayfa'dan yeni bir duvar kağıdı seç", "couldNotUnlink": "Eşleşme kaldırılamadı",
+      "coupleOptions": "Çift seçenekleri", "reportPartner": "Partneri bildir",
+      "locationDeniedTitle": "Konum reddedildi",
+      "locationDeniedBody": "Yakınlığın çalışması için Ayarlar'ı aç ve konum izni ver.", "openSettings": "Ayarları Aç",
+      "backgroundAccessTitle": "Arka plan erişimi gerekli",
+      "backgroundAccessBody": "Yakınlığın uygulama kapalıyken çalışmaya devam etmesi için arka plan konumu (Her Zaman İzin Ver) gerekir. İzin vermek için Ayarlar'ı aç.",
+      "later": "Sonra", "locationActive": "✓ Konum paylaşımı etkin",
+      "pickSideFirst": "Önce yukarıdan tarafını seç — ardından konum paylaşımı etkinleşir", "couldNotCheckPermission": "Konum izni kontrol edilemedi"
+    },
+    "format": {
+      "justNow": "az önce", "secondsAgo": "birkaç saniye önce", "minutesAgo": "{{count}} dk önce", "hoursAgo": "{{count}} sa önce",
+      "daysAgo": "{{count}} gün önce", "never": "hiç", "secondsAgoShort": "{{count}} sn önce"
+    },
+    "diagnostics": {
+      "title": "Bağlantı durumu", "myLocationSent": "Konumum gönderildi", "partnerLocationReceived": "Partner konumu alındı",
+      "distance": "Mesafe", "proximity": "Yakınlık"
+    },
+    "activeWallpaper": {
+      "onScreenNow": "Şu anda ekranında", "togetherBothPhones": "Birlikte — her iki telefon", "soloRole": "Tek ({{role}})",
+      "togetherAppliesBoth": "Birlikte görsel · her iki telefonda da uygulanır", "yourHalf": "{{role}} yarın",
+      "waitingBothSides": "Her iki tarafın da bildirmesi bekleniyor."
+    },
+    "packPicker": {
+      "title": "Çift paketi seç",
+      "subtitle": "İkinizden biri seçebilir. Paket, birlikte görseli VE her iki tek yarıyı tanımlar. Rol etiketleri (Erkek/Kız, Güneş/Ay, …) paketten gelir — paket değiştiğinde tarafın aynı kalır."
+    },
+    "partnerCard": { "you": "Sen", "them": "Onlar", "updated": "{{time}} güncellendi", "pausedBanner": "Konum paylaşımı duraklatıldı — yakınlık “ayrı” olarak kalır" },
+    "controls": { "resume": "Devam Et", "pauseSharing": "Paylaşımı duraklat", "checkGps": "GPS'i Kontrol Et", "locationSharedWith": "Konum yalnızca {{name}} ile paylaşılır." },
+    "preview": {
+      "together": "Birlikte", "completeMoment": "Tam an", "bothPhonesShow": "Yakınken her iki telefon da bunu gösterir. {{blurb}}",
+      "yourSide": "Senin tarafın", "pickYourSide": "Tarafını seç",
+      "sideHint": "Ayrıyken, telefonun senin yarını gösterir — partnerinin telefonu onun yarısını gösterir. İkisi birleşince yukarıdaki görsel tamamlanır.",
+      "thisIsMe": "✓ Bu benim", "tapToChoose": "Seçmek için dokun", "onPhoneNow": "Şu anda telefonunda: ",
+      "togetherImage": "Birlikte görsel", "halfSuffix": "{{role}} yarısı", "openDashboard": "Çift panosunu aç",
+      "pairAs": "{{role}} olarak eşleş →",
+      "pairingFootnote": "Eşleşme, Amora ID'nin eşleştirme kodunu kullanır: biri paylaşır, diğeri girer — ardından bu paket ikisi için de açılır.",
+      "nowRole": "✓ Artık {{role}} sin", "couldNotChangeSide": "Taraf değiştirilemedi"
+    }
+  },
+  "gallery": {
+    "title": "Galeri", "subtitle": "Yapay zeka eserlerin ve çift temaların", "linkedWith": "{{name}} ile eşleşti",
+    "defaultPartnerName": "Partner", "pairCoupleTheme": "Çift temasını eşleştir", "proximitySyncActive": "Yakınlık senkronizasyonu etkin · Yönetmek için dokun",
+    "getCoupleCode": "Çift kodu al · Yakınken eşleşen duvar kağıtları",
+    "filters": { "all": "Tümü", "creations": "Eserler", "couplePacks": "Çift paketleri", "favorites": "Favoriler" },
+    "noCreationsYet": "Henüz yapay zeka eseri yok", "noWallpapersFound": "Duvar kağıdı bulunamadı",
+    "noCreationsBody": "Bir duvar kağıdı oluştur, otomatik olarak buraya yüklenecek!",
+    "noWallpapersBody": "Filtreleri değiştir veya yeni duvar kağıtları oluştur.", "generateWallpaper": "Yapay zeka duvar kağıdı oluştur"
+  },
+  "home": {
+    "heroTitle": "Aşk hikayeni birleştir", "heroSubtitle": "İki fotoğraf saniyeler içinde bire dönüşür.", "tryNow": "Şimdi Dene",
+    "trendingFusions": "Trend Füzyonlar", "popularThisWeek": "Bu Hafta Popüler", "emptyCategory": "Bu kategoride henüz duvar kağıdı yok — başka birini dene.",
+    "categories": { "all": "Tümü", "sunset": "Gün Batımı", "rain": "Yağmur", "beach": "Sahil", "studio": "Stüdyo", "festival": "Festival" },
+    "sections": { "forCouples": "Çiftler İçin", "soloVibes": "Solo Modu", "newThisWeek": "Bu Hafta Yeni", "editorsPicks": "Editör Seçimleri" }
+  },
+  "onboarding": {
+    "profile": {
+      "welcome": "Amora'ya hoş geldin", "subtitle": "Profilini oluşturalım — eşleştikten sonra partnerinin göreceği şey bu.",
+      "namePlaceholder": "Adın", "continue": "Devam Et"
+    },
+    "style": {
+      "headline": "Tarzın ne?", "subtitle": "Sevdiğin bir stil seç — her oluşturmada onu ilk olarak önereceğiz.",
+      "whoFor": "Bu kimin için?", "justMe": "Sadece ben", "meAndPartner": "Ben ve partnerim", "continue": "Devam Et"
+    },
+    "code": {
+      "allSet": "Her şey hazır!", "settingUp": "Hesabın ayarlanıyor", "generatingId": "Amora ID'n oluşturuluyor…",
+      "errorSuffix": "Bu, Amora'yı kullanmanı engellemeyecek — kodlarını daha sonra alabilirsin.",
+      "tryAgain": "Tekrar Dene", "yourAmoraId": "Amora ID'n", "pairedUp": "Eşleştiniz!",
+      "yourPairingCode": "Eşleştirme kodun — partnerinle paylaş", "shareCode": "Kodu Paylaş",
+      "orEnterTheirs": "veya onunkini gir", "partnerCodePlaceholder": "Partnerin kodu",
+      "linking": "Eşleştiriliyor…", "link": "Eşleştir", "enterAmora": "Amora'ya Gir"
+    },
+    "couldntReachServer": "Sunucuya ulaşılamadı.", "pairedAlertTitle": "Eşleştiniz!",
+    "pairedAlertBody": "Hesaplarınız bağlandı — duvar kağıtları otomatik olarak senkronize olacak.",
+    "couldntLinkTitle": "Hesaplar bağlanamadı",
+    "shareCodeMessage": "Amora'da bana katıl! Bağlanmak için eşleştirme kodumu kullan: {{code}}"
+  }
+}

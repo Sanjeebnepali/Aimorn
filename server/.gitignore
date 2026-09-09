@@ -1,0 +1,8 @@
+node_modules/
+dist/
+.env
+*.log
+scripts/.env
+scripts/*.png
+.neon
+.env.local

@@ -1,0 +1,8 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+  <!-- Required by android.app.WallpaperManager#setBitmap — a standard
+       ("normal") Android permission, granted automatically at install time
+       with no runtime prompt, but the call throws SecurityException if it
+       isn't declared. Merged into the app's manifest by the Android Gradle
+       build (manifest merger), so no app.json config plugin is needed. -->
+  <uses-permission android:name="android.permission.SET_WALLPAPER"/>
+</manifest>

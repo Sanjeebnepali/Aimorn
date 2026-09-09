@@ -1,0 +1,178 @@
+{
+  "tabs": { "home": "Nyumbani", "generate": "Unda", "gallery": "Ghala la Picha", "profile": "Wasifu" },
+  "common": {
+    "cancel": "Ghairi", "ok": "Sawa", "save": "Hifadhi", "done": "Imekamilika", "back": "Rudi", "continue": "Endelea",
+    "loading": "Inapakia…", "retry": "Jaribu tena", "delete": "Futa", "share": "Shiriki", "copy": "Nakili",
+    "copied": "Imenakiliwa", "close": "Funga", "error": "Hitilafu imetokea", "comingSoon": "Inakuja Hivi Karibuni"
+  },
+  "themeNames": {
+    "sunsetRose": "Waridi la Machweo", "midnightGreen": "Kijani cha Usiku wa Manane", "crimsonNoir": "Nyekundu ya Giza",
+    "obsidian": "Obsidian", "neonViolet": "Zambarau ya Neon"
+  },
+  "style": {
+    "realistic": "Halisia", "neon": "Neon Noir", "anime": "Anime", "cyberpunk": "Cyberpunk",
+    "vintage": "Vintage 35mm", "oil": "Uchoraji wa Mafuta", "3d": "Uonyeshaji wa 3D", "watercolor": "Rangi za Maji",
+    "fantasy": "Mng'aro wa Fantasia", "cartoon": "Katuni ya 3D"
+  },
+  "auth": {
+    "welcomeBack": "Karibu tena", "createAccount": "Fungua akaunti", "signInSubtitle": "Ingia ili kusawazisha mandhari na mpenzi wako",
+    "signUpSubtitle": "Jiunge na Amora na uanze kuchanganya picha zako", "logIn": "Ingia", "signUp": "Jisajili",
+    "emailPlaceholder": "wewe@mfano.com", "forgotPassword": "Umesahau nenosiri?", "loggingIn": "Inaingia…",
+    "signingUp": "Inajisajili…", "orContinueWith": "au endelea na", "continuing": "Inaendelea…",
+    "continueWithGoogle": "Endelea na Google", "continueWithApple": "Endelea na Apple",
+    "noAccount": "Huna akaunti?", "haveAccount": "Una akaunti tayari?",
+    "logInFailedTitle": "Kuingia kumeshindwa", "signUpFailedTitle": "Usajili umeshindwa",
+    "verificationRequiredTitle": "Uthibitisho wa ziada unahitajika",
+    "verificationRequiredBody": "Akaunti hii inahitaji kukamilisha \"{{status}}\", ambayo bado haitumiki katika toleo hili.",
+    "couldntSendCodeTitle": "Imeshindwa kutuma msimbo", "verificationFailedTitle": "Uthibitisho umeshindwa",
+    "almostThereTitle": "Karibu kumaliza",
+    "almostThereAccountBody": "Maelezo zaidi yanahitajika kukamilisha kufungua akaunti hii, ambayo bado haitumiki katika toleo hili.",
+    "almostThereGoogleBody": "Akaunti hii ya Google inahitaji maelezo zaidi kukamilisha kuingia, ambayo bado haitumiki katika toleo hili.",
+    "couldntResendCodeTitle": "Imeshindwa kutuma tena msimbo", "codeSentTitle": "Msimbo umetumwa",
+    "codeSentBody": "Msimbo mpya umetumwa kwa {{email}}.", "appleTitle": "Endelea na Apple",
+    "applePreviewBody": "Kuingia kwa Apple bado hakujaunganishwa — toleo hili ni muhtasari tu.",
+    "googleFailedTitle": "Kuingia kwa Google kumeshindwa", "forgotPasswordTitle": "Umesahau Nenosiri",
+    "forgotPasswordBody": "Urejeshaji wa nenosiri bado haujaunganishwa — toleo hili ni muhtasari tu.",
+    "checkEmail": "Angalia barua pepe yako", "enterCodeSentTo": "Ingiza msimbo uliotumwa kwa {{email}}",
+    "verifying": "Inathibitisha…", "verify": "Thibitisha", "resendCode": "Tuma tena msimbo"
+  },
+  "generate": {
+    "titleRecreate": "Unda", "subtitleRecreate": "Kuunda upya tukio lililoshirikiwa kwa picha zako",
+    "title": "Unda", "subtitle": "Buni mandhari, pamoja au peke yako", "recreatingTemplate": "Kuunda upya kiolezo",
+    "whoIsInThis": "Nani yumo humu?", "couple": "Wapenzi", "solo": "Peke yako", "you": "Wewe", "partner": "Mpenzi",
+    "pickStyle": "Chagua mtindo", "addExtraDetail": "Ongeza maelezo ya ziada", "addDescription": "Ongeza maelezo", "optional": "(si lazima)",
+    "promptPlaceholderTemplate": "Rekebisha hali, mwanga, au mazingira ya {{template}}…",
+    "promptPlaceholder": "Matembezi ya saa ya dhahabu Paris, chembechembe za filamu, mwanga wa joto…",
+    "surpriseMe": "Nishangaze", "recreateFusion": "Unda upya muunganiko", "generateFusion": "Unda muunganiko",
+    "creditsCaption": "Inatumia mkopo 1 · takriban sekunde 30",
+    "suggestions": ["Fukwe wakati wa machweo", "Tokyo ya Neon", "Kibanda cha theluji", "Filamu ya zamani"]
+  },
+  "profile": {
+    "title": "Wasifu", "amoraUser": "Mtumiaji wa Amora", "guest": "Mgeni", "signInToSync": "Ingia ili kusawazisha mandhari",
+    "editProfile": "Hariri wasifu", "signIn": "Ingia", "wallpapers": "Mandhari", "creditsLeft": "Mikopo Iliyobaki",
+    "paired": "Umeoanishwa", "notPaired": "Haujaoanishwa", "pairedWith": "Umeoanishwa na {{name}}", "defaultPartner": "mpenzi wako",
+    "notPairedYet": "Bado hujaoanishwa", "pairedHint": "Mandhari husawazishwa kiotomatiki mnapokuwa karibu",
+    "notPairedHint": "Ungana katika kichupo cha Couple ili kufungua mandhari za ukaribu", "premiumTitle": "Amora Premium",
+    "benefits": ["Uundaji usio na kikomo", "Hakuna alama ya maji unapohamisha", "Ubora wa mandhari wa 8K"], "upgrade": "Boresha · $6.99/mwezi",
+    "appearance": "Muonekano", "appearanceSubtitle": "Zote giza, hakuna hali angavu — chagua hali yako",
+    "avatarUpdatedTitle": "Imefanikiwa ✨", "avatarUpdatedBody": "Picha ya wasifu imesasishwa kwa mafanikio!",
+    "premiumAlertTitle": "Amora Premium 💎",
+    "premiumAlertBody": "Fungua uundaji wa mandhari za AI za 8K bila kikomo, bila alama za maji, na usawazishaji wa ukaribu wa papo hapo!",
+    "notNow": "Sio Sasa", "startTrial": "Anza jaribio la bure la siku 7",
+    "inAppPurchasesPreview": "Manunuzi ndani ya programu bado hayajaunganishwa — toleo hili ni muhtasari tu.",
+    "signOutTitle": "Toka", "signOutBody": "Una uhakika unataka kutoka Amora?",
+    "notConnectedYet": "{{label}} bado hajaunganishwa — toleo hili ni muhtasari tu.",
+    "languagePicker": {
+      "title": "Lugha", "subtitle": "Chagua lugha ambayo Amora itaonyesha kila mahali kwenye programu.",
+      "systemDefault": "Fuata lugha ya kifaa", "systemDefaultSub": "Kwa sasa {{language}}"
+    },
+    "settings": {
+      "myPosts": "Shiriki uumbaji wako", "security": "Akaunti na usalama", "notifications": "Arifa",
+      "privacy": "Faragha na mahali", "language": "Lugha", "help": "Msaada na uungwaji mkono", "signOut": "Toka"
+    }
+  },
+  "couple": {
+    "setup": {
+      "title": "Usanidi wa Wapenzi", "carriedPack": "Kifurushi na upande vilivyochaguliwa kwenye skrini ya muhtasari vitatumika mtakapooanishwa.",
+      "or": "au", "codeCopied": "✓ Msimbo umenakiliwa", "shareMessage": "Kuwa mpenzi wangu kwenye Amora 💕\nMsimbo wangu: {{code}}",
+      "signInFirst": "Ingia kwanza ili kuoanishwa na mpenzi", "codeMustBe6": "Misimbo ina herufi 6",
+      "declinedLocation": "Unaweza kuwasha mahali baadaye kutoka dashibodi ya Couple",
+      "packAppliesFromDashboard": "Chagua upande kutoka dashibodi ili kutumia kifurushi ulichochagua",
+      "linked": "💕 Umeoanishwa", "couldNotLink": "Imeshindwa kuoanisha",
+      "privacyNote": "Mahali pako panashirikiwa tu na mpenzi wako aliyeoanishwa. Unaweza kusitisha ushirikianaji au kutenganisha wakati wowote kutoka dashibodi.",
+      "yourCodeTitle": "Mimi ni Mtu A — nipe msimbo", "yourCodeBody": "Shiriki hii na mpenzi wako. Ataingiza kwenye simu yake.",
+      "copy": "Nakili", "share": "Shiriki", "continueToWaitingRoom": "Endelea → Chumba cha Kusubiri",
+      "loadingCode": "Inapakia msimbo wako…", "acceptTitle": "Mimi ni Mtu B — nina msimbo",
+      "acceptBody": "Ingiza msimbo wa herufi 6 wa mpenzi wako.", "pickSide": "Chagua upande wako (si lazima)",
+      "pickSideHint": "Acha kwenye Kiotomatiki na uchague upande wako baadaye kutoka dashibodi. Au chagua sasa.",
+      "auto": "🪄 Kiotomatiki", "sideA": "👈 Upande A", "sideB": "👉 Upande B", "linking": "Inaoanisha…", "linkWithPartner": "Oanisha na mpenzi"
+    },
+    "linking": {
+      "waiting": "Inasubiri mpenzi wako…", "shareHint": "Shiriki msimbo wako hapa chini. Mara tu atakapouingiza, skrini hii itaruka hadi dashibodi yako ya Couple.",
+      "cancel": "Ghairi"
+    },
+    "dashboard": {
+      "notLinkedYet": "Bado hajaoanishwa", "openSetup": "Fungua usanidi", "title": "Wapenzi", "together": "Pamoja",
+      "apart": "Mbali", "noDataYet": "hakuna data bado", "packSwitched": "✓ Kifurushi kimebadilishwa",
+      "couldNotSave": "Imeshindwa kuhifadhi", "sharingResumed": "▶ Ushirikianaji umeendelea",
+      "sharingResumedWith": "▶ Ushirikianaji umeendelea · {{stopped}} umesitishwa", "sharingPaused": "⏸ Ushirikianaji umesitishwa",
+      "couldNotUpdate": "Imeshindwa kusasisha", "unlinkCoupleTitle": "Tenganisha wapenzi?",
+      "unlinkCoupleBody": "Utaacha kushiriki mahali na {{name}}. Nyote wawili mtapata msimbo mpya ili kuoanishwa tena baadaye.",
+      "cancel": "Ghairi", "unlink": "Tenganisha", "unlinking": "Inatenganisha…",
+      "unlinked": "Imetenganishwa — chagua mandhari mpya kutoka Nyumbani", "couldNotUnlink": "Imeshindwa kutenganisha",
+      "coupleOptions": "Chaguo za wapenzi", "reportPartner": "Ripoti mpenzi",
+      "locationDeniedTitle": "Ruhusa ya mahali imekataliwa",
+      "locationDeniedBody": "Fungua Mipangilio na uruhusu ruhusa ya mahali ili ukaribu ufanye kazi.", "openSettings": "Fungua mipangilio",
+      "backgroundAccessTitle": "Ufikiaji wa nyuma unahitajika",
+      "backgroundAccessBody": "Ukaribu unahitaji mahali pa nyuma (Ruhusu Kila Wakati) ili kuendelea kufanya kazi programu ikiwa imefungwa. Fungua Mipangilio ili kuruhusu.",
+      "later": "Baadaye", "locationActive": "✓ Ushirikianaji wa mahali umewashwa",
+      "pickSideFirst": "Chagua upande wako hapo juu kwanza — kisha ushirikianaji wa mahali utawashwa", "couldNotCheckPermission": "Imeshindwa kuangalia ruhusa ya mahali"
+    },
+    "format": {
+      "justNow": "sasa hivi", "secondsAgo": "sekunde chache zilizopita", "minutesAgo": "dakika {{count}} zilizopita", "hoursAgo": "saa {{count}} zilizopita",
+      "daysAgo": "siku {{count}} zilizopita", "never": "kamwe", "secondsAgoShort": "sekunde {{count}} zilizopita"
+    },
+    "diagnostics": {
+      "title": "Hali ya muunganisho", "myLocationSent": "Mahali pangu pametumwa", "partnerLocationReceived": "Mahali pa mpenzi pamepokewa",
+      "distance": "Umbali", "proximity": "Ukaribu"
+    },
+    "activeWallpaper": {
+      "onScreenNow": "Sasa kwenye skrini yako", "togetherBothPhones": "Pamoja — simu zote mbili", "soloRole": "Peke yako ({{role}})",
+      "togetherAppliesBoth": "Picha ya pamoja · inatumika kwenye simu zote mbili", "yourHalf": "Nusu yako ya {{role}}",
+      "waitingBothSides": "Inasubiri pande zote mbili kuripoti."
+    },
+    "packPicker": {
+      "title": "Chagua kifurushi cha wapenzi",
+      "subtitle": "Yeyote kati yenu anaweza kuchagua. Kifurushi kinaainisha picha ya pamoja NA nusu zote mbili za peke yako. Lebo za majukumu (Kijana/Msichana, Jua/Mwezi, …) zinatoka kwenye kifurushi — upande wako unabaki sawa unapobadilisha vifurushi."
+    },
+    "partnerCard": { "you": "Wewe", "them": "Wao", "updated": "Imesasishwa {{time}}", "pausedBanner": "Ushirikianaji wa mahali umesitishwa — ukaribu utabaki “mbali”" },
+    "controls": { "resume": "Endelea", "pauseSharing": "Sitisha ushirikianaji", "checkGps": "Angalia GPS", "locationSharedWith": "Mahali panashirikiwa tu na {{name}}." },
+    "preview": {
+      "together": "Pamoja", "completeMoment": "Wakati kamili", "bothPhonesShow": "Simu zote mbili zinaonyesha hii mnapokuwa karibu. {{blurb}}",
+      "yourSide": "Upande wako", "pickYourSide": "Chagua upande wako",
+      "sideHint": "Mnapokuwa mbali, simu yako inaonyesha nusu yako — simu ya mpenzi wako inaonyesha nusu yake. Zote mbili zinakamilisha picha iliyo juu.",
+      "thisIsMe": "✓ Huyu ni mimi", "tapToChoose": "Gusa kuchagua", "onPhoneNow": "Sasa kwenye simu yako: ",
+      "togetherImage": "Picha ya pamoja", "halfSuffix": "nusu ya {{role}}", "openDashboard": "Fungua dashibodi ya Couple",
+      "pairAs": "Oanisha kama {{role}} →",
+      "pairingFootnote": "Uoanishaji hutumia msimbo wa kuoanisha wa Amora ID yako: mmoja anashiriki, mwingine anaingiza — kisha kifurushi hiki kinafunguliwa kwa wote wawili.",
+      "nowRole": "✓ Sasa wewe ni {{role}}", "couldNotChangeSide": "Imeshindwa kubadilisha upande"
+    }
+  },
+  "gallery": {
+    "title": "Ghala la Picha", "subtitle": "Uumbaji wako wa AI na mandhari za wapenzi", "linkedWith": "Umeoanishwa na {{name}}",
+    "defaultPartnerName": "Mpenzi", "pairCoupleTheme": "Oanisha mandhari ya wapenzi", "proximitySyncActive": "Usawazishaji wa ukaribu umewashwa · Gusa kusimamia",
+    "getCoupleCode": "Pata msimbo wa wapenzi · Mandhari zinazolingana mkiwa karibu",
+    "filters": { "all": "Zote", "creations": "Uumbaji", "couplePacks": "Vifurushi vya Wapenzi", "favorites": "Vipendwa" },
+    "noCreationsYet": "Bado hakuna uumbaji wa AI", "noWallpapersFound": "Hakuna mandhari zilizopatikana",
+    "noCreationsBody": "Unda mandhari na itapakiwa hapa moja kwa moja!",
+    "noWallpapersBody": "Badilisha vichujio au unda mandhari mpya.", "generateWallpaper": "Unda mandhari ya AI"
+  },
+  "home": {
+    "heroTitle": "Unganisha hadithi yenu ya mapenzi", "heroSubtitle": "Picha mbili zinakuwa moja, kwa sekunde.", "tryNow": "Jaribu Sasa",
+    "trendingFusions": "Miunganiko Maarufu", "popularThisWeek": "Maarufu Wiki Hii", "emptyCategory": "Bado hakuna mandhari katika kategoria hii — jaribu nyingine.",
+    "categories": { "all": "Zote", "sunset": "Machweo", "rain": "Mvua", "beach": "Fukwe", "studio": "Studio", "festival": "Sherehe" },
+    "sections": { "forCouples": "Kwa Wapenzi", "soloVibes": "Hali ya Peke Yako", "newThisWeek": "Mpya Wiki Hii", "editorsPicks": "Chaguo za Mhariri" }
+  },
+  "onboarding": {
+    "profile": {
+      "welcome": "Karibu Amora", "subtitle": "Hebu tusanidi wasifu wako — hiki ndicho mpenzi wako ataona mtakapooanishwa.",
+      "namePlaceholder": "Jina lako", "continue": "Endelea"
+    },
+    "style": {
+      "headline": "Mtindo wako ni upi?", "subtitle": "Chagua mtindo unaoupenda — tutaupendekeza kwanza kila unapounda.",
+      "whoFor": "Hii ni ya nani?", "justMe": "Mimi tu", "meAndPartner": "Mimi na mpenzi wangu", "continue": "Endelea"
+    },
+    "code": {
+      "allSet": "Yote tayari!", "settingUp": "Inasanidi akaunti yako", "generatingId": "Inaunda Amora ID yako…",
+      "errorSuffix": "Hii haitakuzuia kutumia Amora — unaweza kupata misimbo yako baadaye.",
+      "tryAgain": "Jaribu tena", "yourAmoraId": "Amora ID yako", "pairedUp": "Mmeoanishwa!",
+      "yourPairingCode": "Msimbo wako wa kuoanisha — shiriki na mpenzi wako", "shareCode": "Shiriki Msimbo",
+      "orEnterTheirs": "au ingiza wao", "partnerCodePlaceholder": "Msimbo wa mpenzi",
+      "linking": "Inaoanisha…", "link": "Oanisha", "enterAmora": "Ingia Amora"
+    },
+    "couldntReachServer": "Imeshindwa kufikia seva.", "pairedAlertTitle": "Mmeoanishwa!",
+    "pairedAlertBody": "Akaunti zenu zimeunganishwa — mandhari zitasawazishwa kiotomatiki.",
+    "couldntLinkTitle": "Imeshindwa kuunganisha akaunti",
+    "shareCodeMessage": "Njoo ujiunge nami kwenye Amora! Tumia msimbo wangu wa kuoanisha kuunganisha: {{code}}"
+  }
+}

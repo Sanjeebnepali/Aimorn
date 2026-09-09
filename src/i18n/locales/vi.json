@@ -1,0 +1,178 @@
+{
+  "tabs": { "home": "Trang chủ", "generate": "Tạo", "gallery": "Thư viện", "profile": "Hồ sơ" },
+  "common": {
+    "cancel": "Hủy", "ok": "OK", "save": "Lưu", "done": "Xong", "back": "Quay lại", "continue": "Tiếp tục",
+    "loading": "Đang tải…", "retry": "Thử lại", "delete": "Xóa", "share": "Chia sẻ", "copy": "Sao chép",
+    "copied": "Đã sao chép", "close": "Đóng", "error": "Đã xảy ra lỗi", "comingSoon": "Sắp ra mắt"
+  },
+  "themeNames": {
+    "sunsetRose": "Hồng Hoàng Hôn", "midnightGreen": "Xanh Nửa Đêm", "crimsonNoir": "Đỏ Thẫm Noir",
+    "obsidian": "Đá Obsidian", "neonViolet": "Tím Neon"
+  },
+  "style": {
+    "realistic": "Chân thực", "neon": "Neon Noir", "anime": "Anime", "cyberpunk": "Cyberpunk",
+    "vintage": "Cổ điển 35mm", "oil": "Tranh sơn dầu", "3d": "Kết xuất 3D", "watercolor": "Màu nước",
+    "fantasy": "Ánh sáng huyền ảo", "cartoon": "Hoạt hình 3D"
+  },
+  "auth": {
+    "welcomeBack": "Chào mừng trở lại", "createAccount": "Tạo tài khoản", "signInSubtitle": "Đăng nhập để đồng bộ hình nền với người ấy",
+    "signUpSubtitle": "Tham gia Amora và bắt đầu ghép ảnh của bạn", "logIn": "Đăng nhập", "signUp": "Đăng ký",
+    "emailPlaceholder": "ban@vidu.com", "forgotPassword": "Quên mật khẩu?", "loggingIn": "Đang đăng nhập…",
+    "signingUp": "Đang đăng ký…", "orContinueWith": "hoặc tiếp tục với", "continuing": "Đang tiếp tục…",
+    "continueWithGoogle": "Tiếp tục với Google", "continueWithApple": "Tiếp tục với Apple",
+    "noAccount": "Chưa có tài khoản?", "haveAccount": "Đã có tài khoản?",
+    "logInFailedTitle": "Đăng nhập thất bại", "signUpFailedTitle": "Đăng ký thất bại",
+    "verificationRequiredTitle": "Cần xác minh thêm",
+    "verificationRequiredBody": "Tài khoản này cần hoàn tất \"{{status}}\", điều mà phiên bản này chưa hỗ trợ.",
+    "couldntSendCodeTitle": "Không thể gửi mã", "verificationFailedTitle": "Xác minh thất bại",
+    "almostThereTitle": "Sắp xong rồi",
+    "almostThereAccountBody": "Cần thêm thông tin để hoàn tất tạo tài khoản này, điều mà phiên bản này chưa hỗ trợ.",
+    "almostThereGoogleBody": "Tài khoản Google này cần thêm thông tin để hoàn tất đăng nhập, điều mà phiên bản này chưa hỗ trợ.",
+    "couldntResendCodeTitle": "Không thể gửi lại mã", "codeSentTitle": "Đã gửi mã",
+    "codeSentBody": "Mã mới đã được gửi đến {{email}}.", "appleTitle": "Tiếp tục với Apple",
+    "applePreviewBody": "Đăng nhập Apple chưa được kết nối — phiên bản này chỉ là bản xem trước.",
+    "googleFailedTitle": "Đăng nhập Google thất bại", "forgotPasswordTitle": "Quên mật khẩu",
+    "forgotPasswordBody": "Khôi phục mật khẩu chưa được kết nối — phiên bản này chỉ là bản xem trước.",
+    "checkEmail": "Kiểm tra email của bạn", "enterCodeSentTo": "Nhập mã đã gửi đến {{email}}",
+    "verifying": "Đang xác minh…", "verify": "Xác minh", "resendCode": "Gửi lại mã"
+  },
+  "generate": {
+    "titleRecreate": "Tạo", "subtitleRecreate": "Đang tái hiện khoảnh khắc chung bằng ảnh của bạn",
+    "title": "Tạo", "subtitle": "Thiết kế hình nền, cùng nhau hoặc một mình", "recreatingTemplate": "Đang tái hiện mẫu",
+    "whoIsInThis": "Ai có trong ảnh này?", "couple": "Cặp đôi", "solo": "Một mình", "you": "Bạn", "partner": "Người ấy",
+    "pickStyle": "Chọn phong cách", "addExtraDetail": "Thêm chi tiết", "addDescription": "Thêm mô tả", "optional": "(tùy chọn)",
+    "promptPlaceholderTemplate": "Điều chỉnh không khí, ánh sáng hoặc bối cảnh của {{template}}…",
+    "promptPlaceholder": "Dạo bước giờ vàng ở Paris, hạt film, ánh sáng ấm áp…",
+    "surpriseMe": "Bất ngờ cho tôi", "recreateFusion": "Tạo lại ảnh ghép", "generateFusion": "Tạo ảnh ghép",
+    "creditsCaption": "Dùng 1 credit · khoảng 30 giây",
+    "suggestions": ["Bãi biển hoàng hôn", "Tokyo neon", "Nhà gỗ tuyết", "Phim cổ điển"]
+  },
+  "profile": {
+    "title": "Hồ sơ", "amoraUser": "Người dùng Amora", "guest": "Khách", "signInToSync": "Đăng nhập để đồng bộ hình nền",
+    "editProfile": "Chỉnh sửa hồ sơ", "signIn": "Đăng nhập", "wallpapers": "Hình nền", "creditsLeft": "Credit còn lại",
+    "paired": "Đã ghép đôi", "notPaired": "Chưa ghép đôi", "pairedWith": "Đã ghép đôi với {{name}}", "defaultPartner": "người ấy của bạn",
+    "notPairedYet": "Chưa ghép đôi", "pairedHint": "Hình nền tự động đồng bộ khi ở gần nhau",
+    "notPairedHint": "Kết nối ở tab Couple để mở khóa hình nền theo khoảng cách", "premiumTitle": "Amora Premium",
+    "benefits": ["Tạo không giới hạn", "Không watermark khi xuất", "Độ phân giải hình nền 8K"], "upgrade": "Nâng cấp · $6.99/tháng",
+    "appearance": "Giao diện", "appearanceSubtitle": "Toàn bộ tối màu, không có chế độ sáng — chọn tâm trạng của bạn",
+    "avatarUpdatedTitle": "Thành công ✨", "avatarUpdatedBody": "Cập nhật ảnh đại diện thành công!",
+    "premiumAlertTitle": "Amora Premium 💎",
+    "premiumAlertBody": "Mở khóa tạo hình nền AI 8K không giới hạn, không watermark và đồng bộ khoảng cách tức thì!",
+    "notNow": "Để sau", "startTrial": "Bắt đầu dùng thử miễn phí 7 ngày",
+    "inAppPurchasesPreview": "Mua trong ứng dụng chưa được kết nối — phiên bản này chỉ là bản xem trước.",
+    "signOutTitle": "Đăng xuất", "signOutBody": "Bạn chắc chắn muốn đăng xuất khỏi Amora chứ?",
+    "notConnectedYet": "{{label}} chưa được kết nối — phiên bản này chỉ là bản xem trước.",
+    "languagePicker": {
+      "title": "Ngôn ngữ", "subtitle": "Chọn ngôn ngữ mà Amora sẽ hiển thị khắp ứng dụng.",
+      "systemDefault": "Theo ngôn ngữ thiết bị", "systemDefaultSub": "Hiện tại {{language}}"
+    },
+    "settings": {
+      "myPosts": "Chia sẻ tác phẩm của bạn", "security": "Tài khoản và bảo mật", "notifications": "Thông báo",
+      "privacy": "Quyền riêng tư và vị trí", "language": "Ngôn ngữ", "help": "Trợ giúp và hỗ trợ", "signOut": "Đăng xuất"
+    }
+  },
+  "couple": {
+    "setup": {
+      "title": "Thiết lập cặp đôi", "carriedPack": "Gói và bên đã chọn ở màn hình xem trước sẽ được áp dụng sau khi ghép đôi.",
+      "or": "hoặc", "codeCopied": "✓ Đã sao chép mã", "shareMessage": "Hãy làm người ấy của tôi trên Amora 💕\nMã của tôi: {{code}}",
+      "signInFirst": "Đăng nhập trước để ghép đôi với người ấy", "codeMustBe6": "Mã gồm 6 ký tự",
+      "declinedLocation": "Bạn có thể bật vị trí sau từ bảng điều khiển Couple",
+      "packAppliesFromDashboard": "Chọn một bên từ bảng điều khiển để áp dụng gói bạn đã chọn",
+      "linked": "💕 Đã ghép đôi", "couldNotLink": "Không thể ghép đôi",
+      "privacyNote": "Vị trí của bạn chỉ được chia sẻ với người ấy đã ghép đôi. Bạn có thể tạm dừng chia sẻ hoặc hủy ghép đôi bất cứ lúc nào từ bảng điều khiển.",
+      "yourCodeTitle": "Tôi là Người A — cho tôi mã", "yourCodeBody": "Chia sẻ điều này với người ấy. Họ sẽ nhập vào điện thoại của họ.",
+      "copy": "Sao chép", "share": "Chia sẻ", "continueToWaitingRoom": "Tiếp tục → Phòng chờ",
+      "loadingCode": "Đang tải mã của bạn…", "acceptTitle": "Tôi là Người B — tôi có mã",
+      "acceptBody": "Nhập mã 6 ký tự của người ấy.", "pickSide": "Chọn bên của bạn (tùy chọn)",
+      "pickSideHint": "Để ở Tự động và chọn bên sau từ bảng điều khiển. Hoặc chọn ngay bây giờ.",
+      "auto": "🪄 Tự động", "sideA": "👈 Bên A", "sideB": "👉 Bên B", "linking": "Đang ghép đôi…", "linkWithPartner": "Ghép đôi với người ấy"
+    },
+    "linking": {
+      "waiting": "Đang chờ người ấy…", "shareHint": "Chia sẻ mã của bạn bên dưới. Ngay khi họ nhập, màn hình này sẽ chuyển đến bảng điều khiển Couple của bạn.",
+      "cancel": "Hủy"
+    },
+    "dashboard": {
+      "notLinkedYet": "Chưa ghép đôi", "openSetup": "Mở thiết lập", "title": "Couple", "together": "Bên nhau",
+      "apart": "Xa nhau", "noDataYet": "chưa có dữ liệu", "packSwitched": "✓ Đã đổi gói",
+      "couldNotSave": "Không thể lưu", "sharingResumed": "▶ Đã tiếp tục chia sẻ",
+      "sharingResumedWith": "▶ Đã tiếp tục chia sẻ · {{stopped}} đã tạm dừng", "sharingPaused": "⏸ Đã tạm dừng chia sẻ",
+      "couldNotUpdate": "Không thể cập nhật", "unlinkCoupleTitle": "Hủy ghép đôi?",
+      "unlinkCoupleBody": "Bạn sẽ ngừng chia sẻ vị trí với {{name}}. Cả hai sẽ nhận mã mới để ghép đôi lại sau.",
+      "cancel": "Hủy", "unlink": "Hủy ghép đôi", "unlinking": "Đang hủy ghép đôi…",
+      "unlinked": "Đã hủy ghép đôi — chọn hình nền mới từ Trang chủ", "couldNotUnlink": "Không thể hủy ghép đôi",
+      "coupleOptions": "Tùy chọn cặp đôi", "reportPartner": "Báo cáo người ấy",
+      "locationDeniedTitle": "Vị trí bị từ chối",
+      "locationDeniedBody": "Mở Cài đặt và cấp quyền vị trí để tính năng khoảng cách hoạt động.", "openSettings": "Mở cài đặt",
+      "backgroundAccessTitle": "Cần quyền truy cập nền",
+      "backgroundAccessBody": "Tính năng khoảng cách cần vị trí nền (Luôn cho phép) để tiếp tục hoạt động khi đóng ứng dụng. Mở Cài đặt để cấp quyền.",
+      "later": "Để sau", "locationActive": "✓ Chia sẻ vị trí đang hoạt động",
+      "pickSideFirst": "Chọn bên của bạn ở trên trước — sau đó chia sẻ vị trí sẽ được bật", "couldNotCheckPermission": "Không thể kiểm tra quyền vị trí"
+    },
+    "format": {
+      "justNow": "vừa xong", "secondsAgo": "vài giây trước", "minutesAgo": "{{count}} phút trước", "hoursAgo": "{{count}} giờ trước",
+      "daysAgo": "{{count}} ngày trước", "never": "chưa bao giờ", "secondsAgoShort": "{{count}} giây trước"
+    },
+    "diagnostics": {
+      "title": "Trạng thái kết nối", "myLocationSent": "Đã gửi vị trí của tôi", "partnerLocationReceived": "Đã nhận vị trí người ấy",
+      "distance": "Khoảng cách", "proximity": "Độ gần"
+    },
+    "activeWallpaper": {
+      "onScreenNow": "Trên màn hình của bạn ngay bây giờ", "togetherBothPhones": "Bên nhau — cả hai điện thoại", "soloRole": "Một mình ({{role}})",
+      "togetherAppliesBoth": "Ảnh bên nhau · áp dụng trên cả hai điện thoại", "yourHalf": "Nửa {{role}} của bạn",
+      "waitingBothSides": "Đang chờ cả hai bên báo cáo."
+    },
+    "packPicker": {
+      "title": "Chọn gói cặp đôi",
+      "subtitle": "Ai trong hai người cũng có thể chọn. Gói xác định ảnh bên nhau VÀ cả hai nửa riêng. Nhãn vai trò (Trai/Gái, Mặt trời/Mặt trăng, …) đến từ gói — bên của bạn giữ nguyên khi đổi gói."
+    },
+    "partnerCard": { "you": "Bạn", "them": "Họ", "updated": "Cập nhật {{time}}", "pausedBanner": "Đã tạm dừng chia sẻ vị trí — độ gần vẫn giữ ở “xa nhau”" },
+    "controls": { "resume": "Tiếp tục", "pauseSharing": "Tạm dừng chia sẻ", "checkGps": "Kiểm tra GPS", "locationSharedWith": "Vị trí chỉ được chia sẻ với {{name}}." },
+    "preview": {
+      "together": "Bên nhau", "completeMoment": "Khoảnh khắc trọn vẹn", "bothPhonesShow": "Cả hai điện thoại hiển thị điều này khi ở gần nhau. {{blurb}}",
+      "yourSide": "Bên của bạn", "pickYourSide": "Chọn bên của bạn",
+      "sideHint": "Khi xa nhau, điện thoại của bạn hiển thị nửa của bạn — điện thoại của người ấy hiển thị nửa của họ. Cả hai ghép lại hoàn thiện bức ảnh phía trên.",
+      "thisIsMe": "✓ Đây là tôi", "tapToChoose": "Chạm để chọn", "onPhoneNow": "Trên điện thoại của bạn ngay bây giờ: ",
+      "togetherImage": "Ảnh bên nhau", "halfSuffix": "nửa {{role}}", "openDashboard": "Mở bảng điều khiển Couple",
+      "pairAs": "Ghép đôi với vai trò {{role}} →",
+      "pairingFootnote": "Ghép đôi sử dụng mã ghép nối của ID Amora: một người chia sẻ, người kia nhập — sau đó gói này được mở khóa cho cả hai.",
+      "nowRole": "✓ Bây giờ bạn là {{role}}", "couldNotChangeSide": "Không thể đổi bên"
+    }
+  },
+  "gallery": {
+    "title": "Thư viện", "subtitle": "Tác phẩm AI và chủ đề cặp đôi của bạn", "linkedWith": "Đã ghép đôi với {{name}}",
+    "defaultPartnerName": "Người ấy", "pairCoupleTheme": "Ghép đôi chủ đề cặp đôi", "proximitySyncActive": "Đồng bộ khoảng cách đang hoạt động · Chạm để quản lý",
+    "getCoupleCode": "Lấy mã cặp đôi · Hình nền khớp nhau khi ở gần",
+    "filters": { "all": "Tất cả", "creations": "Tác phẩm", "couplePacks": "Gói cặp đôi", "favorites": "Yêu thích" },
+    "noCreationsYet": "Chưa có tác phẩm AI nào", "noWallpapersFound": "Không tìm thấy hình nền",
+    "noCreationsBody": "Tạo một hình nền và nó sẽ tự động được tải lên đây!",
+    "noWallpapersBody": "Đổi bộ lọc hoặc tạo hình nền mới.", "generateWallpaper": "Tạo hình nền AI"
+  },
+  "home": {
+    "heroTitle": "Ghép câu chuyện tình yêu của bạn", "heroSubtitle": "Hai bức ảnh trở thành một, chỉ trong vài giây.", "tryNow": "Thử ngay",
+    "trendingFusions": "Ảnh ghép thịnh hành", "popularThisWeek": "Phổ biến tuần này", "emptyCategory": "Chưa có hình nền nào trong danh mục này — hãy thử danh mục khác.",
+    "categories": { "all": "Tất cả", "sunset": "Hoàng hôn", "rain": "Mưa", "beach": "Bãi biển", "studio": "Studio", "festival": "Lễ hội" },
+    "sections": { "forCouples": "Dành cho cặp đôi", "soloVibes": "Phong cách solo", "newThisWeek": "Mới tuần này", "editorsPicks": "Biên tập viên chọn" }
+  },
+  "onboarding": {
+    "profile": {
+      "welcome": "Chào mừng đến với Amora", "subtitle": "Hãy thiết lập hồ sơ của bạn — đây là những gì người ấy sẽ thấy khi ghép đôi.",
+      "namePlaceholder": "Tên của bạn", "continue": "Tiếp tục"
+    },
+    "style": {
+      "headline": "Phong cách của bạn là gì?", "subtitle": "Chọn một phong cách bạn thích — chúng tôi sẽ gợi ý nó đầu tiên mỗi khi bạn tạo.",
+      "whoFor": "Ai sẽ dùng cái này?", "justMe": "Chỉ mình tôi", "meAndPartner": "Tôi và người ấy", "continue": "Tiếp tục"
+    },
+    "code": {
+      "allSet": "Đã sẵn sàng!", "settingUp": "Đang thiết lập tài khoản của bạn", "generatingId": "Đang tạo ID Amora của bạn…",
+      "errorSuffix": "Điều này sẽ không ngăn bạn sử dụng Amora — bạn có thể lấy mã sau.",
+      "tryAgain": "Thử lại", "yourAmoraId": "ID Amora của bạn", "pairedUp": "Bạn đã ghép đôi!",
+      "yourPairingCode": "Mã ghép nối của bạn — chia sẻ với người ấy", "shareCode": "Chia sẻ mã",
+      "orEnterTheirs": "hoặc nhập mã của họ", "partnerCodePlaceholder": "Mã của người ấy",
+      "linking": "Đang ghép đôi…", "link": "Ghép đôi", "enterAmora": "Vào Amora"
+    },
+    "couldntReachServer": "Không thể kết nối đến máy chủ.", "pairedAlertTitle": "Đã ghép đôi!",
+    "pairedAlertBody": "Tài khoản của các bạn đã được liên kết — hình nền sẽ tự động đồng bộ.",
+    "couldntLinkTitle": "Không thể liên kết tài khoản",
+    "shareCodeMessage": "Cùng tham gia Amora với tôi! Dùng mã ghép nối của tôi để kết nối: {{code}}"
+  }
+}

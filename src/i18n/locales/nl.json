@@ -1,0 +1,178 @@
+{
+  "tabs": { "home": "Start", "generate": "Maken", "gallery": "Galerij", "profile": "Profiel" },
+  "common": {
+    "cancel": "Annuleren", "ok": "OK", "save": "Opslaan", "done": "Klaar", "back": "Terug", "continue": "Doorgaan",
+    "loading": "Laden…", "retry": "Opnieuw proberen", "delete": "Verwijderen", "share": "Delen", "copy": "Kopiëren",
+    "copied": "Gekopieerd", "close": "Sluiten", "error": "Er is iets misgegaan", "comingSoon": "Binnenkort beschikbaar"
+  },
+  "themeNames": {
+    "sunsetRose": "Zonsondergangroze", "midnightGreen": "Middernachtgroen", "crimsonNoir": "Karmozijn Noir",
+    "obsidian": "Obsidiaan", "neonViolet": "Neonviolet"
+  },
+  "style": {
+    "realistic": "Realistisch", "neon": "Neon Noir", "anime": "Anime", "cyberpunk": "Cyberpunk",
+    "vintage": "Vintage 35mm", "oil": "Olieverf", "3d": "3D-render", "watercolor": "Aquarel",
+    "fantasy": "Fantasieglans", "cartoon": "3D-cartoon"
+  },
+  "auth": {
+    "welcomeBack": "Welkom terug", "createAccount": "Account aanmaken", "signInSubtitle": "Log in om achtergronden te synchroniseren met je partner",
+    "signUpSubtitle": "Word lid van Amora en begin met het samenvoegen van je foto's", "logIn": "Inloggen", "signUp": "Registreren",
+    "emailPlaceholder": "jij@voorbeeld.com", "forgotPassword": "Wachtwoord vergeten?", "loggingIn": "Bezig met inloggen…",
+    "signingUp": "Bezig met registreren…", "orContinueWith": "of ga verder met", "continuing": "Bezig met doorgaan…",
+    "continueWithGoogle": "Doorgaan met Google", "continueWithApple": "Doorgaan met Apple",
+    "noAccount": "Geen account?", "haveAccount": "Al een account?",
+    "logInFailedTitle": "Inloggen mislukt", "signUpFailedTitle": "Registreren mislukt",
+    "verificationRequiredTitle": "Extra verificatie vereist",
+    "verificationRequiredBody": "Dit account moet \"{{status}}\" voltooien, wat deze versie nog niet ondersteunt.",
+    "couldntSendCodeTitle": "Kon code niet verzenden", "verificationFailedTitle": "Verificatie mislukt",
+    "almostThereTitle": "Bijna klaar",
+    "almostThereAccountBody": "Er zijn meer gegevens nodig om dit account aan te maken, wat deze versie nog niet ondersteunt.",
+    "almostThereGoogleBody": "Dit Google-account heeft meer gegevens nodig om het inloggen te voltooien, wat deze versie nog niet ondersteunt.",
+    "couldntResendCodeTitle": "Kon code niet opnieuw verzenden", "codeSentTitle": "Code verzonden",
+    "codeSentBody": "Een nieuwe code is verzonden naar {{email}}.", "appleTitle": "Doorgaan met Apple",
+    "applePreviewBody": "Inloggen met Apple is nog niet verbonden — deze versie is een preview.",
+    "googleFailedTitle": "Inloggen met Google mislukt", "forgotPasswordTitle": "Wachtwoord vergeten",
+    "forgotPasswordBody": "Wachtwoordherstel is nog niet verbonden — deze versie is een preview.",
+    "checkEmail": "Controleer je e-mail", "enterCodeSentTo": "Voer de code in die naar {{email}} is verzonden",
+    "verifying": "Bezig met verifiëren…", "verify": "Verifiëren", "resendCode": "Code opnieuw versturen"
+  },
+  "generate": {
+    "titleRecreate": "Maken", "subtitleRecreate": "Een gedeelde scène met je foto's opnieuw creëren",
+    "title": "Maken", "subtitle": "Ontwerp een achtergrond, samen of alleen", "recreatingTemplate": "Sjabloon opnieuw creëren",
+    "whoIsInThis": "Wie staat hierop?", "couple": "Stel", "solo": "Alleen", "you": "Jij", "partner": "Partner",
+    "pickStyle": "Kies een stijl", "addExtraDetail": "Extra detail toevoegen", "addDescription": "Beschrijving toevoegen", "optional": "(optioneel)",
+    "promptPlaceholderTemplate": "Pas de sfeer, belichting of setting van {{template}} aan…",
+    "promptPlaceholder": "Een wandeling in Parijs tijdens het gouden uur, filmkorrel, warm licht…",
+    "surpriseMe": "Verras me", "recreateFusion": "Fusie opnieuw maken", "generateFusion": "Fusie genereren",
+    "creditsCaption": "Gebruikt 1 credit · ongeveer 30 seconden",
+    "suggestions": ["Strand bij zonsondergang", "Neon Tokio", "Sneeuwhut", "Vintage film"]
+  },
+  "profile": {
+    "title": "Profiel", "amoraUser": "Amora-gebruiker", "guest": "Gast", "signInToSync": "Log in om achtergronden te synchroniseren",
+    "editProfile": "Profiel bewerken", "signIn": "Inloggen", "wallpapers": "Achtergronden", "creditsLeft": "Resterende credits",
+    "paired": "Gekoppeld", "notPaired": "Niet gekoppeld", "pairedWith": "Gekoppeld met {{name}}", "defaultPartner": "je partner",
+    "notPairedYet": "Nog niet gekoppeld", "pairedHint": "De achtergrond synchroniseert automatisch als jullie dicht bij elkaar zijn",
+    "notPairedHint": "Verbind in het tabblad Koppel om nabijheidsachtergronden te ontgrendelen", "premiumTitle": "Amora Premium",
+    "benefits": ["Onbeperkt genereren", "Geen watermerk bij export", "8K achtergrondresolutie"], "upgrade": "Upgraden · $6,99/maand",
+    "appearance": "Uiterlijk", "appearanceSubtitle": "Alles donker, geen lichte modus — kies je stemming",
+    "avatarUpdatedTitle": "Gelukt ✨", "avatarUpdatedBody": "Profielfoto succesvol bijgewerkt!",
+    "premiumAlertTitle": "Amora Premium 💎",
+    "premiumAlertBody": "Ontgrendel onbeperkte 8K AI-achtergronden, geen watermerken en directe nabijheidssynchronisatie!",
+    "notNow": "Niet nu", "startTrial": "Start 7-daagse gratis proefperiode",
+    "inAppPurchasesPreview": "Aankopen in de app zijn nog niet verbonden — deze versie is een preview.",
+    "signOutTitle": "Uitloggen", "signOutBody": "Weet je zeker dat je wilt uitloggen bij Amora?",
+    "notConnectedYet": "{{label}} is nog niet verbonden — deze versie is een preview.",
+    "languagePicker": {
+      "title": "Taal", "subtitle": "Kies de taal die Amora overal in de app toont.",
+      "systemDefault": "Apparaattaal volgen", "systemDefaultSub": "Momenteel {{language}}"
+    },
+    "settings": {
+      "myPosts": "Deel je creatie", "security": "Account en beveiliging", "notifications": "Meldingen",
+      "privacy": "Privacy en locatie", "language": "Taal", "help": "Hulp en ondersteuning", "signOut": "Uitloggen"
+    }
+  },
+  "couple": {
+    "setup": {
+      "title": "Koppelinstellingen", "carriedPack": "Het pakket en de kant gekozen op het voorbeeldscherm worden toegepast zodra jullie gekoppeld zijn.",
+      "or": "of", "codeCopied": "✓ Code gekopieerd", "shareMessage": "Word mijn koppel op Amora 💕\nMijn code: {{code}}",
+      "signInFirst": "Log eerst in om te koppelen met een partner", "codeMustBe6": "Codes bestaan uit 6 tekens",
+      "declinedLocation": "Je kunt locatie later inschakelen vanuit het Koppel-dashboard",
+      "packAppliesFromDashboard": "Kies een kant in het dashboard om je gekozen pakket toe te passen",
+      "linked": "💕 Gekoppeld", "couldNotLink": "Kon niet koppelen",
+      "privacyNote": "Je locatie wordt alleen gedeeld met je gekoppelde partner. Je kunt delen op elk moment pauzeren of ontkoppelen via het dashboard.",
+      "yourCodeTitle": "Ik ben Persoon A — geef mij een code", "yourCodeBody": "Deel dit met je partner. Die voert het in op zijn/haar telefoon.",
+      "copy": "Kopiëren", "share": "Delen", "continueToWaitingRoom": "Doorgaan → Wachtkamer",
+      "loadingCode": "Je code wordt geladen…", "acceptTitle": "Ik ben Persoon B — ik heb een code",
+      "acceptBody": "Voer de 6-tekens code van je partner in.", "pickSide": "Kies je kant (optioneel)",
+      "pickSideHint": "Laat op Automatisch staan en kies je kant later via het dashboard. Of kies nu.",
+      "auto": "🪄 Automatisch", "sideA": "👈 Kant A", "sideB": "👉 Kant B", "linking": "Bezig met koppelen…", "linkWithPartner": "Koppelen met partner"
+    },
+    "linking": {
+      "waiting": "Wachten op je partner…", "shareHint": "Deel je code hieronder. Zodra die het invoert, springt dit scherm naar je Koppel-dashboard.",
+      "cancel": "Annuleren"
+    },
+    "dashboard": {
+      "notLinkedYet": "Nog niet gekoppeld", "openSetup": "Instellingen openen", "title": "Koppel", "together": "Samen",
+      "apart": "Uit elkaar", "noDataYet": "nog geen gegevens", "packSwitched": "✓ Pakket gewisseld",
+      "couldNotSave": "Kon niet opslaan", "sharingResumed": "▶ Delen hervat",
+      "sharingResumedWith": "▶ Delen hervat · {{stopped}} gepauzeerd", "sharingPaused": "⏸ Delen gepauzeerd",
+      "couldNotUpdate": "Kon niet bijwerken", "unlinkCoupleTitle": "Koppel ontkoppelen?",
+      "unlinkCoupleBody": "Je stopt met het delen van locatie met {{name}}. Jullie krijgen allebei een nieuwe code om later opnieuw te koppelen.",
+      "cancel": "Annuleren", "unlink": "Ontkoppelen", "unlinking": "Bezig met ontkoppelen…",
+      "unlinked": "Ontkoppeld — kies een nieuwe achtergrond vanaf Start", "couldNotUnlink": "Kon niet ontkoppelen",
+      "coupleOptions": "Koppelopties", "reportPartner": "Partner rapporteren",
+      "locationDeniedTitle": "Locatie geweigerd",
+      "locationDeniedBody": "Open Instellingen en geef locatietoestemming zodat nabijheid werkt.", "openSettings": "Instellingen openen",
+      "backgroundAccessTitle": "Achtergrondtoegang vereist",
+      "backgroundAccessBody": "Nabijheid heeft achtergrondlocatie (Altijd toestaan) nodig om te blijven werken bij een gesloten app. Open Instellingen om dit toe te staan.",
+      "later": "Later", "locationActive": "✓ Locatiedeling actief",
+      "pickSideFirst": "Kies eerst je kant hierboven — dan wordt locatiedeling ingeschakeld", "couldNotCheckPermission": "Kon locatietoestemming niet controleren"
+    },
+    "format": {
+      "justNow": "zojuist", "secondsAgo": "een paar seconden geleden", "minutesAgo": "{{count}} min geleden", "hoursAgo": "{{count}} u geleden",
+      "daysAgo": "{{count}} d geleden", "never": "nooit", "secondsAgoShort": "{{count}} s geleden"
+    },
+    "diagnostics": {
+      "title": "Verbindingsstatus", "myLocationSent": "Mijn locatie verzonden", "partnerLocationReceived": "Locatie partner ontvangen",
+      "distance": "Afstand", "proximity": "Nabijheid"
+    },
+    "activeWallpaper": {
+      "onScreenNow": "Nu op je scherm", "togetherBothPhones": "Samen — beide telefoons", "soloRole": "Alleen ({{role}})",
+      "togetherAppliesBoth": "Samen-afbeelding · geldt op beide telefoons", "yourHalf": "Jouw {{role}}-helft",
+      "waitingBothSides": "Wachten tot beide kanten zich melden."
+    },
+    "packPicker": {
+      "title": "Kies een koppelpakket",
+      "subtitle": "Ieder van jullie kan kiezen. Het pakket bepaalt de samen-afbeelding EN beide solo-helften. Rollabels (Jongen/Meisje, Zon/Maan, …) komen uit het pakket — jouw kant blijft hetzelfde bij het wisselen van pakket."
+    },
+    "partnerCard": { "you": "Jij", "them": "Zij", "updated": "Bijgewerkt {{time}}", "pausedBanner": "Locatiedeling gepauzeerd — nabijheid blijft op “uit elkaar”" },
+    "controls": { "resume": "Hervatten", "pauseSharing": "Delen pauzeren", "checkGps": "GPS controleren", "locationSharedWith": "Locatie wordt alleen gedeeld met {{name}}." },
+    "preview": {
+      "together": "Samen", "completeMoment": "Het complete moment", "bothPhonesShow": "Beide telefoons tonen dit wanneer jullie dichtbij zijn. {{blurb}}",
+      "yourSide": "Jouw kant", "pickYourSide": "Kies je kant",
+      "sideHint": "Wanneer jullie uit elkaar zijn, toont jouw telefoon jouw helft — die van je partner toont zijn/haar helft. Samen vormen ze de afbeelding hierboven.",
+      "thisIsMe": "✓ Dit ben ik", "tapToChoose": "Tik om te kiezen", "onPhoneNow": "Nu op je telefoon: ",
+      "togetherImage": "Samen-afbeelding", "halfSuffix": "{{role}}-helft", "openDashboard": "Koppel-dashboard openen",
+      "pairAs": "Koppelen als {{role}} →",
+      "pairingFootnote": "Koppelen gebruikt de koppelcode van je Amora ID: één deelt hem, de ander voert hem in — dan wordt dit pakket voor beiden ontgrendeld.",
+      "nowRole": "✓ Je bent nu {{role}}", "couldNotChangeSide": "Kon kant niet wijzigen"
+    }
+  },
+  "gallery": {
+    "title": "Galerij", "subtitle": "Jouw AI-creaties en koppelthema's", "linkedWith": "Gekoppeld met {{name}}",
+    "defaultPartnerName": "Partner", "pairCoupleTheme": "Koppelthema koppelen", "proximitySyncActive": "Nabijheidssynchronisatie actief · Tik om te beheren",
+    "getCoupleCode": "Koppelcode ophalen · Bijpassende achtergronden bij nabijheid",
+    "filters": { "all": "Alle", "creations": "Creaties", "couplePacks": "Koppelpakketten", "favorites": "Favorieten" },
+    "noCreationsYet": "Nog geen AI-creaties", "noWallpapersFound": "Geen achtergronden gevonden",
+    "noCreationsBody": "Genereer een achtergrond en die wordt automatisch hier geüpload!",
+    "noWallpapersBody": "Wijzig filters of genereer nieuwe achtergronden.", "generateWallpaper": "AI-achtergrond genereren"
+  },
+  "home": {
+    "heroTitle": "Voeg jullie liefdesverhaal samen", "heroSubtitle": "Twee foto's worden in seconden één.", "tryNow": "Nu proberen",
+    "trendingFusions": "Populaire fusies", "popularThisWeek": "Populair deze week", "emptyCategory": "Nog geen achtergronden in deze categorie — probeer een andere.",
+    "categories": { "all": "Alle", "sunset": "Zonsondergang", "rain": "Regen", "beach": "Strand", "studio": "Studio", "festival": "Festival" },
+    "sections": { "forCouples": "Voor koppels", "soloVibes": "Solo sfeer", "newThisWeek": "Nieuw deze week", "editorsPicks": "Keuze van de redactie" }
+  },
+  "onboarding": {
+    "profile": {
+      "welcome": "Welkom bij Amora", "subtitle": "Laten we je profiel instellen — dit ziet je partner zodra jullie gekoppeld zijn.",
+      "namePlaceholder": "Je naam", "continue": "Doorgaan"
+    },
+    "style": {
+      "headline": "Wat is jouw stijl?", "subtitle": "Kies een stijl die je mooi vindt — we stellen die als eerste voor telkens wanneer je genereert.",
+      "whoFor": "Voor wie is dit?", "justMe": "Alleen ik", "meAndPartner": "Ik en mijn partner", "continue": "Doorgaan"
+    },
+    "code": {
+      "allSet": "Helemaal klaar!", "settingUp": "Je account wordt ingesteld", "generatingId": "Je Amora ID wordt gegenereerd…",
+      "errorSuffix": "Dit weerhoudt je er niet van om Amora te gebruiken — je kunt je codes later ophalen.",
+      "tryAgain": "Opnieuw proberen", "yourAmoraId": "Jouw Amora ID", "pairedUp": "Jullie zijn gekoppeld!",
+      "yourPairingCode": "Jouw koppelcode — deel deze met je partner", "shareCode": "Code delen",
+      "orEnterTheirs": "of voer die van hen in", "partnerCodePlaceholder": "Code van partner",
+      "linking": "Bezig met koppelen…", "link": "Koppelen", "enterAmora": "Amora binnengaan"
+    },
+    "couldntReachServer": "Kon geen verbinding maken met de server.", "pairedAlertTitle": "Gekoppeld!",
+    "pairedAlertBody": "Jullie accounts zijn gekoppeld — achtergronden synchroniseren automatisch.",
+    "couldntLinkTitle": "Kon accounts niet koppelen",
+    "shareCodeMessage": "Doe met mij mee op Amora! Gebruik mijn koppelcode om te verbinden: {{code}}"
+  }
+}
