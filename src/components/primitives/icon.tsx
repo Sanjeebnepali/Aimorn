@@ -33,6 +33,7 @@ export type IconName =
   | 'wallpaper'
   | 'share'
   | 'download'
+  | 'trash'
   | 'eye'
   | 'noWatermark'
   | 'settings'
@@ -201,6 +202,18 @@ export function Icon({ name, size = 20, color = '#fff2ef', strokeWidth = 1.8 }: 
               <>
                 <Path d="M12 4v11M7.5 11.5 12 16l4.5-4.5" {...stroke} />
                 <Path d="M5 19h14" {...stroke} />
+              </>
+            );
+          case 'trash':
+            // Not from the design canvas like the rest of this file (no
+            // matching mockup existed yet — delete-a-creation is a new
+            // feature) — a plain lid+bin outline in the same stroke style,
+            // swap for a canvas-sourced version later.
+            return (
+              <>
+                <Path d="M4 7h16M9 7V4h6v3" {...stroke} />
+                <Path d="M6 7l1 13a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-13" {...stroke} />
+                <Path d="M10 11v6M14 11v6" {...stroke} />
               </>
             );
           case 'eye':

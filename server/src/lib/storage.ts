@@ -1,4 +1,4 @@
-import { GetObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
+import { DeleteObjectsCommand, GetObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { randomUUID } from 'node:crypto';
 
@@ -97,4 +97,49 @@ export async function putObjectBytes(params: {
 /** Public URL a client can load an object from directly (bucket/CDN is public-read). */
 export function publicUrlFor(key: string): string {
   return `${env.S3_PUBLIC_BASE_URL}/${key}`;
+}
+
+/**
+ * Same as publicUrlFor, but with a `?v=<timestamp>` query string appended —
+ * for a URL whose underlying object can be OVERWRITTEN in place at the same
+ * key (routes/generationsRegenerate.ts's "redo one image" feature does
+ * exactly this, deliberately reusing outputKey/outputKeyA/outputKeyB rather
+ * than minting a new one). Real bug this fixes (reported 2026-09-14): that
+ * route's own response DID carry a one-time `?t=Date.now()` busted URL, but
+ * every SUBSEQUENT read of the same generation — GET /generations,
+ * GET /generations/:id, both in this file's caller — kept calling plain
+ * publicUrlFor(), i.e. the EXACT same URL that was live before the
+ * regenerate. Any cache keyed by that URL (expo-image's client-side cache,
+ * and R2.dev's own edge cache in front of the bucket) had every reason to
+ * keep serving the pre-regeneration bytes at it, so the very next app
+ * restart / pull-to-refresh / tab revisit silently reverted the image —
+ * the regeneration "worked" (R2 truly had new bytes) but nothing the user
+ * could see ever reflected it. `updatedAt` is a real column
+ * (`@updatedAt` in schema.prisma) Prisma bumps on ANY update to that row,
+ * including the regenerate route's own `db.generation.update()` — so using
+ * it as the cache key means a URL that's guaranteed to change exactly when,
+ * and only when, the row (and therefore possibly its image) actually
+ * changed, with no extra column or write needed to track it separately.
+ */
+export function publicUrlForBusted(key: string, updatedAt: Date): string {
+  return `${publicUrlFor(key)}?v=${updatedAt.getTime()}`;
+}
+
+/**
+ * Permanently removes objects from the bucket — added 2026-09-11 for real
+ * generation deletion (routes/generations.ts's DELETE /generations/:id).
+ * Batched into one DeleteObjectsCommand (up to 1000 keys per call, S3/R2's
+ * own limit) instead of one DeleteObjectCommand per key — a couple session
+ * has up to 5 keys (2 source photos + together/solo-A/solo-B), no reason to
+ * make 5 round trips. A no-op on an empty array rather than an API call with
+ * nothing to delete.
+ */
+export async function deleteObjects(keys: string[]): Promise<void> {
+  if (keys.length === 0) return;
+  await requireS3().send(
+    new DeleteObjectsCommand({
+      Bucket: env.S3_BUCKET,
+      Delete: { Objects: keys.map((Key) => ({ Key })) },
+    }),
+  );
 }

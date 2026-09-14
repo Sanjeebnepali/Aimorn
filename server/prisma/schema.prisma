@@ -29,10 +29,36 @@ model User {
   email       String?      @unique
   displayName String?
   /// Starter balance so a new signup can try one generation immediately.
-  /// This is a placeholder economy, not a real purchases/ledger system yet.
-  credits     Int          @default(3)
-  createdAt   DateTime     @default(now())
+  credits     Int              @default(3)
+  /// Earned separately from `credits` — see Post.pointsAwarded for how these
+  /// accrue (100 regenerations of one of your posts = 1 point, see
+  /// generations.ts's awardPointsForRegeneration). Kept as its own ledger
+  /// rather than crediting `credits` directly so "earned from the
+  /// community" and "purchased/starter balance" stay distinguishable in the
+  /// UI and can't be silently conflated — POST /profile/redeem-points is the
+  /// one place points convert into spendable credits, 1:1, on request.
+  points      Int              @default(0)
+  /// Subscription tier: FREE, PRO, or ULTRA
+  subscriptionTier      SubscriptionTier @default(FREE)
+  /// Expiration date for paid subscriptions (null for free users)
+  subscriptionExpiresAt DateTime?
+  /// Timestamp of when daily free credits (2 per day) were last granted
+  lastDailyCreditReset  DateTime?
+  /// Rewarded video ad view tracking
+  adWatchesToday        Int              @default(0)
+  lastAdWatchReset      DateTime?
+  /// Progress toward unlocking the one-time 3-day free trial (see POST
+  /// /profile/trial/watch-ad) — ads watched so far, out of TRIAL_ADS_REQUIRED.
+  /// Only meaningful while `trialUsedAt` is null; not reset once the trial
+  /// has been activated (that's what `trialUsedAt` guards against reuse).
+  trialAdsWatched        Int              @default(0)
+  /// Set once, the moment the trial activates — a lifetime one-shot, not a
+  /// per-period flag, so it also blocks a second free trial after the first
+  /// one expires. Null means "never activated, still eligible."
+  trialUsedAt            DateTime?
+  createdAt   DateTime         @default(now())
   generations Generation[]
+  posts       Post[]
 
   /// Set once the post-signup onboarding flow (name/photo, style survey,
   /// personal + pairing codes) is completed — null gates the app's root
@@ -81,9 +107,44 @@ model User {
   location   CoupleLocation?
 }
 
+/// One row per RevenueCat purchase transaction ever actually credited —
+/// the idempotency guard for the RevenueCat integration (see
+/// src/lib/revenueCat.ts's applyPurchase, the one place that both the
+/// webhook route AND the client-triggered /iap/sync route funnel through).
+/// RevenueCat can and does redeliver the same webhook event more than once
+/// (their own docs say so), and a purchase can ALSO reach us twice through
+/// two different paths — the webhook and the client's own immediate sync
+/// call right after `Purchases.purchasePackage()` resolves — without this,
+/// either path alone risks double-granting credits for one real purchase.
+/// `transactionId` is RevenueCat's own per-purchase id (unique per renewal
+/// too, so a subscription's 2nd/3rd period each get their own row and their
+/// own credit grant, exactly once).
+model ProcessedPurchase {
+  id             String   @id @default(cuid())
+  transactionId  String   @unique
+  userId         String
+  productId      String
+  creditsGranted Int
+  createdAt      DateTime @default(now())
+}
+
 enum CoupleRole {
   A
   B
+}
+
+enum SubscriptionTier {
+  FREE
+  /// The one-time, ad-unlocked 3-day trial (POST /profile/trial/watch-ad) —
+  /// deliberately its own value rather than reusing PRO, so the client can
+  /// show "Trial" instead of "Pro" and so a lapsed trial is distinguishable
+  /// from a lapsed real subscription in analytics later. Every place that
+  /// checks `subscriptionTier !== 'FREE'` (isSubscribed, in generations.ts
+  /// and profile.ts) already treats TRIAL as a real, bounded subscription —
+  /// same credit cap, same expiry check, no special-casing needed.
+  TRIAL
+  PRO
+  ULTRA
 }
 
 /// Shared state for one linked pair's proximity-wallpaper feature. Deliberately
@@ -93,9 +154,24 @@ enum CoupleRole {
 /// time either side picks a role (see PATCH /couple/role), not at pairing time.
 model Couple {
   id         String   @id @default(cuid())
-  /// Matches a CouplePack.id from src/couple/packs.ts. Null until either
-  /// partner picks one.
+  /// Matches a CouplePack.id from src/couple/packs.ts (one of the 3 bundled
+  /// packs) OR a Generation.id when the active pack is a real AI-generated
+  /// couple session — see customPack* below for why that second case needs
+  /// its own fields rather than just resolving packId as a Generation id
+  /// on demand.
   packId     String?
+  /// The three resolved public R2 URLs for a custom (AI-generated) active
+  /// pack, copied here ONCE when either partner picks one (PATCH
+  /// /couple/settings) — not fetched live from the Generation each time,
+  /// because GET /generations/:id is scoped to its owner (privacy-correct
+  /// for a personal creation), so the OTHER partner has no way to resolve
+  /// it by id alone. Copying the already-public URLs onto this shared row
+  /// sidesteps that: both partners already read this same Couple row via
+  /// their own GET /couple, no cross-account fetch needed. All three null
+  /// together means "packId (if any) refers to a bundled pack instead."
+  customPackTogetherUrl String?
+  customPackAUrl        String?
+  customPackBUrl        String?
   /// When true, proximity always reads 'far' — see server/src/routes/couple.ts
   /// GET handler and the client's recomputeDistance, which both need to honor
   /// this independently (server for the partner-location read, client for its
@@ -120,6 +196,18 @@ model CoupleLocation {
 enum SubjectMode {
   SOLO
   COUPLE
+  /// A real group photo — 2 to 4 DISTINCT people fused into one scene
+  /// together, added 2026-09-12 for a real request: "three faces in one
+  /// photo... exactly." Deliberately reuses photoAKey/photoAExtraKeys as
+  /// storage (person 1 → photoAKey, the rest → photoAExtraKeys) rather than
+  /// new columns — that pair already means "an array of photos attached to
+  /// this generation," and GROUP is simply the one subjectMode where each
+  /// entry is a DIFFERENT person's own single photo instead of one
+  /// person's multiple angles. See server's promptBuilder.ts
+  /// buildGroupScenePrompt for how the prompt text tells the model these
+  /// are DISTINCT individuals — the opposite instruction from what the
+  /// same array means for SOLO/COUPLE's multi-angle identity lock.
+  GROUP
 }
 
 enum GenerationStatus {
@@ -144,19 +232,113 @@ model Generation {
   styleKey    String
   subjectMode SubjectMode
   description String?
-  /// S3/R2 object key for the "You" photo.
+  /// S3/R2 object key for the "You" photo — always the FIRST of possibly
+  /// several reference angles of that person (photoAExtraKeys holds any
+  /// more). Kept as the single source every other feature already reads
+  /// (thumbnails, the DELETE route's R2 cleanup, points.ts, posts.ts) so
+  /// none of that has to learn about multi-angle uploads.
   photoAKey   String
   /// S3/R2 object key for the "Partner" photo — null when subjectMode=SOLO.
+  /// Same "first of possibly several" relationship to photoBExtraKeys.
   photoBKey   String?
+  /// Any reference angles of the "You" person BEYOND photoAKey — added
+  /// 2026-09-12 for multi-angle identity lock (server/src/lib/promptBuilder.ts's
+  /// PromptInput.photoACount doc comment has the research this is built
+  /// against: several angles of one person measurably improve identity-lock
+  /// over a single photo). Empty array, not null, when there are none —
+  /// simpler for every consumer (`...generation.photoAExtraKeys` spreads
+  /// safely either way) than an optional array would be.
+  photoAExtraKeys String[] @default([])
+  /// Same idea as photoAExtraKeys, for the "Partner" person.
+  photoBExtraKeys String[] @default([])
   provider    String
   model       String
   status      GenerationStatus  @default(PENDING)
   /// S3/R2 object key of the result image, set only once status=COMPLETE.
+  /// For subjectMode=COUPLE this is the "together" shot; SOLO has only this.
   outputKey   String?
+  /// Solo portrait of the "You" photo, same theme/style/seed as outputKey —
+  /// only ever set for subjectMode=COUPLE (see generations.ts's 3-image
+  /// session). Null for SOLO, where there's no second identity to split out.
+  outputKeyA  String?
+  /// Solo portrait of the "Partner" photo — see outputKeyA.
+  outputKeyB  String?
+  /// Shared across all images in one session (1 for SOLO, 3 for COUPLE) so
+  /// the together/solo-A/solo-B shots share lighting/color grade instead of
+  /// each landing as an unrelated roll of the dice — see qwenImageEdit.ts.
+  seed        Int?
   errorMessage String?
   creditCost  Int               @default(1)
+  /// Set when this generation was created via a post's "Recreate" button
+  /// rather than from scratch — see generations.ts's POST /generations.
+  /// Drives Post.regenerationCount/pointsAwarded (that post's owner earns
+  /// points as their post gets recreated by others), completely separate
+  /// from `templateId` above (a bundled starter theme) since a post being
+  /// recreated already carries its own templateId/styleKey from its source
+  /// generation — this just additionally credits whoever posted it.
+  sourcePost   Post?             @relation("RegeneratedFrom", fields: [sourcePostId], references: [id])
+  sourcePostId String?
   createdAt   DateTime          @default(now())
   updatedAt   DateTime          @updatedAt
+  post        Post?
 
   @@index([userId, createdAt])
+  @@index([sourcePostId])
+}
+
+/// A user sharing one of their own COMPLETE generations to the public
+/// community feed (Home's "Recent Post"/"Trending Creations" — see
+/// src/app/(tabs)/index.tsx). Deliberately references `Generation` rather
+/// than copying its output keys/style/theme onto this row: those never
+/// change after COMPLETE, so joining avoids two rows drifting out of sync,
+/// and this table only needs to own what's actually post-specific (caption,
+/// regeneration/points bookkeeping).
+model Post {
+  id     String @id @default(cuid())
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+
+  /// One post per generation — sharing the same creation twice would just
+  /// double-count its regenerations/points for no real benefit, and the
+  /// client's Share flow (create-post) always starts from a specific one of
+  /// your own Gallery items.
+  generation   Generation @relation(fields: [generationId], references: [id])
+  generationId String     @unique
+
+  /// Short one-line title, separate from `caption` below — mirrors
+  /// src/app/create-post's own title+description split (its own comment
+  /// there explains why: an explicit ask to diverge from a strict
+  /// Instagram/TikTok single-caption model).
+  title   String?
+  caption String?
+
+  /// How many times another user has tapped "Recreate" on this post (see
+  /// generations.ts's POST /generations with `sourcePostId`) — the trending
+  /// rank (GET /posts/trending, top 5 by this field) and the points economy
+  /// both key off this one counter.
+  regenerationCount Int @default(0)
+  /// How many times this post's detail screen (src/app/post/[id].tsx) has
+  /// been opened — incremented by POST /posts/:id/view. Simple lifetime
+  /// counter, not deduplicated per viewer (same "every open counts" model
+  /// as a YouTube view), pushed live to anyone currently watching this post
+  /// via realtime/postsSocket.ts.
+  viewCount Int @default(0)
+  /// Cumulative points already paid out to `userId` for this post, i.e.
+  /// `floor(regenerationCount / 100)` the last time it was checked — stored
+  /// so awarding is idempotent (each regeneration only pays the NEW
+  /// points crossed, never re-pays ones already granted) without needing a
+  /// separate ledger/audit table for what's a single simple counter.
+  pointsAwarded Int @default(0)
+
+  /// The generations created by recreating THIS post — see Generation.
+  /// sourcePostId. Named for the inverse relation, not queried directly
+  /// anywhere yet (regenerationCount is the maintained, cheap-to-read
+  /// counter for that), but kept so the relation is real or Prisma can't
+  /// express Generation.sourcePost's side of it.
+  regenerations Generation[] @relation("RegeneratedFrom")
+
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+  @@index([regenerationCount])
 }

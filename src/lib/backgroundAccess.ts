@@ -102,7 +102,7 @@ export async function openAppDetails(): Promise<void> {
  * The first one that resolves wins; if none do (stock Android / unknown
  * OEM) we land the user on the app-info page.
  */
-const AUTOSTART_TARGETS: Array<{ packageName: string; className: string }> = [
+const AUTOSTART_TARGETS: { packageName: string; className: string }[] = [
   // Vivo "High background power consumption" (com.vivo.abe) — on Vivo this is
   // the screen that actually stops the screen-off process FREEZE (PEM / Power
   // Energy Manager). The plain battery "No restrictions" toggle and the

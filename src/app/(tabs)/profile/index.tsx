@@ -1,6 +1,7 @@
 import { useAuth, useClerk, useUser } from '@clerk/expo';
-import { router } from 'expo-router';
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { router, useFocusEffect } from 'expo-router';
+import { useCallback, useState } from 'react';
+import { Pressable, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -9,7 +10,6 @@ import { useTranslation } from 'react-i18next';
 import { showAlert } from '@/alerts/store';
 import { Chip } from '@/components/primitives/chip';
 import { GlassCard } from '@/components/primitives/glass-card';
-import { GradientButton } from '@/components/primitives/gradient-button';
 import { GradientScreen } from '@/components/primitives/gradient-screen';
 import { Icon, type IconName } from '@/components/primitives/icon';
 import { IconButton } from '@/components/primitives/icon-button';
@@ -19,14 +19,17 @@ import { useProfileStore } from '@/profile/store';
 import { useThemeStore } from '@/theme/store';
 import { fonts, THEME_OPTIONS } from '@/theme/tokens';
 import { useAppTheme } from '@/theme/use-app-theme';
+import { useApi } from '@/utils/api';
 import { pickImageSafely } from '@/utils/native-media';
+import { PaywallModal } from '@/components/paywall/paywall-modal';
+import { BannerAdView } from '@/components/ads/banner-ad-view';
+import { styles } from '@/components/profile/styles';
 
 type SettingsRowItem = { icon: IconName; label: string; danger?: boolean; actionKey: string };
 
 export default function ProfileScreen() {
   const theme = useAppTheme();
   const { t } = useTranslation();
-  const benefits = t('profile.benefits', { returnObjects: true }) as string[];
   const activeTheme = useThemeStore((s) => s.theme);
   const setTheme = useThemeStore((s) => s.setTheme);
   const avatarUri = useProfileStore((s) => s.avatarUri);
@@ -44,6 +47,30 @@ export default function ProfileScreen() {
   const { user } = useUser();
   const { signOut } = useClerk();
 
+  // Real numbers for the stat row below — added 2026-09-11. Before this,
+  // "18 Wallpapers" and "6 Credits Left" were literal hardcoded strings that
+  // never moved no matter how much was actually generated or spent; only
+  // the "Paired"/"Not Paired" card was ever wired to real state. Fetched on
+  // every focus (not just mount) so generating a wallpaper, then coming
+  // back to Profile, shows the count going up immediately rather than
+  // whatever was true when the tab was first opened this session.
+  const api = useApi();
+  const [stats, setStats] = useState<{ generationCount: number; credits: number; points: number } | null>(null);
+  const [paywallVisible, setPaywallVisible] = useState(false);
+  useFocusEffect(
+    useCallback(() => {
+      if (!isSignedIn) return;
+      api
+        .getProfile()
+        .then((p) => setStats({ generationCount: p.generationCount, credits: p.credits, points: p.points }))
+        .catch(() => {
+          // Offline/transient — leave whatever was already on screen (or
+          // the "—" placeholder below) rather than showing a wrong number.
+        });
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isSignedIn]),
+  );
+
   const displayName = isSignedIn
     ? (user?.fullName ?? user?.primaryEmailAddress?.emailAddress ?? t('profile.amoraUser'))
     : t('profile.guest');
@@ -60,7 +87,14 @@ export default function ProfileScreen() {
     { icon: 'lock', label: t('profile.settings.privacy'), actionKey: 'privacy' },
     { icon: 'globe', label: t('profile.settings.language'), actionKey: 'language' },
     { icon: 'help', label: t('profile.settings.help'), actionKey: 'help' },
+    { icon: 'sparkle', label: t('profile.settings.about'), actionKey: 'about' },
     { icon: 'logout', label: isSignedIn ? t('profile.settings.signOut') : t('auth.logIn'), danger: !!isSignedIn, actionKey: 'logout' },
+    // Only shown once signed in — deleting an account you're not signed
+    // into makes no sense, and the server route requires a real session
+    // anyway (see accountDelete.ts's requireUser). Deliberately the LAST
+    // row, same "most destructive action sits furthest from an accidental
+    // tap" placement as Sign Out already had before this was added.
+    ...(isSignedIn ? [{ icon: 'trash', label: t('profile.settings.deleteAccount'), danger: true, actionKey: 'deleteAccount' } as SettingsRowItem] : []),
   ];
 
   async function handlePickAvatar() {
@@ -71,25 +105,20 @@ export default function ProfileScreen() {
     }
   }
 
-  // In-app purchases need real store-side product setup (App Store Connect /
-  // Play Console) that doesn't exist yet — the trial CTA says so honestly
-  // instead of claiming a purchase went through.
-  function handleUpgrade() {
-    showAlert(t('profile.premiumAlertTitle'), t('profile.premiumAlertBody'), [
-      { text: t('profile.notNow'), style: 'cancel' },
-      {
-        text: t('profile.startTrial'),
-        onPress: () => showAlert(t('common.comingSoon'), t('profile.inAppPurchasesPreview')),
-      },
-    ]);
-  }
-
   // Most of these rows still have no real destination (no notifications
   // backend, no settings sub-screens) — say so honestly rather than
   // claiming they're "enabled" or "configured". Sign in/out is now real.
   function handleSettingsAction(row: SettingsRowItem) {
     if (row.actionKey === 'myPosts') {
       router.push('/manage-posts');
+      return;
+    }
+    if (row.actionKey === 'about') {
+      router.push('/about');
+      return;
+    }
+    if (row.actionKey === 'deleteAccount') {
+      router.push('/delete-account');
       return;
     }
     if (row.actionKey === 'language') {
@@ -168,13 +197,15 @@ export default function ProfileScreen() {
 
           <View style={styles.statsRow}>
             <GlassCard radius={16} style={styles.statCard}>
-              <Text style={[styles.statValue, { color: theme.ink }]}>18</Text>
+              <Text style={[styles.statValue, { color: theme.ink }]}>{stats ? stats.generationCount : '—'}</Text>
               <Text style={[styles.statLabel, { color: theme.inkFaint }]}>{t('profile.wallpapers')}</Text>
             </GlassCard>
-            <GlassCard radius={16} style={styles.statCard}>
-              <Text style={[styles.statValue, { color: theme.ink }]}>6</Text>
-              <Text style={[styles.statLabel, { color: theme.inkFaint }]}>{t('profile.creditsLeft')}</Text>
-            </GlassCard>
+            <Pressable style={{ flex: 1 }} onPress={() => setPaywallVisible(true)}>
+              <GlassCard radius={16} style={styles.statCard}>
+                <Text style={[styles.statValue, { color: theme.accent1 }]}>{stats ? stats.credits : '—'}</Text>
+                <Text style={[styles.statLabel, { color: theme.accent1 }]}>{t('profile.creditsLeft')} ⚡</Text>
+              </GlassCard>
+            </Pressable>
             <GlassCard radius={16} style={styles.statCard}>
               <Icon
                 name={hasPartner ? 'check' : 'couple'}
@@ -187,6 +218,39 @@ export default function ProfileScreen() {
               </Text>
             </GlassCard>
           </View>
+
+          {/* Points earned from the community (see server/src/routes/
+           * generations.ts's awardPointsForRegeneration — 100 regenerations
+           * of one of your posts = 1 point) redeem 1:1 into spendable
+           * credits on tap. Only shown once there's something to redeem —
+           * a permanent "0" row for every account that's never been
+           * recreated by anyone would just be dead weight on the screen. */}
+          {stats && stats.points > 0 ? (
+            <Pressable
+              onPress={async () => {
+                try {
+                  const result = await api.redeemPoints();
+                  setStats((s) => (s ? { ...s, credits: result.credits, points: result.points } : s));
+                  showAlert(t('profile.pointsRedeemedTitle'), t('profile.pointsRedeemedBody', { count: result.credits - (stats?.credits ?? 0) }));
+                } catch (err) {
+                  showAlert(t('profile.pointsRedeemFailedTitle'), err instanceof Error ? err.message : t('profile.pointsRedeemFailedBody'));
+                }
+              }}
+            >
+              <GlassCard radius={18} style={styles.pointsCard}>
+                <View style={[styles.pointsIconWrap, { backgroundColor: theme.glass }]}>
+                  <Icon name="sparkle" size={18} color={theme.accent1} strokeWidth={1.8} />
+                </View>
+                <View style={styles.partnerText}>
+                  <Text style={[styles.partnerName, { color: theme.ink }]}>
+                    {t('profile.pointsEarned', { count: stats.points })}
+                  </Text>
+                  <Text style={[styles.partnerHint, { color: theme.inkFaint }]}>{t('profile.pointsRedeemHint')}</Text>
+                </View>
+                <Icon name="chevronRight" size={16} color={theme.inkFaint} strokeWidth={2} />
+              </GlassCard>
+            </Pressable>
+          ) : null}
 
           {/* Real pairing state now (see useCoupleStore above) — tapping
            * routes to setup (link up) or the live dashboard depending on
@@ -215,24 +279,6 @@ export default function ProfileScreen() {
             </GlassCard>
           </Pressable>
 
-          <GlassCard radius={22} style={styles.premiumCard}>
-            <View style={styles.premiumHeader}>
-              <LinearGradient colors={[theme.accent2, theme.accent1]} style={styles.premiumIcon}>
-                <Icon name="crown" size={17} color={theme.ink} strokeWidth={1.9} />
-              </LinearGradient>
-              <Text style={[styles.premiumTitle, { color: theme.ink }]}>{t('profile.premiumTitle')}</Text>
-            </View>
-            <View style={styles.benefitList}>
-              {benefits.map((b) => (
-                <View key={b} style={styles.benefitRow}>
-                  <Icon name="check" size={14} color={theme.accent2} strokeWidth={2.6} />
-                  <Text style={[styles.benefitText, { color: theme.inkSoft }]}>{b}</Text>
-                </View>
-              ))}
-            </View>
-            <GradientButton label={t('profile.upgrade')} onPress={handleUpgrade} />
-          </GlassCard>
-
           <View style={styles.section}>
             <Text style={[styles.sectionTitle, { color: theme.ink }]}>{t('profile.appearance')}</Text>
             <Text style={[styles.sectionSubtitle, { color: theme.inkFaint }]}>{t('profile.appearanceSubtitle')}</Text>
@@ -248,6 +294,8 @@ export default function ProfileScreen() {
               ))}
             </ScrollView>
           </View>
+
+          <BannerAdView onPressCta={() => setPaywallVisible(true)} />
 
           <GlassCard radius={20} style={styles.settingsCard}>
             {SETTINGS_ROWS.map((row, i) => (
@@ -274,44 +322,14 @@ export default function ProfileScreen() {
           </GlassCard>
         </ScrollView>
       </SafeAreaView>
+
+      <PaywallModal
+        visible={paywallVisible}
+        onClose={() => setPaywallVisible(false)}
+        onSuccess={(updated) => {
+          setStats((prev) => (prev ? { ...prev, credits: updated.credits, points: updated.points } : null));
+        }}
+      />
     </GradientScreen>
   );
 }
-
-const styles = StyleSheet.create({
-  fill: { flex: 1 },
-  content: { paddingHorizontal: 20, paddingTop: 16, paddingBottom: 165, gap: 26 },
-  header: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 4 },
-  headerActions: { flexDirection: 'row', alignItems: 'center', gap: 10 },
-  title: { fontFamily: fonts.display, fontSize: 26 },
-  avatarBlock: { alignItems: 'center', gap: 12, marginVertical: 6 },
-  avatar: { width: 92, height: 92, borderRadius: 46, borderWidth: 3.5 },
-  avatarBadge: { position: 'absolute', bottom: 0, right: 0, width: 30, height: 30, borderRadius: 15, borderWidth: 2.5, alignItems: 'center', justifyContent: 'center' },
-  name: { fontFamily: fonts.display, fontSize: 20 },
-  handle: { fontFamily: fonts.body, fontSize: 13.5 },
-  statsRow: { flexDirection: 'row', gap: 12 },
-  statCard: { flex: 1, paddingVertical: 14, paddingHorizontal: 8, alignItems: 'center', gap: 4 },
-  statValue: { fontFamily: fonts.bodyExtraBold, fontSize: 17 },
-  statLabel: { fontFamily: fonts.bodySemiBold, fontSize: 11.5 },
-  partnerCard: { flexDirection: 'row', alignItems: 'center', gap: 14, padding: 16 },
-  partnerIconWrap: { width: 48, height: 48, borderRadius: 24, borderWidth: 2, alignItems: 'center', justifyContent: 'center' },
-  partnerText: { flex: 1, gap: 3 },
-  partnerName: { fontFamily: fonts.bodyBold, fontSize: 14 },
-  partnerHint: { fontFamily: fonts.body, fontSize: 13 },
-  premiumCard: { padding: 20, gap: 16 },
-  premiumHeader: { flexDirection: 'row', alignItems: 'center', gap: 12 },
-  premiumIcon: { width: 36, height: 36, borderRadius: 12, alignItems: 'center', justifyContent: 'center' },
-  premiumTitle: { fontFamily: fonts.display, fontSize: 18 },
-  benefitList: { gap: 10 },
-  benefitRow: { flexDirection: 'row', alignItems: 'center', gap: 10 },
-  benefitText: { fontFamily: fonts.body, fontSize: 13 },
-  section: { gap: 6, marginTop: 4 },
-  modeHeader: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 4 },
-  sectionTitle: { fontFamily: fonts.bodyBold, fontSize: 16 },
-  sectionSubtitle: { fontFamily: fonts.body, fontSize: 13.5 },
-  themeRail: { gap: 16, paddingTop: 12, paddingHorizontal: 2 },
-  settingsCard: { paddingHorizontal: 16, marginTop: 6 },
-  settingsRow: { flexDirection: 'row', alignItems: 'center', gap: 14, paddingVertical: 15 },
-  settingsIconWrap: { width: 34, height: 34, borderRadius: 11, alignItems: 'center', justifyContent: 'center' },
-  settingsLabel: { flex: 1, fontSize: 14 },
-});

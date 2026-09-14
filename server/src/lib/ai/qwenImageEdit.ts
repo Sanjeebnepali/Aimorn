@@ -10,8 +10,9 @@ const HF_PROVIDER = 'fal-ai' as const;
  * Qwen-Image-Edit-2511 via Hugging Face's Inference Providers (routed to
  * fal.ai) — the provider actually verified end-to-end with a real two-person
  * fusion call, for $0.05 of usage / $0.00 billed against HF's free monthly
- * allowance (see docs/ai-generation-plan.md §3a and the working reference
- * script at server/scripts/test-qwen-fusion.py). This is the *proven* path;
+ * allowance (see docs/ai-generation-plan.md §3a — the one-off Python script
+ * that proved it has since been removed, its flow ported here). This is the
+ * *proven* path;
  * NanoBananaProvider remains a real, un-blocked-by-money future option, not
  * a dead end — see that file and §3 for the comparison.
  *
@@ -53,7 +54,27 @@ export class QwenImageEditProvider implements ImageFusionProvider {
     const toDataUri = (photo: { bytes: Buffer; mimeType: string }) =>
       `data:${photo.mimeType};base64,${photo.bytes.toString('base64')}`;
 
-    const imageUrls = [toDataUri(input.photoA), ...(input.photoB ? [toDataUri(input.photoB)] : [])];
+    // Same ordering requirement as nanoBanana.ts: promptBuilder.ts's
+    // template-image branch describes the template photo as the "FIRST
+    // attached image," so it has to lead this array too. Qwen-Image-Edit-
+    // 2511 is documented for up to 3 reference images (see this file's
+    // class comment), which template+photoA+photoB fits exactly — that cap
+    // is also why, unlike nanoBanana.ts, this only ever sends ONE photo per
+    // person (photoA[0]/photoB[0]) even though FusionInput.photoA/photoB
+    // are now multi-angle arrays (provider.ts): this is not the active
+    // provider (generations.ts uses NanoBananaProvider), so it stays a
+    // simple, correct degradation rather than getting the same multi-image
+    // treatment an inactive path would never actually exercise.
+    // identityReferenceImage (see provider.ts's FusionInput doc comment) —
+    // kept last, same ordering contract as nanoBanana.ts, though this
+    // inactive provider was already capped at 3 images before this field
+    // existed; a caller that actually needs it here would exceed that cap.
+    const imageUrls = [
+      ...(input.templateImage ? [toDataUri(input.templateImage)] : []),
+      toDataUri(input.photoA[0]),
+      ...(input.photoB?.[0] ? [toDataUri(input.photoB[0])] : []),
+      ...(input.identityReferenceImage ? [toDataUri(input.identityReferenceImage)] : []),
+    ];
 
     // Everything here becomes the literal JSON body (see the class comment
     // above for why `preparePayload` just passes this through unchanged).
@@ -68,6 +89,12 @@ export class QwenImageEditProvider implements ImageFusionProvider {
       prompt: input.prompt,
       image_url: imageUrls[0],
       image_urls: imageUrls,
+      // Every prompt here already says "vertical phone wallpaper" — without
+      // this the fal.ai endpoint defaults to `square_hd`, actively fighting
+      // that instruction. Verified against fal.ai's own qwen-image-edit-plus
+      // schema (the model HF_QWEN_MODEL maps to), not assumed.
+      image_size: 'portrait_16_9',
+      ...(input.seed != null ? { seed: input.seed } : {}),
     };
 
     const { url, info } = await makeRequestOptions(requestArgs, providerHelper, { task: 'image-to-image' });

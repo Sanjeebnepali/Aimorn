@@ -7,11 +7,13 @@ import { premiumAlert } from '../components/PremiumAlert';
 import { reportContent } from '../components/ReportContentModal';
 import { enforceSingleDriver } from '../lib/automationMode';
 import { toast } from '../lib/toast';
+import { setDeviceWallpaper } from '../utils/native-media';
 import { useApi } from '../utils/api';
 import { refreshCoupleState } from './bootstrap';
 import { requestCoupleLocationConsent } from './locationConsent';
 import { startCoupleLocation } from './location';
-import { applyProximityWallpaper } from './wallpaper';
+import { couplePacks } from './packs';
+import { applyProximityWallpaper, resolveCoupleImageUri } from './wallpaper';
 import { useCoupleStore } from './store';
 
 /**
@@ -40,6 +42,35 @@ export function useCoupleDashboardActions({
   const { t } = useTranslation();
   const [busy, setBusy] = useState(false);
   const [picking, setPicking] = useState(false);
+
+  /**
+   * Switches to one of the caller's own real AI-generated couple photos —
+   * parallel to onPickPack below but through `generationId` instead of
+   * `packId` (see server/src/routes/couple.ts's PATCH /couple/settings).
+   * Added 2026-09-11 alongside CouplePackPicker's new "Your Creations"
+   * section: previously the ONLY way to activate a real generation as the
+   * couple pack was result/[id].tsx's "Use as Our Couple Pack" button,
+   * right after generating it — there was no way to reselect an older one,
+   * or any indication in the picker itself that a custom pack was active at
+   * all (see CouplePackPicker.tsx's own comment on this).
+   */
+  const onPickGeneration = useCallback(
+    async (generationId: string) => {
+      if (generationId === packId) return;
+      setPicking(true);
+      try {
+        const settings = await api.setCoupleSettings({ generationId });
+        useCoupleStore.getState().setSettings(settings);
+        toast(t('couple.dashboard.packSwitched'));
+        void applyProximityWallpaper();
+      } catch (err) {
+        toast(err instanceof Error ? err.message : t('couple.dashboard.couldNotSave'));
+      } finally {
+        setPicking(false);
+      }
+    },
+    [packId, api, t],
+  );
 
   const onPickPack = useCallback(
     async (newPackId: string) => {
@@ -126,6 +157,26 @@ export function useCoupleDashboardActions({
             try {
               await api.unlinkCouple();
               await refreshCoupleState();
+              // Real bug, reported live: the couple photo used to just stay
+              // applied as the device wallpaper after unlinking — nothing
+              // ever told Android to change it, since a wallpaper is a
+              // system-level setting that persists until something
+              // explicitly sets a new one. Landing on Home (below) gave the
+              // user a way to pick a fresh one manually, but they'd see the
+              // ex-partner's photo every time they unlocked their phone
+              // until they noticed and did that themselves. Applying one of
+              // the app's own bundled packs here — any of them, this is
+              // just "not a stale couple photo," not a meaningful choice —
+              // means the wallpaper is already sane the instant unlink
+              // finishes. Best-effort: unlink itself already succeeded by
+              // this point, so a failure here (no storage permission this
+              // moment, say) shouldn't surface as an "unlink failed" error.
+              try {
+                const defaultUri = await resolveCoupleImageUri(couplePacks[0].togetherImage);
+                await setDeviceWallpaper(defaultUri, 'both');
+              } catch {
+                /* best-effort — see comment above */
+              }
               // Land on Home instead of the re-pairing (Couple Setup) screen —
               // that screen has no path back to a normal wallpaper, so the
               // couple photo stayed applied with no obvious way to change it.
@@ -210,5 +261,5 @@ export function useCoupleDashboardActions({
     }
   }, [t]);
 
-  return { busy, picking, onPickPack, onTogglePause, onMenu, onCheckPermission };
+  return { busy, picking, onPickPack, onPickGeneration, onTogglePause, onMenu, onCheckPermission };
 }

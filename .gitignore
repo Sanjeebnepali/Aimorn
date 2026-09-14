@@ -17,6 +17,10 @@ expo-env.d.ts
 *.p12
 *.key
 *.mobileprovision
+# Real Android release-signing credentials (see keystore.properties's own
+# doc comment) — *.jks above already covers the actual keystore file itself;
+# this covers the passwords/alias sitting next to it at the project root.
+keystore.properties
 
 # Metro
 .metro-health-check*
@@ -25,6 +29,10 @@ expo-env.d.ts
 npm-debug.*
 yarn-debug.*
 yarn-error.*
+# This session's own Metro/Gradle build logs (metro-boot*.log,
+# android-build*.log) — pure local debugging noise from live device
+# testing, never meant to be version-controlled.
+*.log
 
 # macOS
 .DS_Store
@@ -49,3 +57,13 @@ modules/*/android/build/
 modules/*/build/
 *.apk
 *.dex
+
+# Gradle's own local build cache/lock files — found 2026-09-11 tracked under
+# modules/wallpaper-manager/android/.gradle/ (a real leftover from before this
+# rule existed): pure machine-local state (binary lock files, timestamps),
+# changes on every build, and was never meant to be version-controlled.
+# `/android`'s own .gradle is already covered by the whole-folder `/android`
+# rule above; this catches the same thing for any local Expo module's own
+# android/ project (which isn't covered by that root-only rule).
+modules/*/android/.gradle/
+.gradle/

@@ -31,6 +31,21 @@ npx prisma migrate dev  # creates tables on your Neon (or local) Postgres
 npm run dev              # http://localhost:4000
 ```
 
+`dev`/`start`/`prisma:migrate`/`prisma:deploy` read `DATABASE_URL`/
+`DATABASE_URL_UNPOOLED` straight out of `.env`/`.env.local` (via `dotenv`,
+loaded in `src/env.ts`) — **not** through `neon-env run`. That wrapper
+fetches a fresh connection string from Neon's control plane on every
+launch, which needs a live Neon CLI OAuth session (`~/.config/neonctl/
+credentials.json`) or a `NEON_API_KEY`; that token silently expires between
+sessions and repeatedly blocked `npm run dev` from booting at all (fixed
+2026-09-11 — see [[amora-2026-09-11-prompt-rewrite]] memory). Since this
+project runs off one static Neon branch (`.neon`'s `"branch": "production"`)
+rather than a per-feature-branch workflow, there's nothing to dynamically
+resolve — the static values already in `.env` work every time and never
+expire. If a real branch-per-task workflow is wanted later, `npm run
+dev:neon-branch` / `start:neon-branch` still exist and do go through
+`neon-env run`.
+
 ## Deploying to Render (free) today
 
 1. Push this repo to GitHub.

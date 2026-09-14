@@ -1,7 +1,7 @@
 import { Image } from 'expo-image';
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { showAlert } from '@/alerts/store';
@@ -11,9 +11,10 @@ import { GradientScreen } from '@/components/primitives/gradient-screen';
 import { Icon } from '@/components/primitives/icon';
 import { IconButton } from '@/components/primitives/icon-button';
 import { creationLabel, resolveCreationImage, useGalleryStore } from '@/data/gallery-store';
-import { extractHashtags, extractMentions, usePostsStore } from '@/posts/store';
+import { extractHashtags, extractMentions } from '@/posts/store';
 import { fonts, radii } from '@/theme/tokens';
 import { useAppTheme } from '@/theme/use-app-theme';
+import { useApi } from '@/utils/api';
 
 type Step = 'pick' | 'compose';
 
@@ -31,16 +32,24 @@ type Step = 'pick' | 'compose';
  * templates instead (src/data/creations.ts, now deleted); per explicit
  * correction (2026-09-08), sharing was showing the same stock photos every
  * other user sees on Home/Template-browse, not anything actually yours.
+ *
+ * Posts to the REAL backend as of 2026-09-11 (POST /posts —
+ * server/src/routes/posts.ts) — this used to save only to a local-only
+ * `usePostsStore` (AsyncStorage), explicitly labeled a preview with a
+ * "publishing isn't connected yet" alert on every post. That's no longer
+ * true: a post made here is now genuinely visible to every other user via
+ * Home's "Recent Post"/"Trending Creations" sections and GET /posts.
  */
 export default function CreatePostScreen() {
   const theme = useAppTheme();
-  const addPost = usePostsStore((s) => s.addPost);
+  const api = useApi();
   const creations = useGalleryStore((s) => s.creations);
   const loadFromStorage = useGalleryStore((s) => s.loadFromStorage);
   const [step, setStep] = useState<Step>('pick');
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [title, setTitle] = useState('');
   const [caption, setCaption] = useState('');
+  const [posting, setPosting] = useState(false);
 
   // This screen can be opened directly (the new header shortcuts) without
   // ever having visited the Gallery tab first, which is the only other
@@ -60,19 +69,21 @@ export default function CreatePostScreen() {
     setStep('compose');
   }
 
-  function handlePost() {
-    if (!selectedId) return;
-    addPost({ creationId: selectedId, title: title.trim(), caption: caption.trim() });
-    // Honest about what actually just happened — same voice as the rest of
-    // the app's not-connected-yet features (see profile/index.tsx's
-    // handleSettingsAction default case). This saves to *your* device; it
-    // doesn't reach other users or earn credits until the community
-    // backend in docs/ai-generation-plan.md exists.
-    showAlert(
-      'Posted ✨',
-      'Saved to My Posts. Publishing to the wider community (and earning credits from it) isn’t connected yet — this build is a preview.',
-    );
-    router.replace('/manage-posts');
+  async function handlePost() {
+    if (!selectedId || posting) return;
+    setPosting(true);
+    try {
+      // selectedId IS the underlying Generation's id — gallery-store.ts's
+      // syncFromServer() sets UserCreationItem.id straight from
+      // GenerationResponse.id, so no separate lookup/mapping is needed here.
+      await api.createPost({ generationId: selectedId, title: title.trim() || undefined, caption: caption.trim() || undefined });
+      showAlert('Posted ✨', 'Your creation is now live on Home for everyone to see and recreate.');
+      router.replace('/manage-posts');
+    } catch (err) {
+      showAlert('Couldn’t Post', err instanceof Error ? err.message : 'Something went wrong — try again.');
+    } finally {
+      setPosting(false);
+    }
   }
 
   if (step === 'compose' && selectedCreation) {
@@ -85,6 +96,12 @@ export default function CreatePostScreen() {
             <View style={styles.headerSpacer} />
           </View>
 
+          {/* See create-form.tsx's identical wrapper for why this is
+           * iOS-only behavior — Android's adjustResize (AndroidManifest.xml)
+           * already handles the resize there; the real fix for the caption
+           * box specifically hiding its own cursor behind the keyboard is
+           * captionInput's maxHeight below, not this wrapper. */}
+          <KeyboardAvoidingView style={styles.fill} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
           <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
             <View style={styles.previewRow}>
               {resolveCreationImage(selectedCreation.togetherImage) ? (
@@ -139,8 +156,9 @@ export default function CreatePostScreen() {
           </ScrollView>
 
           <View style={styles.footer}>
-            <GradientButton label="Post" onPress={handlePost} disabled={!title.trim()} />
+            <GradientButton label={posting ? 'Posting…' : 'Post'} onPress={handlePost} disabled={posting} />
           </View>
+          </KeyboardAvoidingView>
         </SafeAreaView>
       </GradientScreen>
     );
@@ -208,7 +226,10 @@ const styles = StyleSheet.create({
   fieldCard: { padding: 14 },
   titleInput: { fontFamily: fonts.body, fontSize: 14 },
   captionCard: { minHeight: 100 },
-  captionInput: { fontFamily: fonts.body, fontSize: 14, lineHeight: 20, textAlignVertical: 'top' },
+  // maxHeight fixes the same "keyboard hides the text area" bug as
+  // create-form.tsx's promptInput — see that file's comment on it for the
+  // full diagnosis (confirmed live 2026-09-11).
+  captionInput: { fontFamily: fonts.body, fontSize: 14, lineHeight: 20, textAlignVertical: 'top', maxHeight: 140 },
   tagRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
   tagPill: { paddingHorizontal: 12, paddingVertical: 6, borderRadius: radii.pill, borderWidth: 1 },
   tagText: { fontFamily: fonts.bodySemiBold, fontSize: 13.5 },

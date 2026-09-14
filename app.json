@@ -8,7 +8,7 @@
     "scheme": "amora",
     "userInterfaceStyle": "automatic",
     "ios": {
-      "icon": "./assets/expo.icon",
+      "icon": "./assets/images/ios-icon.png",
       "infoPlist": {
         "NSLocationAlwaysAndWhenInUseUsageDescription": "Amora uses your location to detect when you're near your linked partner so it can switch to your shared couple wallpaper automatically. Location is shared only with your linked partner.",
         "NSLocationWhenInUseUsageDescription": "Amora uses your location to detect when you're near your linked partner so it can switch to your shared couple wallpaper automatically.",
@@ -19,9 +19,8 @@
     },
     "android": {
       "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
+        "backgroundColor": "#1a1024",
         "foregroundImage": "./assets/images/android-icon-foreground.png",
-        "backgroundImage": "./assets/images/android-icon-background.png",
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
       "predictiveBackGestureEnabled": false,
@@ -44,9 +43,9 @@
       [
         "expo-splash-screen",
         {
-          "backgroundColor": "#208AEF",
+          "backgroundColor": "#1a1024",
           "image": "./assets/images/splash-icon.png",
-          "imageWidth": 76
+          "imageWidth": 140
         }
       ],
       "expo-sharing",
@@ -78,11 +77,23 @@
           "isAndroidForegroundServiceEnabled": true
         }
       ],
-      "expo-localization"
+      "expo-localization",
+      [
+        "react-native-google-mobile-ads",
+        {
+          "androidAppId": "ca-app-pub-3639353975248512~6881822249",
+          "iosAppId": "ca-app-pub-3940256099942544~1458002511",
+          "userTrackingUsageDescription": "Amora shows a rewarded ad here so you can earn free AI wallpaper credits. This identifier helps show ads that are more relevant to you."
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
     }
+  },
+  "react-native-google-mobile-ads": {
+    "android_app_id": "ca-app-pub-3639353975248512~6881822249",
+    "ios_app_id": "ca-app-pub-3940256099942544~1458002511"
   }
 }

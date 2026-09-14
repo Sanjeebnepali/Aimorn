@@ -62,6 +62,7 @@ export const styles = StyleSheet.create({
   activeSub: { fontFamily: fonts.bodySemiBold, fontSize: 11 },
   activeEmpty: { justifyContent: 'flex-start' },
   activeEmptyText: { fontFamily: fonts.body, fontSize: 12, flex: 1 },
+  packSectionLabel: { fontFamily: fonts.bodyBold, fontSize: 11.5, textTransform: 'uppercase', letterSpacing: 0.4, marginTop: 12, marginBottom: -2 },
   packGrid: { gap: 10 },
   packTile: { borderRadius: radii.md, borderWidth: 1, overflow: 'hidden' },
   packTileTriptych: { flexDirection: 'row', height: 88 },

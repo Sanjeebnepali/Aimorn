@@ -78,6 +78,9 @@ async function hydrate(): Promise<void> {
     myRole: couple?.myRole ?? null,
     partnerRole: couple?.partnerRole ?? null,
     packId: couple?.packId ?? null,
+    customPackTogetherUrl: couple?.customPackTogetherUrl ?? null,
+    customPackAUrl: couple?.customPackAUrl ?? null,
+    customPackBUrl: couple?.customPackBUrl ?? null,
     paused: couple?.paused ?? false,
     thresholdM: couple?.thresholdM ?? 100,
   });
@@ -136,8 +139,24 @@ function wireStoreEffects(): void {
     if (state.proximity !== prev.proximity || state.myRole !== prev.myRole) {
       void applyProximityWallpaper();
     }
-    // Pack swap → precache the new images AND apply immediately.
-    if (state.packId !== prev.packId) {
+    // Pack swap → precache the new images AND apply immediately. Also
+    // fires on a same-packId URL change, not just a packId change: a
+    // regenerate of one image in the couple's ALREADY-active custom pack
+    // (server/src/routes/generationsRegenerate.ts) pushes a fresh
+    // customPack*Url over this same 'settings' channel without ever
+    // touching packId itself (the generation id doesn't change, only its
+    // bytes/URL do — see that route's own doc comment). Comparing packId
+    // alone missed exactly that case: the store update landed, but nothing
+    // re-read it into the actual displayed/applied wallpaper until the next
+    // unrelated proximity tick, which could be minutes away or never if the
+    // user stayed still — the literal "regeneration doesn't actually update
+    // the file" bug this whole block exists to prevent.
+    if (
+      state.packId !== prev.packId ||
+      state.customPackTogetherUrl !== prev.customPackTogetherUrl ||
+      state.customPackAUrl !== prev.customPackAUrl ||
+      state.customPackBUrl !== prev.customPackBUrl
+    ) {
       void precacheActiveCouplePack();
       void applyProximityWallpaper();
     }

@@ -38,28 +38,28 @@ export type SettingsState = {
   // `bgAccessPrompted` so the two are never shown in the same session.
   exactAlarmPrompted: boolean;
   // ─── Entitlements (à la carte premium — changes/158) ────────────────────
-  // The app sells FOUR independently-purchasable premium areas plus an
-  // "All Access" bundle that grants all four at once. Every premium gate
-  // checks `allAccess || <the area's flag>` via `lib/billing.ts`
-  // (`hasEntitlement` / `useEntitlement`). These flags are written by the
-  // subscription page's mock purchase (`purchasePlans`) and persist across
-  // restarts. Real billing (RevenueCat) swaps the WRITE path only — the
-  // read path (these flags) and every call site stay the same.
+  // RETIRED 2026-09-11: this was an earlier 4-area + "All Access" bundle
+  // model (`lib/billing.ts`, `constants/billing.ts`) that referenced a
+  // subscription page (`app/subscription.tsx`) which no longer exists —
+  // superseded by the live credits/ad-reward/trial paywall in
+  // components/paywall/paywall-modal.tsx and server/src/routes/creditsRoutes.ts.
+  // Both files were deleted; these flags are left here, inert, rather than
+  // ripped out, since removing them cleanly needs a v3→v4 migration bump and
+  // nothing currently reads or writes them (verified: no import of either
+  // deleted file remains anywhere in src/).
   //
-  // Replaces the old single `isPremium` flag; the v2→v3 migration below maps
+  // Replaced the old single `isPremium` flag; the v2→v3 migration below maps
   // a pre-existing `isPremium: true` onto the three non-couple areas.
   allAccess: boolean; // bundle — grants all four areas at once
   entThemePacks: boolean; // custom albums + 15/30/custom timers + smart shuffle
   entMood: boolean; // all mood-based features
   entCollection: boolean; // the 60-image premium wallpaper collection
-  // Couple Theme is its own SKU. `isCouplePremium` keeps its name (many call
-  // sites + `lib/couple` write it). `coupleSource` records WHY the user holds
-  // it, which drives the unlink rule (the buyer keeps it; a partner who only
-  // entered the buyer's code is re-locked when the pair ends):
+  // Couple Theme is its own SKU. `isCouplePremium` keeps its name from that
+  // retired model above. `coupleSource` records WHY the user holds it:
   //   'purchased' → bought directly OR via All Access → KEPT after unlink.
   //   'inherited' → unlocked by entering a partner's code → REVOKED on unlink.
   //   null        → not entitled.
-  // Enforced in `lib/billing.ts:reconcileCoupleEntitlement`.
+  // Also currently unread/unwritten — see the RETIRED note above.
   isCouplePremium: boolean;
   coupleSource: 'purchased' | 'inherited' | null;
   // Billing cadence the user last chose on the subscription page. Display
@@ -189,7 +189,11 @@ function getStorage(): AsyncStorageLike | null {
   if (storageResolved) return storage;
   storageResolved = true;
   try {
-
+    // Deliberately a runtime require(), not a static import: a top-level
+    // import is resolved before any code runs, so on a target where this
+    // native module isn't available it would throw at module-load time,
+    // completely bypassing this try/catch's fallback-to-null behavior.
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     const mod = require('@react-native-async-storage/async-storage');
     storage = (mod?.default ?? mod) as AsyncStorageLike;
   } catch {

@@ -14,10 +14,23 @@ import { tokenCache } from '@clerk/expo/token-cache';
 import { DarkTheme, ThemeProvider, Stack } from 'expo-router';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import * as WebBrowser from 'expo-web-browser';
 import { LogBox } from 'react-native';
+
+import { configureAds } from '@/ads/configureAds';
+import { useAppOpenAdOnForeground } from '@/ads/useAppOpenAdOnForeground';
+import { BrandSplash } from '@/components/brandSplash/BrandSplash';
+import { ThemedAlertHost } from '@/components/primitives/themed-alert';
+import { PremiumAlertHost } from '@/components/PremiumAlert';
+import { bootstrapCoupleFeature, teardownCoupleFeature } from '@/couple/bootstrap';
+import { configurePurchases, loginPurchases, logoutPurchases } from '@/iap/purchases';
+// Side-effect import — runs i18next.init() (see that file's doc comment)
+// before anything below renders. Must be imported somewhere that loads
+// before the first screen; the root layout is the earliest app-owned module.
+import '@/i18n';
+import { useHasCompletedOnboarding } from '@/onboarding/store';
 
 // Expected in every local/dev run — this project's own .env intentionally
 // points at Clerk's test instance (see server docs), so this warning fires
@@ -31,21 +44,29 @@ import { LogBox } from 'react-native';
 // interference without hiding anything worth seeing.
 LogBox.ignoreLogs(['Clerk has been loaded with development keys']);
 
-import { ThemedAlertHost } from '@/components/primitives/themed-alert';
-import { PremiumAlertHost } from '@/components/PremiumAlert';
-import { bootstrapCoupleFeature, teardownCoupleFeature } from '@/couple/bootstrap';
-// Side-effect import — runs i18next.init() (see that file's doc comment)
-// before anything below renders. Must be imported somewhere that loads
-// before the first screen; the root layout is the earliest app-owned module.
-import '@/i18n';
-import { useHasCompletedOnboarding } from '@/onboarding/store';
-
 SplashScreen.preventAutoHideAsync();
 
 // Resolves the pending browser tab from a Google OAuth redirect back into a
 // result the calling `await` can see, on both cold start (app was closed
 // during the redirect) and warm resume. A no-op on any other launch.
 WebBrowser.maybeCompleteAuthSession();
+
+// Boots the RevenueCat SDK before any screen that might open the paywall
+// can mount — same "runs once at module scope, before the component tree"
+// timing as the two calls above. Not tied to sign-in state (unlike
+// loginPurchases below, which needs a known user id): the SDK itself can
+// browse offerings and even complete a purchase against an anonymous id
+// before a user ever signs in, same as it can for a real store app.
+configurePurchases();
+
+// Same module-scope, boot-once timing as configurePurchases() just above —
+// gathers ad consent (GDPR/UK UMP flow) and starts the Google Mobile Ads
+// SDK before any screen's "Watch Ad" button can be tapped. Fire-and-forget:
+// configureAds() is async (consent gathering awaits a real network call/
+// form), but nothing here needs to block first paint on it — the rewarded-
+// ad hook (useRewardedAdReward.ts) just shows its own "Loading Ad…" state
+// on any button that's tapped before this resolves.
+void configureAds();
 
 // Client-side config vars are inlined into the JS bundle at build time (see
 // .env.example) rather than read from process.env at runtime, so this must
@@ -75,6 +96,14 @@ function RootNavigator() {
   // never sees an onboarding flash before that resolves.
   const needsOnboarding = isSignedIn === true && !hasOnboarded;
 
+  // The "loading ad" — shows on every foreground/resume per the user's own
+  // confirmed choice (see that hook's own doc comment). Called here, not
+  // at module scope like configureAds()/configurePurchases() above: it's a
+  // real hook (useAppOpenAd/useForeground underneath), which can only run
+  // inside a component's render, and this is the one component that's
+  // always mounted for the app's whole lifetime once auth resolves.
+  useAppOpenAdOnForeground();
+
   // Couple-proximity's own hydration/socket/location wiring — gated on a
   // real signed-in user id rather than plain isSignedIn so a sign-out then
   // a different account signing in re-bootstraps for the new user instead
@@ -82,8 +111,13 @@ function RootNavigator() {
   useEffect(() => {
     if (isSignedIn && userId) {
       void bootstrapCoupleFeature(userId);
+      // Attaches RevenueCat to this same user id — see purchases.ts's own
+      // doc comment for why that's what lets the server's webhook/sync
+      // routes credit the right account with no separate mapping table.
+      void loginPurchases(userId);
     } else if (isSignedIn === false) {
       void teardownCoupleFeature();
+      void logoutPurchases();
     }
   }, [isSignedIn, userId]);
 
@@ -97,6 +131,7 @@ function RootNavigator() {
       </Stack.Protected>
       <Stack.Screen name="loading" options={{ presentation: 'fullScreenModal', animation: 'fade' }} />
       <Stack.Screen name="result/[id]" options={{ presentation: 'fullScreenModal' }} />
+      <Stack.Screen name="regenerate/[id]" options={{ presentation: 'fullScreenModal' }} />
       {/* Was `fullScreenModal` — confirmed live (2026-09-07) that on this
        * Android setup, a screen's own StyleSheet.absoluteFill content (the
        * template photo, at this screen's z-index 0) never got a resolved
@@ -115,6 +150,12 @@ function RootNavigator() {
 }
 
 export default function RootLayout() {
+  // Shown once per cold start, on top of everything else, right after the
+  // native splash hides — see BrandSplash's own doc comment for the full
+  // reasoning (this is the JS-animated version of the user's splash.html
+  // design; the native OS splash stays a static image, since that's all a
+  // pre-JS splash screen is technically capable of showing).
+  const [showIntro, setShowIntro] = useState(true);
   const [fontsLoaded] = useFonts({
     Manrope_400Regular,
     Manrope_500Medium,
@@ -125,9 +166,19 @@ export default function RootLayout() {
     PlayfairDisplay_600SemiBold_Italic,
   });
 
-  useEffect(() => {
-    if (fontsLoaded) SplashScreen.hideAsync();
-  }, [fontsLoaded]);
+  // SplashScreen.hideAsync() is deliberately NOT called here — it now lives
+  // inside BrandSplash's own mount effect instead. Confirmed live
+  // (2026-09-11): calling it from this effect left a real, visible gap —
+  // the native splash's own hide transition isn't instant, so by the time
+  // it actually cleared, BrandSplash's independent 2.6s JS timer (started
+  // the same render, but not visually synced to the native splash's own
+  // fade) had already run out UNDERNEATH the still-showing native splash.
+  // Users saw native splash → Home directly, with the whole JS-animated
+  // intro playing invisibly behind it. Moving the hideAsync() call into
+  // BrandSplash's own effect — the same tick its animation timers start —
+  // closes that gap: the native splash now only comes down once the JS
+  // intro is actually mounted and already animating, not some indeterminate
+  // time earlier.
 
   if (!fontsLoaded) return null;
 
@@ -154,6 +205,7 @@ export default function RootLayout() {
            * silently no-op'd — the button's onPress fired fine, the call just
            * had no host to show anything on. */}
           <PremiumAlertHost />
+          {showIntro && <BrandSplash onFinish={() => setShowIntro(false)} />}
         </ThemeProvider>
       </GestureHandlerRootView>
     </ClerkProvider>

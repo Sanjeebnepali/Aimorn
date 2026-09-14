@@ -3,6 +3,7 @@ import { Text, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import { GlassCard } from '@/components/primitives/glass-card';
+import { GradientButton } from '@/components/primitives/gradient-button';
 import { Icon } from '@/components/primitives/icon';
 import { IconButton } from '@/components/primitives/icon-button';
 import { useAppTheme } from '@/theme/use-app-theme';
@@ -16,6 +17,13 @@ type CoupleActiveWallpaperCardProps = {
   activeImage: ReturnType<typeof pickImageForState> | null;
   activePack: CouplePack;
   myRoleLabel: string;
+  /** True once this account has picked a side (`myRole !== null` in
+   * dashboard.tsx). Pairing via a raw code (not by tapping a pack in
+   * Gallery) never sends you through the role-picker at all — before this,
+   * the ONLY way there was the "eye" button below, which only ever
+   * rendered once a role already existed. That's a dead end a code-paired
+   * account could never escape. Confirmed live 2026-09-10. */
+  hasRole: boolean;
   onPreview: () => void;
 };
 
@@ -25,6 +33,7 @@ export function CoupleActiveWallpaperCard({
   activeImage,
   activePack,
   myRoleLabel,
+  hasRole,
   onPreview,
 }: CoupleActiveWallpaperCardProps) {
   const theme = useAppTheme();
@@ -56,10 +65,18 @@ export function CoupleActiveWallpaperCard({
           </View>
           <IconButton name="eye" size={32} iconSize={16} onPress={onPreview} color={theme.inkFaint} />
         </View>
-      ) : (
+      ) : hasRole ? (
         <View style={[styles.activeRow, styles.activeEmpty, { borderColor: theme.glassBorder, backgroundColor: theme.glass }]}>
           <Icon name="heartOutline" size={20} color={theme.inkFaint} />
           <Text style={[styles.activeEmptyText, { color: theme.inkFaint }]}>{t('couple.activeWallpaper.waitingBothSides')}</Text>
+        </View>
+      ) : (
+        // The actual blocker isn't "waiting on data" — it's that this
+        // account never picked a side at all, and (until this fix) had no
+        // way to from here. A real CTA, not passive waiting text.
+        <View style={[styles.activeRow, styles.activeEmpty, { borderColor: theme.glassBorder, backgroundColor: theme.glass }]}>
+          <Text style={[styles.activeEmptyText, { color: theme.inkFaint }]}>You haven’t picked a side yet.</Text>
+          <GradientButton label="Pick Your Side" icon="couple" fullWidth={false} onPress={onPreview} />
         </View>
       )}
     </GlassCard>

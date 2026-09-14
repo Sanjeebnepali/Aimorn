@@ -26,12 +26,33 @@ const envSchema = z.object({
   S3_SECRET_ACCESS_KEY: z.string().min(1).optional(),
   S3_PUBLIC_BASE_URL: z.string().url().optional(),
 
-  // Optional, not required: Nano Banana is still a real future option (see
-  // docs/ai-generation-plan.md §3) but it's untested and blocked on Google
-  // Cloud billing setup. HF_TOKEN below is the proven, near-free default —
-  // see docs/ai-generation-plan.md §3a and §7.
+  // Verified working end-to-end 2026-09-10 (real billed account, real
+  // couple-fusion result) — now the active provider (generations.ts).
+  // gemini-3.1-flash-image (not the "-lite" variant) over the original
+  // gemini-2.5-flash-image: Google now calls 2.5 legacy outright, and 3.1
+  // adds both resolution control (imageConfig.imageSize — see
+  // nanoBanana.ts) and native multi-reference "character consistency",
+  // which is exactly the identity-fidelity problem flagged in live testing
+  // that same day. Costs more per image than 2.5 did ($0.067/1K vs
+  // $0.039) — a real, deliberate tradeoff given the budget concern raised
+  // in that same conversation, not an oversight.
   GEMINI_API_KEY: z.string().min(1).optional(),
-  GEMINI_MODEL: z.string().default('gemini-2.5-flash-image'),
+  GEMINI_MODEL: z.string().default('gemini-3.1-flash-image'),
+  // A SEPARATE, much cheaper model for lib/ai/photoQuality.ts's pre-
+  // generation blur/face-quality gate (added 2026-09-12, real complaint:
+  // blurry/bad photos silently burning a credit on a generation that was
+  // never going to look like the person). gemini-3.1-flash-image above is
+  // priced per-IMAGE-generated ($0.067-0.151), completely wrong for a
+  // "look at this and answer 3 yes/no questions, output text" task — a
+  // per-token vision-lite model is what a classification-only call like
+  // this should cost. Originally set to gemini-2.5-flash-lite per outside
+  // research, but a REAL call against this account 404'd with "no longer
+  // available to new users... use models/gemini-3.5-flash-lite instead" —
+  // that's Google's own API telling this account which model it actually
+  // has access to, which trumps any blog post. photoQuality.ts fails open
+  // on exactly this kind of error, so the gate silently no-op'd rather than
+  // breaking generation — confirmed live 2026-09-12 before this fix.
+  GEMINI_VISION_MODEL: z.string().default('gemini-3.5-flash-lite'),
 
   // Hugging Face Inference Providers — a free, fine-grained token scoped to
   // "Make calls to Inference Providers" only (huggingface.co/settings/tokens).
@@ -40,6 +61,32 @@ const envSchema = z.object({
   // (a generation needs both storage AND a provider token either way).
   HF_TOKEN: z.string().min(1).optional(),
   HF_QWEN_MODEL: z.string().default('Qwen/Qwen-Image-Edit-2511'),
+
+  // Points faceGeometry.ts's subprocess call at the SPECIFIC Python install
+  // with mediapipe/opencv-python actually installed (2026-09-12) — this
+  // machine has several `python`/`python3` entries on PATH (Windows Store
+  // alias, a bare "Python" launcher, this one), and the bare command
+  // `python` resolved inconsistently across shells during setup. Defaults
+  // to the plain command as a reasonable fallback for a future host where
+  // there's only one, correctly-provisioned Python on PATH.
+  FACE_CORRECT_PYTHON: z.string().default('python'),
+
+  // --- RevenueCat (real App Store / Play Store billing) --------------------
+  // Both optional at boot, same "fail per-request, not at startup" reasoning
+  // as S3_*/HF_TOKEN above — see lib/revenueCat.ts's isRevenueCatConfigured().
+  // Secret key (starts "sk_"), from the RevenueCat dashboard's API Keys page
+  // — used server-side ONLY, to call RevenueCat's own REST API and read a
+  // user's authoritative entitlement/purchase state (routes/iapSync.ts).
+  // Never the same as the client's public SDK key (that one's fine to ship
+  // in the app bundle; this one is not).
+  REVENUECAT_SECRET_API_KEY: z.string().min(1).optional(),
+  // The exact string configured as this webhook's "Authorization header
+  // value" in the RevenueCat dashboard (Project Settings → Webhooks) — every
+  // incoming POST /webhooks/revenuecat must present this back verbatim in
+  // its own Authorization header, or it's rejected. This is what stops
+  // anyone who finds the webhook URL from POSTing fake "purchase" events and
+  // granting themselves free credits.
+  REVENUECAT_WEBHOOK_AUTHORIZATION: z.string().min(1).optional(),
 });
 
 const parsed = envSchema.safeParse(process.env);

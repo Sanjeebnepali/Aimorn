@@ -95,9 +95,9 @@ export const TEMPLATES: Template[] = [
     id: 'cherryBlossom',
     label: 'Cherry Blossom',
     colors: cardGradients.cherryBlossom,
-    // No real photo of the two of them actually in cherry blossoms yet —
-    // this is the closest available (a traditional-village golden-hour
-    // shot) until a real blossom photo replaces it.
+    // Regenerated 2026-09-11 (gemini-3.1-flash-image, server/scripts/
+    // generate-template-images.ts) — the previous photo was an unrelated
+    // hanok-village street shot with no blossoms in it at all.
     imageUrl: local(require('../../assets/templates/cherry-blossom.jpg')),
     views: 15600,
     likes: 2100,
@@ -107,9 +107,8 @@ export const TEMPLATES: Template[] = [
     id: 'winterWalk',
     label: 'Winter Walk',
     colors: cardGradients.winterWalk,
-    // Closest available is a cozy indoor cabin shot, not an actual outdoor
-    // winter walk — same "no exact real photo yet" situation as Cherry
-    // Blossom above.
+    // Regenerated 2026-09-11 (see cherryBlossom's note above) — the
+    // previous photo was a cozy indoor cabin hug with no snow or walking.
     imageUrl: local(require('../../assets/templates/winter-walk.jpg')),
     views: 12400,
     likes: 1650,
@@ -120,9 +119,8 @@ export const TEMPLATES: Template[] = [
     label: 'Neon Nights',
     colors: cardGradients.neonNights,
     handle: '@kenji.p',
-    // Closest available is a warm string-lights photo, not an actual neon
-    // scene — same "no exact real photo yet" situation as Cherry Blossom
-    // and Winter Walk above.
+    // Regenerated 2026-09-11 (see cherryBlossom's note above) — the
+    // previous photo was a warm indoor string-lights hangout with no neon.
     imageUrl: local(require('../../assets/templates/neon-nights.jpg')),
     views: 29700,
     likes: 4330,
@@ -155,9 +153,8 @@ export const TEMPLATES: Template[] = [
     label: 'Cyber Date',
     colors: cardGradients.cyberDate,
     handle: '@zx.creates',
-    // Doesn't actually look cyberpunk (a beach-sunset shot) — every real
-    // photo supplied got assigned to a template on purpose, so this one
-    // borrows the closest leftover rather than staying on stock.
+    // Regenerated 2026-09-11 (see cherryBlossom's note above) — the
+    // previous photo was a plain beach sunset, not cyberpunk at all.
     imageUrl: local(require('../../assets/templates/cyber-date.jpg')),
     views: 19200,
     likes: 2560,
@@ -168,8 +165,8 @@ export const TEMPLATES: Template[] = [
     label: 'Rainy Window',
     colors: cardGradients.rainyWindow,
     handle: '@maya.k',
-    // Doesn't actually show rain or a window (a sunset forest close-up) —
-    // same "every supplied photo gets used" reasoning as Cyber Date above.
+    // Regenerated 2026-09-11 (see cherryBlossom's note above) — the
+    // previous photo was a sunset forest close-up with no rain or window.
     imageUrl: local(require('../../assets/templates/rainy-window.jpg')),
     views: 8700,
     likes: 1120,

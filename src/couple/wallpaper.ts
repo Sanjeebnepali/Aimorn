@@ -1,36 +1,61 @@
 import { Asset } from 'expo-asset';
 
 import { setDeviceWallpaper } from '@/utils/native-media';
-import { type CoupleImageSource, getCouplePack, pickImageForState } from './packs';
+import { type CoupleImageSource, pickImageForState, resolveActivePack } from './packs';
 import { useCoupleStore } from './store';
 
 /**
- * Resolve a pack image source to a URI `setDeviceWallpaper` can read.
+ * Resolve a pack image source to a real LOCAL file:// uri `setDeviceWallpaper`
+ * can actually read.
  *
- *   string  → a remote URL / file:// / content:// URI — returned as-is.
- *   number  → a bundled `require()` module — materialised on disk via
- *             expo-asset and returned as a `file://` URI. `downloadAsync`
- *             copies the asset out of the APK on first use and is a no-op
- *             once cached, so this is cheap on repeat applies.
+ * This used to treat an http(s) string as already "usable" and hand it
+ * straight to setDeviceWallpaper. That was wrong, confirmed against the real
+ * native module it feeds (modules/wallpaper-manager's
+ * WallpaperManagerModule.kt): it calls `BitmapFactory.decodeFile()` on the
+ * URI's bare PATH COMPONENT — for `https://host/results/x.png` that's just
+ * `/results/x.png`, a path that doesn't exist on the device's filesystem at
+ * all. It throws `WallpaperDecodeException` immediately rather than
+ * silently misbehaving, but the couple-pack feature would still fail the
+ * moment it tried to actually apply a real AI-generated pack's remote R2
+ * URL (bundled packs never hit this path — they're all local `require()`
+ * assets, which is exactly why nothing caught this until a real URL
+ * existed to test against). Confirmed live 2026-09-10.
+ *
+ *   http(s) string           → downloaded via expo-asset's `Asset.fromURI`,
+ *                              same caching mechanism the bundled-asset
+ *                              branch below already relies on.
+ *   file:// / content:// string → already local, returned as-is.
+ *   number (bundled `require()`) → materialised on disk via expo-asset;
+ *                              download is a no-op once cached.
  */
 export async function resolveCoupleImageUri(src: CoupleImageSource): Promise<string> {
-  if (typeof src === 'string') return src;
+  if (typeof src === 'string') {
+    if (/^https?:/i.test(src)) {
+      const asset = Asset.fromURI(src);
+      if (!asset.localUri) await asset.downloadAsync();
+      if (!asset.localUri) throw new Error(`Could not download wallpaper image: ${src}`);
+      return asset.localUri;
+    }
+    return src;
+  }
   const asset = Asset.fromModule(src);
   // On Android, expo-asset can leave a bundled image's `localUri` as the
   // bare drawable RESOURCE NAME (e.g. "assets_couple_pack2together") for
-  // RN <Image> backward-compat, and marks the asset `downloaded: true` so
-  // `downloadAsync()` short-circuits and never materialises a real file.
-  // The native wallpaper setter (BitmapFactory.decodeFile) can't read a
-  // resource name — force a real copy when the current localUri isn't
-  // actually usable as a file.
+  // RN <Image> backward-compat — or, talking to a dev-client's Metro
+  // server, as an `http://<metro-ip>:8081/...` URL. Neither is a real local
+  // path BitmapFactory can decode (see this function's doc comment above —
+  // the old `usable()` check here wrongly accepted the http(s) case too).
+  // Force a real copy whenever the current localUri isn't an actual
+  // file/content path.
   const usable = (u: string | null | undefined): u is string =>
-    !!u && (u.startsWith('file://') || u.startsWith('content://') || /^https?:/i.test(u));
+    !!u && (u.startsWith('file://') || u.startsWith('content://'));
   if (!usable(asset.localUri)) {
     asset.downloaded = false;
     asset.localUri = null;
     await asset.downloadAsync();
   }
-  return asset.localUri ?? asset.uri;
+  if (!usable(asset.localUri)) throw new Error(`Could not materialise bundled wallpaper asset: ${asset.uri}`);
+  return asset.localUri;
 }
 
 /**
@@ -59,9 +84,18 @@ export async function applyProximityWallpaper(): Promise<{ ok: boolean; applied:
   if (s.proximity === 'unknown') return { ok: false, applied: 'none' };
   if (!s.myRole) return { ok: false, applied: 'none' };
 
-  const pack = getCouplePack(s.packId);
+  const pack = resolveActivePack(s);
   const target = pickImageForState(pack, s.myRole, s.proximity === 'near' ? 'near' : 'far');
-  const key = `${pack.id}:${s.myRole}:${target.kind}`;
+  // Includes `target.image` itself, not just the pack id — a custom pack's
+  // image URL can change (generationsRegenerate.ts overwrites one slot's
+  // bytes at the SAME R2 key, so `pack.id` — really the generation id —
+  // stays identical; only the cache-busted URL string differs, see
+  // storage.ts's publicUrlForBusted) while `pack.id`/role/kind all stay
+  // exactly as they were. Deduping on those three alone (as this used to)
+  // meant a regenerated image, even once correctly pushed all the way into
+  // this store's customPack*Url fields, was STILL silently treated as "no
+  // change" here and never actually re-downloaded/re-applied.
+  const key = `${pack.id}:${s.myRole}:${target.kind}:${target.image}`;
   if (lastAppliedKey === key) return { ok: true, applied: 'none' };
 
   inFlight = true;
@@ -85,7 +119,7 @@ export async function applyProximityWallpaper(): Promise<{ ok: boolean; applied:
 export async function precacheActiveCouplePack(): Promise<void> {
   const s = useCoupleStore.getState();
   if (!s.hasPartner) return;
-  const pack = getCouplePack(s.packId);
+  const pack = resolveActivePack(s);
   const sources: CoupleImageSource[] = [pack.togetherImage, pack.roleAImage, pack.roleBImage];
   await Promise.all(
     sources.map(async (src) => {

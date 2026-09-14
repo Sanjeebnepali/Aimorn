@@ -102,7 +102,17 @@
     "recreateFusion": "합성 재생성",
     "generateFusion": "합성 생성",
     "creditsCaption": "크레딧 1개 사용 · 약 30초 소요",
-    "suggestions": ["석양 해변", "네온 도쿄", "설원 오두막", "빈티지 필름"]
+    "needYourPhoto": "먼저 본인 사진을 추가하세요",
+    "needPartnerPhoto": "파트너 사진도 추가하세요",
+    "uploadFailed": "사진 업로드에 실패했어요 — 다시 시도해 주세요",
+    "uploading": "업로드 중…",
+    "creditsCaptionCouple": "크레딧 3개 사용 · 약 30초",
+    "suggestions": [
+      "석양 해변",
+      "네온 도쿄",
+      "설원 오두막",
+      "비 오는 도시 거리"
+    ]
   },
   "profile": {
     "title": "프로필",
@@ -121,7 +131,11 @@
     "pairedHint": "가까이 있을 때 배경화면이 자동으로 동기화됩니다",
     "notPairedHint": "커플 탭에서 연결하면 근접 배경화면을 사용할 수 있어요",
     "premiumTitle": "Amora 프리미엄",
-    "benefits": ["무제한 생성", "내보내기 시 워터마크 없음", "8K 배경화면 해상도"],
+    "benefits": [
+      "무제한 생성",
+      "내보내기 시 워터마크 없음",
+      "8K 배경화면 해상도"
+    ],
     "upgrade": "업그레이드 · $6.99/월",
     "appearance": "테마",
     "appearanceSubtitle": "라이트 모드 없이 전부 다크 — 취향대로 골라보세요",
@@ -148,7 +162,8 @@
       "privacy": "개인정보 및 위치",
       "language": "언어",
       "help": "도움말 및 지원",
-      "signOut": "로그아웃"
+      "signOut": "로그아웃",
+      "deleteAccount": "계정 삭제"
     }
   },
   "couple": {
@@ -355,5 +370,21 @@
     "pairedAlertBody": "계정이 연결되었습니다 — 배경화면이 자동으로 동기화됩니다.",
     "couldntLinkTitle": "계정을 연결할 수 없습니다",
     "shareCodeMessage": "Amora에서 저와 함께해요! 제 페어링 코드로 연결하세요: {{code}}"
+  },
+  "deleteAccount": {
+    "title": "계정 삭제",
+    "intro": "Amora 계정과 그 안의 모든 데이터가 영구적으로 삭제됩니다. 이 작업은 되돌릴 수 없습니다.",
+    "whatGetsDeletedTitle": "삭제되는 항목",
+    "itemPhotos": "업로드한 모든 사진과 생성한 모든 AI 배경화면",
+    "itemPosts": "공유한 게시물과 조회수·재생성 기록",
+    "itemCouple": "커플 연결 — 파트너에게 알림이 전송되고 자동으로 연결이 해제됩니다",
+    "itemCredits": "크레딧, 포인트, 구매 내역",
+    "subscriptionNoteTitle": "구독 중이신가요?",
+    "subscriptionNoteBody": "계정을 삭제해도 결제는 자동으로 취소되지 않습니다 — 계속 청구되지 않도록 먼저 {{store}} 구독 설정에서 취소해 주세요.",
+    "confirmLabel": "확인하려면 DELETE를 입력하세요",
+    "confirmPlaceholder": "DELETE",
+    "confirmButton": "내 계정 삭제",
+    "deletingButton": "삭제 중…",
+    "errorTitle": "계정을 삭제하지 못했습니다"
   }
 }

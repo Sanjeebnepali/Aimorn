@@ -1,6 +1,6 @@
 import { type Href, useFocusEffect, useRouter } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import { useCallback, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
@@ -17,9 +17,9 @@ import { CouplePartnerCard } from '../../components/coupleDashboard/CouplePartne
 import { styles } from '../../components/coupleDashboard/styles';
 import {
   emojiForRole,
-  getCouplePack,
   labelForRole,
   pickImageForState,
+  resolveActivePack,
 } from '../../couple/packs';
 import { formatDistance, formatRelative } from '../../couple/format';
 import {
@@ -35,6 +35,7 @@ import {
   useCoupleStore,
   useMyRole,
 } from '../../couple/store';
+import { useApi, type GenerationResponse } from '../../utils/api';
 
 /**
  * Couple Dashboard — main connected view.
@@ -79,10 +80,49 @@ export default function CoupleDashboard() {
   const distanceM = useCoupleDistance();
   const paused = useCouplePaused();
   const packId = useCouplePackId();
+  const customPackTogetherUrl = useCoupleStore((s) => s.customPackTogetherUrl);
+  const customPackAUrl = useCoupleStore((s) => s.customPackAUrl);
+  const customPackBUrl = useCoupleStore((s) => s.customPackBUrl);
   const partnerUpdatedAt = useCoupleStore((s) => s.partnerUpdatedAt);
   const error = useCoupleStore((s) => s.error);
 
-  const activePack = useMemo(() => getCouplePack(packId), [packId]);
+  // Backs the "last update" label below with a real ticking clock instead of
+  // reading Date.now() straight in the render body — React Compiler flags
+  // that as an impure render (real concern, not just a lint nitpick: this
+  // component could get memoized on a stale render and the "X minutes ago"
+  // text would never advance without some other unrelated re-render forcing
+  // it). 30s granularity matches formatRelative's own coarsest unit
+  // (minutes), so there's no visible benefit to ticking faster.
+  const [nowMs, setNowMs] = useState(() => Date.now());
+  useEffect(() => {
+    const id = setInterval(() => setNowMs(Date.now()), 30_000);
+    return () => clearInterval(id);
+  }, []);
+
+  const activePack = useMemo(
+    () => resolveActivePack({ packId, customPackTogetherUrl, customPackAUrl, customPackBUrl }),
+    [packId, customPackTogetherUrl, customPackAUrl, customPackBUrl],
+  );
+
+  // The caller's own real AI-generated couple photos, for CouplePackPicker's
+  // "Your Creations" section — see that file's doc comment for why this
+  // didn't exist before 2026-09-11. Fetched fresh on every focus (not just
+  // mount) so a generation made just now, or a pack switched from
+  // result/[id].tsx, is reflected the moment this screen is revisited.
+  const api = useApi();
+  const [yourCreations, setYourCreations] = useState<GenerationResponse[]>([]);
+  useFocusEffect(
+    useCallback(() => {
+      api
+        .listGenerations()
+        .then((all) => setYourCreations(all.filter((g) => g.subjectMode === 'COUPLE' && g.status === 'COMPLETE')))
+        .catch(() => {
+          // Offline/transient — leave whatever list is already on screen
+          // rather than clearing it out from under the user.
+        });
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []),
+  );
 
   // While this screen is focused, refresh our GPS + the partner's position
   // fast (Uber-style live distance) instead of the slow battery-saving
@@ -96,7 +136,7 @@ export default function CoupleDashboard() {
   );
 
   const partnerName = partner?.displayName ?? t('profile.defaultPartner');
-  const { busy, picking, onPickPack, onTogglePause, onMenu, onCheckPermission } = useCoupleDashboardActions({
+  const { busy, picking, onPickPack, onPickGeneration, onTogglePause, onMenu, onCheckPermission } = useCoupleDashboardActions({
     packId,
     paused,
     partnerId: partner?.id,
@@ -117,7 +157,7 @@ export default function CoupleDashboard() {
   const proximityColor =
     proximity === 'near' ? theme.accent1 : proximity === 'far' ? theme.accent2 : theme.inkFaint;
   const lastUpdate = partnerUpdatedAt
-    ? formatRelative(Date.now() - partnerUpdatedAt)
+    ? formatRelative(nowMs - partnerUpdatedAt)
     : t('couple.dashboard.noDataYet');
 
   // What's actually applied right now: together image, or my-solo from
@@ -187,10 +227,17 @@ export default function CoupleDashboard() {
             activeImage={activeImage}
             activePack={activePack}
             myRoleLabel={myRoleLabel}
+            hasRole={myRole !== null}
             onPreview={() => router.push('/couple/preview' as Href)}
           />
 
-          <CouplePackPicker packId={packId} picking={picking} onPickPack={onPickPack} />
+          <CouplePackPicker
+            packId={packId}
+            picking={picking}
+            onPickPack={onPickPack}
+            yourCreations={yourCreations}
+            onPickGeneration={onPickGeneration}
+          />
 
           <CoupleDashboardControls
             paused={paused}

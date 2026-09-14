@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { router } from 'expo-router';
+import { router, useFocusEffect } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 
 import { Chip } from '@/components/primitives/chip';
@@ -14,9 +14,9 @@ import { TemplateCard } from '@/components/primitives/template-card';
 import { couplePacks } from '@/couple/packs';
 import { useCoupleStore } from '@/couple/store';
 import { creationLabel, resolveCreationImage, useGalleryStore } from '@/data/gallery-store';
-import { getTemplate } from '@/data/templates';
 import { fonts } from '@/theme/tokens';
 import { useAppTheme } from '@/theme/use-app-theme';
+import { useApi } from '@/utils/api';
 
 const CARD_WIDTH = 168;
 // `key` is what filtering logic compares against and stays a fixed English
@@ -48,17 +48,45 @@ export default function GalleryScreen() {
   const { t } = useTranslation();
   const [filter, setFilter] = useState<FilterKey>('all');
 
+  const api = useApi();
   const creations = useGalleryStore((s) => s.creations);
   const favorites = useGalleryStore((s) => s.favorites);
   const toggleFavorite = useGalleryStore((s) => s.toggleFavorite);
   const loadFromStorage = useGalleryStore((s) => s.loadFromStorage);
+  const syncFromServer = useGalleryStore((s) => s.syncFromServer);
 
   const hasPartner = useCoupleStore((s) => s.hasPartner);
   const partner = useCoupleStore((s) => s.partner);
 
+  // Local cache first (instant paint, works offline), then the real server
+  // list (GET /generations) overwrites it the moment it lands. Added
+  // 2026-09-11 — this screen used to be AsyncStorage-only, so a wiped/
+  // reinstalled app, or a generation added from a screen this local cache
+  // never synced with, both looked like "my images vanished" even though
+  // every row was always safe in Postgres/R2. Runs on every FOCUS, not just
+  // mount, so coming back here right after generating (or after using
+  // "Use as Our Couple Pack" elsewhere) always shows the current truth
+  // instead of whatever was true the last time this screen mounted.
   useEffect(() => {
     void loadFromStorage();
   }, [loadFromStorage]);
+
+  useFocusEffect(
+    useCallback(() => {
+      api
+        .listGenerations()
+        .then(syncFromServer)
+        .catch(() => {
+          // Offline or a transient server hiccup — the local cache loaded
+          // above stays on screen rather than clearing it, same "degrade,
+          // don't blank" reasoning as gallery-store.ts's own try/catch.
+        });
+      // api is a fresh object every render (useApi() isn't memoized) — only
+      // re-running this on focus, not on every api identity change, is the
+      // actual intent here.
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []),
+  );
 
   // Map user creations
   const creationItems: CombinedGalleryItem[] = creations.map((c) => ({

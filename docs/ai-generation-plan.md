@@ -127,8 +127,10 @@ money this time, but a trivial amount, and inside a free allowance:
   spreads into the payload *after* its own single-image default, so it
   overrides it. Confirmed against
   `huggingface_hub/inference/_providers/fal_ai.py` directly. The working
-  script is checked in at
-  [`server/scripts/test-qwen-fusion.py`](../server/scripts/test-qwen-fusion.py).
+  script this verification used (`server/scripts/test-qwen-fusion.py`) has
+  since been removed — its flow was ported into the real
+  `src/lib/ai/qwenImageEdit.ts` (see §7), so it was a one-off proof, not a
+  tool anyone needed to keep running.
 - **Prompt used:** the exact string `buildFusionPrompt()` produces for
   Golden Hour + Realistic + Couple (see §4 below) — a real production
   prompt, not a simplified stand-in.
@@ -229,7 +231,7 @@ test photos either way.
 3. **You, in parallel if you want:** create the free accounts — Neon,
    Cloudflare (for R2), Clerk — so their credentials are ready to drop into
    `amora/server/.env`.
-4. **Me, next:** port `server/scripts/test-qwen-fusion.py`'s verified flow
+4. **Me, next:** port the standalone Python test script's verified flow
    into a real `src/lib/ai/qwenImageEdit.ts` (same `ImageFusionProvider`
    interface as `nanoBanana.ts`, including the fal.ai queue polling), fix
    the clothing-prompt gap found in §3a, then wire `@clerk/clerk-expo` into

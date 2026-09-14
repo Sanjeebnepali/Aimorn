@@ -82,7 +82,15 @@ async function authenticateAndRegister(ws: WebSocket, url: URL): Promise<void> {
 
 export type CoupleSocketMessage =
   | { type: 'partner-location'; lat: number; lng: number; accuracyM: number | null; updatedAt: string }
-  | { type: 'settings'; packId: string | null; paused: boolean; thresholdM: number }
+  | {
+      type: 'settings';
+      packId: string | null;
+      customPackTogetherUrl: string | null;
+      customPackAUrl: string | null;
+      customPackBUrl: string | null;
+      paused: boolean;
+      thresholdM: number;
+    }
   | { type: 'role'; myRole: 'A' | 'B' | null; partnerRole: 'A' | 'B' | null }
   | { type: 'linked'; partnerId: string; partnerDisplayName: string | null }
   | { type: 'unlinked' };

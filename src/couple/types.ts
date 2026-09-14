@@ -45,8 +45,16 @@ export type State = {
   /** Computed by `recomputeDistance()` every time either side reports. */
   partnerDistanceM: number | null;
   proximity: ProximityState;
-  /** Matches a CouplePack.id from packs.ts. Either partner can write it. */
+  /** Matches a CouplePack.id from packs.ts, or a Generation.id when the
+   *  active pack is a real AI-generated couple session — see
+   *  customPackTogetherUrl below. Either partner can write it. */
   packId: string | null;
+  /** Non-null together (and only together) when packId refers to an
+   *  AI-generated session rather than one of the 3 bundled packs — see
+   *  packs.ts's resolveActivePack, the one place that reads these. */
+  customPackTogetherUrl: string | null;
+  customPackAUrl: string | null;
+  customPackBUrl: string | null;
   /** When true, the location task stops pushing and proximity is forced
    *  'far' — see geo.ts's recomputeDistance. */
   paused: boolean;
@@ -69,12 +77,22 @@ export type Actions = {
     myRole: CoupleRole | null;
     partnerRole: CoupleRole | null;
     packId: string | null;
+    customPackTogetherUrl: string | null;
+    customPackAUrl: string | null;
+    customPackBUrl: string | null;
     paused: boolean;
     thresholdM: number;
   }) => void;
   setMyLocation: (lat: number, lng: number, accuracy?: number | null) => void;
   setPartnerLocation: (lat: number, lng: number, updatedAt: number, accuracy?: number | null) => void;
-  setSettings: (s: { packId?: string | null; paused?: boolean; thresholdM?: number }) => void;
+  setSettings: (s: {
+    packId?: string | null;
+    customPackTogetherUrl?: string | null;
+    customPackAUrl?: string | null;
+    customPackBUrl?: string | null;
+    paused?: boolean;
+    thresholdM?: number;
+  }) => void;
   setError: (msg: string | null) => void;
   clearError: () => void;
   reset: () => void;

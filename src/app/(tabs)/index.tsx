@@ -1,21 +1,28 @@
-import { LinearGradient } from 'expo-linear-gradient';
-import { router } from 'expo-router';
-import { useState } from 'react';
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Image } from 'expo-image';
+import { router, useFocusEffect } from 'expo-router';
+import { useCallback, useState } from 'react';
+import { BackHandler, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 
+import { showAlert } from '@/alerts/store';
 import { GlassCard } from '@/components/primitives/glass-card';
 import { GradientScreen } from '@/components/primitives/gradient-screen';
 import { GradientButton } from '@/components/primitives/gradient-button';
 import { Chip } from '@/components/primitives/chip';
-import { Icon } from '@/components/primitives/icon';
 import { IconButton } from '@/components/primitives/icon-button';
 import { PhotoCarousel } from '@/components/primitives/photo-carousel';
 import { TemplateCard } from '@/components/primitives/template-card';
 import { getTemplates, TEMPLATES, POPULAR_IDS, TRENDING_IDS, type TemplateCategory } from '@/data/templates';
 import { fonts } from '@/theme/tokens';
 import { useAppTheme } from '@/theme/use-app-theme';
+import { useApi, type PostResponse } from '@/utils/api';
+import { postSublabel } from '@/utils/post-sublabel';
+import { BannerAdView } from '@/components/ads/banner-ad-view';
+import { HomeBannerAd } from '@/components/ads/HomeBannerAd';
+import { RecentPostSection } from '@/components/home/RecentPostSection';
+import { Section, TemplateRail } from '@/components/home/HomeSection';
+import { PaywallModal } from '@/components/paywall/paywall-modal';
 
 const TRENDING = getTemplates(TRENDING_IDS);
 const POPULAR = getTemplates(POPULAR_IDS);
@@ -58,8 +65,77 @@ const HERO_PHOTO_HEIGHT = 290;
 export default function HomeScreen() {
   const theme = useAppTheme();
   const { t } = useTranslation();
+  const api = useApi();
   const [category, setCategory] = useState<TemplateCategory | 'all'>('all');
+  const [paywallVisible, setPaywallVisible] = useState(false);
   const filteredTemplates = category === 'all' ? null : TEMPLATES.filter((t) => t.category === category);
+
+  // Real community data — added 2026-09-11. "Trending Creations" is the
+  // top 5 posts by regeneration count (GET /posts/trending — auto-updates
+  // itself the instant a post crosses another one's recreate-rank, no
+  // separate job needed, see that route's own doc comment). "Recent Post"
+  // is the full public feed (GET /posts), paginated via a "Load more"
+  // button rather than true infinite scroll — this whole screen is already
+  // one big ScrollView, and nesting a separately-scrolling infinite list
+  // inside it is exactly the kind of gesture-conflict RN's ScrollView
+  // doesn't handle well.
+  const [trendingPosts, setTrendingPosts] = useState<PostResponse[]>([]);
+  const [feedPosts, setFeedPosts] = useState<PostResponse[]>([]);
+  const [feedCursor, setFeedCursor] = useState<string | null>(null);
+  const [feedLoadingMore, setFeedLoadingMore] = useState(false);
+
+  useFocusEffect(
+    useCallback(() => {
+      api.listTrendingPosts().then(setTrendingPosts).catch(() => {});
+      api
+        .listPosts()
+        .then(({ posts, nextCursor }) => {
+          setFeedPosts(posts);
+          setFeedCursor(nextCursor);
+        })
+        .catch(() => {});
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []),
+  );
+
+  // Exit confirmation — the user's own request, framed as an engagement
+  // move (a stray back-tap doesn't lose the app entirely, and the copy
+  // reminds them their stuff is saved rather than just blocking the exit).
+  // Attached only here, on Home (the tab React Navigation's bottom-tabs
+  // already funnels a back-press through when you're on any OTHER tab —
+  // Gallery/Generate/Profile's own back goes to Home first, same as any
+  // standard Android tab app), so this is the one real place hardware back
+  // would otherwise close the app. useFocusEffect (not a plain useEffect)
+  // means the listener only exists while Home is the visible tab, so it
+  // can't fire while a modal/other screen is actually on top of it.
+  useFocusEffect(
+    useCallback(() => {
+      const subscription = BackHandler.addEventListener('hardwareBackPress', () => {
+        showAlert(t('home.exitTitle'), t('home.exitBody'), [
+          { text: t('common.cancel'), style: 'cancel' },
+          { text: t('home.exitConfirm'), style: 'destructive', onPress: () => BackHandler.exitApp() },
+        ]);
+        // `true` tells the OS this press was handled — without it, Android's
+        // default behavior (exit immediately) would run in ADDITION to the
+        // alert popping up, which isn't a confirmation at all.
+        return true;
+      });
+      return () => subscription.remove();
+    }, [t]),
+  );
+
+  function loadMorePosts() {
+    if (feedLoadingMore || !feedCursor) return;
+    setFeedLoadingMore(true);
+    api
+      .listPosts(feedCursor)
+      .then(({ posts, nextCursor }) => {
+        setFeedPosts((prev) => [...prev, ...posts]);
+        setFeedCursor(nextCursor);
+      })
+      .catch(() => {})
+      .finally(() => setFeedLoadingMore(false));
+  }
 
   return (
     <GradientScreen>
@@ -68,12 +144,36 @@ export default function HomeScreen() {
           {/* header */}
           <View style={styles.header}>
             <View style={styles.brand}>
-              <Icon name="heart" size={26} color={theme.accent1} />
+              {/* The real brand mark, added 2026-09-11 — this used to be a
+               * generic <Icon name="heart"> glyph, a placeholder from before
+               * the app had an actual logo. logo-mark.png is the same
+               * transparent heart cutout used for the native splash screen
+               * (src/components/brandSplash/paths.ts's geometry, pre-
+               * rendered — no need to re-draw it as SVG just for a small
+               * static header icon). */}
+              {/* A relative path here, not the `@/` alias used everywhere
+               * else in this file — confirmed live 2026-09-11: Metro's
+               * static asset resolver for require() doesn't go through the
+               * babel-module-resolver alias the way plain import statements
+               * do, so `require('@/assets/...')` fails to bundle at all
+               * ("could not be found within the project"), even though the
+               * identical alias works fine on every `import` above. Every
+               * other require()'d image in this codebase (gallery-store.ts,
+               * packs.ts) already uses a relative path for exactly this
+               * reason. */}
+              <Image source={require('../../assets/brand/logo-mark.png')} style={styles.brandLogo} contentFit="contain" />
               <Text style={[styles.wordmark, { color: theme.ink }]}>Amora</Text>
             </View>
             <View style={styles.headerActions}>
               <IconButton name="plus" size={42} iconSize={20} color={theme.ink} onPress={() => router.push('/create-post')} />
-              <IconButton name="crown" size={42} iconSize={18} color={theme.accent2} onPress={() => router.push('/(tabs)/profile')} />
+              {/* Was `router.push('/(tabs)/profile')` — a crown/premium
+               * icon detouring to a whole other tab, which the user then
+               * still had to find their own way to a paywall from, instead
+               * of just opening one. This screen already has its own
+               * PaywallModal instance (see `paywallVisible` state below,
+               * used by BannerAdView's CTA) — the crown just wasn't using
+               * it. */}
+              <IconButton name="crown" size={42} iconSize={18} color={theme.accent2} onPress={() => setPaywallVisible(true)} />
             </View>
           </View>
 
@@ -149,50 +249,58 @@ export default function HomeScreen() {
               ))}
             </>
           )}
+
+          <BannerAdView onPressCta={() => setPaywallVisible(true)} />
+
+          {/* Real community posts, added 2026-09-11 — everything above this
+           * point is the app's own bundled starter catalog (src/data/
+           * templates.ts); these two sections are the first real
+           * user-generated content on Home, and deliberately sit OUTSIDE
+           * the category-filter conditional above so they're always the
+           * tail end of the scroll regardless of which chip is active —
+           * "at home page after scroll finish add one category recent
+           * post" (the user's own spec). Trending only shows once at least
+           * one post has actually been recreated by someone else (an
+           * all-zero top 5 would just be noise). */}
+          {trendingPosts.some((p) => p.regenerationCount > 0) ? (
+            <Section title={t('home.trendingCreations')} theme={theme}>
+              <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.rail}>
+                {trendingPosts.map((post, index) => (
+                  <TemplateCard
+                    key={post.id}
+                    label={`#${index + 1} ${post.title || post.author.displayName || t('home.communityCreation')}`}
+                    sublabel={postSublabel(post, t)}
+                    colors={['#FFA438', '#FF4E72']}
+                    imageUrl={post.outputUrl ?? undefined}
+                    onPress={() => router.push({ pathname: '/post/[id]', params: { id: post.id } })}
+                  />
+                ))}
+              </ScrollView>
+            </Section>
+          ) : null}
+
+          <RecentPostSection
+            posts={feedPosts}
+            cursor={feedCursor}
+            loadingMore={feedLoadingMore}
+            onLoadMore={loadMorePosts}
+          />
+
+          {/* The real AdMob banner (bottom of Home only — the user's own
+           * explicit choice over every tab) — deliberately the LAST item
+           * in this ScrollView rather than a fixed/absolute overlay, so it
+           * gets the same 165dp bottom clearance every other trailing
+           * section already relies on to clear the floating tab bar, for
+           * free. See HomeBannerAd's own doc comment. */}
+          <HomeBannerAd />
         </ScrollView>
       </SafeAreaView>
+
+      <PaywallModal
+        visible={paywallVisible}
+        onClose={() => setPaywallVisible(false)}
+      />
     </GradientScreen>
-  );
-}
-
-function Section({
-  title,
-  onSeeAll,
-  theme,
-  children,
-}: {
-  title: string;
-  onSeeAll?: () => void;
-  theme: ReturnType<typeof useAppTheme>;
-  children: React.ReactNode;
-}) {
-  return (
-    <View style={styles.section}>
-      <View style={styles.sectionHeader}>
-        <Text style={[styles.sectionTitle, { color: theme.ink }]}>{title}</Text>
-        <Pressable onPress={onSeeAll} hitSlop={8}>
-          <Icon name="chevronRight" size={18} color={theme.inkSoft} strokeWidth={2} />
-        </Pressable>
-      </View>
-      {children}
-    </View>
-  );
-}
-
-function TemplateRail({ templates }: { templates: ReturnType<typeof getTemplates> }) {
-  return (
-    <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.rail}>
-      {templates.map((t) => (
-        <TemplateCard
-          key={t.id}
-          label={t.label}
-          colors={t.colors}
-          imageUrl={t.imageUrl}
-          badge={t.badge}
-          onPress={() => router.push({ pathname: '/template/[id]', params: { id: t.id } })}
-        />
-      ))}
-    </ScrollView>
   );
 }
 
@@ -202,6 +310,7 @@ const styles = StyleSheet.create({
   header: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6 },
   headerActions: { flexDirection: 'row', alignItems: 'center', gap: 10 },
   brand: { flexDirection: 'row', alignItems: 'center', gap: 9 },
+  brandLogo: { width: 28, height: 28 },
   wordmark: { fontFamily: fonts.display, fontSize: 24 },
   // Photo bleeds edge-to-edge (clipped by GlassCard's own rounded corners,
   // no radius/margin of its own needed); the body below carries the padding.
@@ -210,9 +319,6 @@ const styles = StyleSheet.create({
   heroBody: { paddingHorizontal: 20, gap: 16 },
   heroTitle: { fontFamily: fonts.display, fontSize: 24, lineHeight: 28 },
   heroSubtitle: { fontFamily: fonts.body, fontSize: 13.5, marginTop: -10 },
-  section: { gap: 14 },
-  sectionHeader: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
-  sectionTitle: { fontFamily: fonts.bodyBold, fontSize: 18 },
   rail: { gap: 14, paddingBottom: 4 },
   chipsRow: { gap: 10, marginVertical: 4 },
   filteredGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 13 },

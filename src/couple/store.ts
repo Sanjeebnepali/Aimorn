@@ -72,6 +72,9 @@ const INITIAL: State = {
   partnerDistanceM: null,
   proximity: 'unknown',
   packId: null,
+  customPackTogetherUrl: null,
+  customPackAUrl: null,
+  customPackBUrl: null,
   paused: false,
   thresholdM: 100,
   error: null,
@@ -91,6 +94,9 @@ export const useCoupleStore = create<State & Actions>()(
           myRole: s.myRole,
           partnerRole: s.partnerRole,
           packId: s.packId,
+          customPackTogetherUrl: s.customPackTogetherUrl,
+          customPackAUrl: s.customPackAUrl,
+          customPackBUrl: s.customPackBUrl,
           paused: s.paused,
           thresholdM: s.thresholdM,
         });
@@ -128,6 +134,10 @@ export const useCoupleStore = create<State & Actions>()(
       setSettings: (s) => {
         set((prev) => ({
           packId: s.packId !== undefined ? s.packId : prev.packId,
+          customPackTogetherUrl:
+            s.customPackTogetherUrl !== undefined ? s.customPackTogetherUrl : prev.customPackTogetherUrl,
+          customPackAUrl: s.customPackAUrl !== undefined ? s.customPackAUrl : prev.customPackAUrl,
+          customPackBUrl: s.customPackBUrl !== undefined ? s.customPackBUrl : prev.customPackBUrl,
           paused: s.paused !== undefined ? s.paused : prev.paused,
           thresholdM: s.thresholdM !== undefined ? s.thresholdM : prev.thresholdM,
         }));
@@ -167,6 +177,16 @@ export const useCoupleStore = create<State & Actions>()(
         myRole: s.myRole,
         partnerRole: s.partnerRole,
         packId: s.packId,
+        // Same reasoning as packId just above (see this file's doc comment
+        // in full): a headless background task resolves the active pack
+        // from THIS persisted slice alone, with no bootstrap re-fetch. Omit
+        // these and a custom (AI-generated) pack would silently fall back
+        // to a bundled one — or crash resolving a null URL — the moment the
+        // app process was killed, exactly the class of bug already found
+        // and fixed here once for packId itself.
+        customPackTogetherUrl: s.customPackTogetherUrl,
+        customPackAUrl: s.customPackAUrl,
+        customPackBUrl: s.customPackBUrl,
         paused: s.paused,
         thresholdM: s.thresholdM,
         partnerLat: s.partnerLat,

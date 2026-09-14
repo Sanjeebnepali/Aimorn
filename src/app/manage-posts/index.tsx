@@ -1,7 +1,7 @@
 import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
-import { router } from 'expo-router';
-import { useEffect } from 'react';
+import { router, useFocusEffect } from 'expo-router';
+import { useCallback, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -11,10 +11,10 @@ import { GlassCard } from '@/components/primitives/glass-card';
 import { GradientScreen } from '@/components/primitives/gradient-screen';
 import { Icon } from '@/components/primitives/icon';
 import { IconButton } from '@/components/primitives/icon-button';
-import { creationLabel, resolveCreationImage, useGalleryStore } from '@/data/gallery-store';
-import { extractHashtags, extractMentions, type MyPost, usePostsStore } from '@/posts/store';
+import { extractHashtags, extractMentions } from '@/posts/store';
 import { fonts, radii } from '@/theme/tokens';
 import { useAppTheme } from '@/theme/use-app-theme';
+import { useApi, type PostResponse } from '@/utils/api';
 
 /**
  * "My Posts" — reached from Profile's "Share Your Creation" row. Doubles as
@@ -22,25 +22,48 @@ import { useAppTheme } from '@/theme/use-app-theme';
  * you've shared) and the entry point into creating a new one, the same way
  * Instagram/TikTok's own-profile grid has a "+" rather than a separate
  * standalone composer screen.
+ *
+ * Backed by the real GET/DELETE /posts/mine + /posts/:id routes as of
+ * 2026-09-11 (server/src/routes/posts.ts) — previously a local-only
+ * `usePostsStore` (AsyncStorage), so this list only ever reflected THIS
+ * device and nobody else could ever see what was "posted" here.
  */
 export default function ManagePostsScreen() {
   const theme = useAppTheme();
-  const posts = usePostsStore((s) => s.posts);
-  const removePost = usePostsStore((s) => s.removePost);
-  // Each PostRow below resolves its `creationId` against this store (your
-  // real Gallery, not a static catalog) — hydrate it here too, same reason
-  // as create-post's own copy of this effect: this screen is reachable
-  // directly from Profile without Gallery ever having been opened first.
-  const loadFromStorage = useGalleryStore((s) => s.loadFromStorage);
+  const api = useApi();
+  const [posts, setPosts] = useState<PostResponse[] | null>(null);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
 
-  useEffect(() => {
-    void loadFromStorage();
-  }, [loadFromStorage]);
+  useFocusEffect(
+    useCallback(() => {
+      api
+        .listMyPosts()
+        .then(setPosts)
+        .catch((err) => {
+          showAlert('Couldn’t Load Posts', err instanceof Error ? err.message : 'Something went wrong.');
+        });
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []),
+  );
 
-  function confirmDelete(post: MyPost) {
-    showAlert('Delete Post', 'This removes it from My Posts. This can’t be undone.', [
+  function confirmDelete(post: PostResponse) {
+    showAlert('Delete Post', 'This removes it from the public feed. This can’t be undone.', [
       { text: 'Cancel', style: 'cancel' },
-      { text: 'Delete', style: 'destructive', onPress: () => removePost(post.id) },
+      {
+        text: 'Delete',
+        style: 'destructive',
+        onPress: async () => {
+          setDeletingId(post.id);
+          try {
+            await api.deletePost(post.id);
+            setPosts((prev) => prev?.filter((p) => p.id !== post.id) ?? prev);
+          } catch (err) {
+            showAlert('Couldn’t Delete', err instanceof Error ? err.message : 'Something went wrong.');
+          } finally {
+            setDeletingId(null);
+          }
+        },
+      },
     ]);
   }
 
@@ -53,13 +76,13 @@ export default function ManagePostsScreen() {
           <IconButton name="plus" onPress={() => router.push('/create-post')} />
         </View>
 
-        {posts.length === 0 ? (
+        {posts === null ? null : posts.length === 0 ? (
           <View style={styles.emptyWrap}>
             <GlassCard radius={20} style={styles.emptyCard}>
               <Icon name="sparkleDouble" size={32} color={theme.inkFaint} />
               <Text style={[styles.emptyTitle, { color: theme.ink }]}>Nothing shared yet</Text>
               <Text style={[styles.emptySubtitle, { color: theme.inkFaint }]}>
-                Share one of your creations and it’ll show up here.
+                Share one of your creations and it’ll show up here — and on everyone’s Home feed.
               </Text>
               <Pressable onPress={() => router.push('/create-post')}>
                 <LinearGradient colors={[theme.accent1, theme.accent2]} style={styles.emptyCta}>
@@ -72,7 +95,7 @@ export default function ManagePostsScreen() {
         ) : (
           <ScrollView contentContainerStyle={styles.list} showsVerticalScrollIndicator={false}>
             {posts.map((post) => (
-              <PostRow key={post.id} post={post} onDelete={() => confirmDelete(post)} />
+              <PostRow key={post.id} post={post} deleting={deletingId === post.id} onDelete={() => confirmDelete(post)} />
             ))}
           </ScrollView>
         )}
@@ -81,36 +104,50 @@ export default function ManagePostsScreen() {
   );
 }
 
-function PostRow({ post, onDelete }: { post: MyPost; onDelete: () => void }) {
+function PostRow({ post, deleting, onDelete }: { post: PostResponse; deleting: boolean; onDelete: () => void }) {
   const theme = useAppTheme();
-  // Looked up live rather than snapshotted at share time, same reasoning as
-  // the doc comment on MyPost.creationId — a post always reflects your
-  // current Gallery entry (e.g. if you later favorite it), not a copy.
-  const creation = useGalleryStore((s) => s.creations.find((c) => c.id === post.creationId));
-  const imageUri = resolveCreationImage(creation?.togetherImage);
-  const hashtags = extractHashtags(post.caption);
-  const mentions = extractMentions(post.caption);
+  const caption = post.caption ?? '';
+  const hashtags = extractHashtags(caption);
+  const mentions = extractMentions(caption);
   const date = new Date(post.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
 
   return (
-    <GlassCard radius={20} style={styles.row}>
-      {imageUri ? (
-        <Image source={{ uri: imageUri }} style={styles.rowImage} contentFit="cover" />
-      ) : (
-        <View style={[styles.rowImage, { backgroundColor: theme.glass }]} />
-      )}
-      <View style={styles.rowBody}>
-        <View style={styles.rowHeader}>
-          {/* Falls back to the creation's own generated label (its prompt,
-           * or a generic "Couple/Solo AI Wallpaper") for posts saved before
-           * `title` existed on MyPost — old local data, not a live migration. */}
-          <Text style={[styles.rowLabel, { color: theme.ink }]}>
-            {post.title || (creation ? creationLabel(creation) : 'Untitled')}
-          </Text>
-          <Pressable onPress={onDelete} hitSlop={8}>
-            <Icon name="close" size={16} color={theme.inkFaint} strokeWidth={2} />
-          </Pressable>
-        </View>
+    // Found live 2026-09-11 while testing the analytics feature end to end:
+    // this row had no way to open the post at all — you could see its
+    // regeneration/view badges here, but not its live detail screen (real
+    // view count ticking, the Recreate button, etc.), which is exactly
+    // where the point of checking "my post's analytics" leads. Wrapped in
+    // a Pressable rather than making GlassCard itself pressable — the ×
+    // button below needs its own separate tap target, and stopPropagation
+    // on it is what keeps tapping delete from also opening the post.
+    <Pressable onPress={() => router.push({ pathname: '/post/[id]', params: { id: post.id } })}>
+      <GlassCard radius={20} style={[styles.row, deleting && { opacity: 0.5 }]}>
+        {post.outputUrl ? (
+          <Image source={{ uri: post.outputUrl }} style={styles.rowImage} contentFit="cover" />
+        ) : (
+          <View style={[styles.rowImage, { backgroundColor: theme.glass }]} />
+        )}
+        <View style={styles.rowBody}>
+          <View style={styles.rowHeader}>
+            <Text style={[styles.rowLabel, { color: theme.ink }]}>
+              {post.title ||
+                (post.subjectMode === 'SOLO'
+                  ? 'Solo AI Wallpaper'
+                  : post.subjectMode === 'GROUP'
+                    ? 'Group AI Wallpaper'
+                    : 'Couple AI Wallpaper')}
+            </Text>
+            <Pressable
+              onPress={(e) => {
+                e.stopPropagation();
+                onDelete();
+              }}
+              disabled={deleting}
+              hitSlop={8}
+            >
+              <Icon name="close" size={16} color={theme.inkFaint} strokeWidth={2} />
+            </Pressable>
+          </View>
         {post.caption ? (
           <Text style={[styles.rowCaption, { color: theme.inkSoft }]} numberOfLines={2}>
             {post.caption}
@@ -126,9 +163,30 @@ function PostRow({ post, onDelete }: { post: MyPost; onDelete: () => void }) {
             ))}
           </View>
         ) : null}
-        <Text style={[styles.rowDate, { color: theme.inkFaint }]}>{date}</Text>
+        <View style={styles.rowFooter}>
+          <Text style={[styles.rowDate, { color: theme.inkFaint }]}>{date}</Text>
+          {/* Real stats — added 2026-09-11. View count updates on every
+           * screen focus (see the useFocusEffect above); the live-ticking
+           * version of both numbers lives on the post detail screen
+           * (src/app/post/[id].tsx) instead, via realtime/postsSocket.ts —
+           * a whole list of posts each holding open its own socket isn't
+           * worth the connection overhead for what's meant to be a
+           * glanceable summary here. Regeneration count is the same data
+           * driving Home's Trending Creations rail (GET /posts/trending). */}
+          <View style={styles.statsBadges}>
+            <View style={styles.regenBadge}>
+              <Icon name="eye" size={11} color={theme.inkFaint} strokeWidth={2} />
+              <Text style={[styles.viewText, { color: theme.inkFaint }]}>{post.viewCount}</Text>
+            </View>
+            <View style={styles.regenBadge}>
+              <Icon name="sparkleDouble" size={11} color={theme.accent2} strokeWidth={2} />
+              <Text style={[styles.regenText, { color: theme.accent2 }]}>{post.regenerationCount} recreated</Text>
+            </View>
+          </View>
+        </View>
       </View>
-    </GlassCard>
+      </GlassCard>
+    </Pressable>
   );
 }
 
@@ -144,7 +202,12 @@ const styles = StyleSheet.create({
   rowLabel: { fontFamily: fonts.bodyBold, fontSize: 14 },
   rowCaption: { fontFamily: fonts.body, fontSize: 14, lineHeight: 17 },
   tagRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 6 },
+  rowFooter: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 2 },
   rowDate: { fontFamily: fonts.bodyMedium, fontSize: 12 },
+  statsBadges: { flexDirection: 'row', alignItems: 'center', gap: 10 },
+  regenBadge: { flexDirection: 'row', alignItems: 'center', gap: 4 },
+  regenText: { fontFamily: fonts.bodyBold, fontSize: 11 },
+  viewText: { fontFamily: fonts.bodySemiBold, fontSize: 11 },
   emptyWrap: { flex: 1, justifyContent: 'center', paddingHorizontal: 20 },
   emptyCard: { padding: 32, alignItems: 'center', gap: 12 },
   emptyTitle: { fontFamily: fonts.bodyBold, fontSize: 16 },

@@ -6,3 +6,14 @@ scripts/.env
 scripts/*.png
 .neon
 .env.local
+
+# One-off local test/scratch scripts and Python bytecode cache — real,
+# reusable dev tools (simulate-partner.ts, face_correct.py,
+# copy-template-images.mjs) are tracked normally; this only catches the
+# ad-hoc `test_*`/`__*` throwaway scripts and build scratch dirs that kept
+# accumulating here (cleaned out 2026-09-13).
+scripts/test_*
+scripts/__*
+scripts/*.pyc
+scripts/__pycache__/
+scratch_dist/

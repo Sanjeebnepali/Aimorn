@@ -39,11 +39,28 @@ async function explainDeniedPermission(title: string, message: string, canAskAga
 
 /**
  * Opens the system photo library so the user can pick one image.
+ * @param options.freeformCrop When true, the crop step lets the user drag
+ * the crop rectangle to any shape instead of locking it to a fixed 3:4
+ * ratio — added 2026-09-12, real complaint: the old hardcoded `aspect:
+ * [3, 4]` cropped out the lower body/legs on anyone trying to upload a
+ * full-body reference photo for the AI generation flow, with no way to
+ * choose a taller crop instead. Verified against the installed
+ * expo-image-picker's own type declarations (never guess an API, per this
+ * repo's rule): `aspect` is Android-only, and omitting it is what enables
+ * free-form dragging there — this app has no non-Android target yet, so
+ * that's the only platform this actually needs to work on. iOS's crop
+ * rectangle is ALWAYS a square regardless of this option (a hard platform
+ * limitation of the library itself, not something any config here can
+ * change) — worth knowing if iOS is ever targeted, not fixable here.
+ * Defaults to false (the original fixed 3:4 crop) so every OTHER caller
+ * (profile avatar, onboarding avatar) keeps its exact existing behavior —
+ * this is scoped to the one flow that was actually reported broken
+ * (UploadSlot's reference-photo picker), not a global crop-behavior change.
  * @returns the picked image's local uri, or `null` if the user cancelled or
  * permission was denied (the denial is already explained to the user here,
  * so callers don't need to show their own message for that case).
  */
-export async function pickImageSafely(): Promise<string | null> {
+export async function pickImageSafely(options?: { freeformCrop?: boolean }): Promise<string | null> {
   const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
   if (!permission.granted) {
     await explainDeniedPermission(
@@ -57,7 +74,7 @@ export async function pickImageSafely(): Promise<string | null> {
   const result = await ImagePicker.launchImageLibraryAsync({
     mediaTypes: ['images'],
     allowsEditing: true,
-    aspect: [3, 4],
+    ...(options?.freeformCrop ? {} : { aspect: [3, 4] }),
     quality: 0.9,
   });
 

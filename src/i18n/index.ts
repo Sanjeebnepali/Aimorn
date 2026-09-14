@@ -120,6 +120,9 @@ function detectDeviceLanguage(): LanguageCode {
 // explicit language pick differs from their device's own OS language.
 const initialLanguage: LanguageCode = useLanguageStore.getState().language ?? detectDeviceLanguage();
 
+// This is the default-exported i18next singleton instance's own .use()/
+// .init(), not the module's separate named export of the same name.
+// eslint-disable-next-line import/no-named-as-default-member
 void i18next.use(initReactI18next).init({
   resources,
   lng: initialLanguage,
@@ -136,6 +139,8 @@ void i18next.use(initReactI18next).init({
 useLanguageStore.subscribe((state) => {
   const target = state.language ?? detectDeviceLanguage();
   if (target !== i18next.language) {
+    // Same singleton-instance-method false positive as the .use() call above.
+    // eslint-disable-next-line import/no-named-as-default-member
     void i18next.changeLanguage(target);
   }
 });

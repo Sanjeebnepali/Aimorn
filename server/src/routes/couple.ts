@@ -5,6 +5,8 @@ import { generatePairingCode } from '../lib/codes.js';
 import { db } from '../lib/db.js';
 import { requireUser } from '../middleware/requireUser.js';
 import { sendToUser } from '../realtime/coupleSocket.js';
+import { publicUrlForBusted } from '../lib/storage.js';
+import { asyncHandler } from '../lib/asyncHandler.js';
 
 export const coupleRouter = Router();
 
@@ -60,7 +62,7 @@ async function loadWithPartner(userId: string) {
  * background task is the only thing still running shouldn't be able to read
  * a position once sharing is off), just as a plain `if` instead of a policy.
  */
-coupleRouter.get('/couple', requireUser, async (req, res) => {
+coupleRouter.get('/couple', requireUser, asyncHandler(async (req, res) => {
   const userId = res.locals.userId as string;
   const me = await loadWithPartner(userId);
   const partner = resolvePartner(me);
@@ -72,6 +74,9 @@ coupleRouter.get('/couple', requireUser, async (req, res) => {
       myRole: null,
       partnerRole: null,
       packId: null,
+      customPackTogetherUrl: null,
+      customPackAUrl: null,
+      customPackBUrl: null,
       paused: false,
       thresholdM: 100,
       partnerLocation: null,
@@ -91,6 +96,9 @@ coupleRouter.get('/couple', requireUser, async (req, res) => {
     myRole: me.coupleRole,
     partnerRole: partner.coupleRole,
     packId: couple?.packId ?? null,
+    customPackTogetherUrl: couple?.customPackTogetherUrl ?? null,
+    customPackAUrl: couple?.customPackAUrl ?? null,
+    customPackBUrl: couple?.customPackBUrl ?? null,
     paused: couple?.paused ?? false,
     thresholdM: couple?.thresholdM ?? 100,
     partnerLocation: partnerLocation
@@ -102,7 +110,7 @@ coupleRouter.get('/couple', requireUser, async (req, res) => {
         }
       : null,
   });
-});
+}));
 
 // ─── Role + pack + settings ───────────────────────────────────────────────
 
@@ -116,7 +124,7 @@ const roleSchema = z.object({ role: z.enum(['A', 'B']) });
  * rejected — mirrors the source feature's ROLE_TAKEN rule, just as an
  * ordinary 409 instead of a Postgres exception.
  */
-coupleRouter.patch('/couple/role', requireUser, async (req, res) => {
+coupleRouter.patch('/couple/role', requireUser, asyncHandler(async (req, res) => {
   const parsed = roleSchema.safeParse(req.body);
   if (!parsed.success) {
     res.status(400).json({ error: parsed.error.flatten() });
@@ -144,17 +152,23 @@ coupleRouter.patch('/couple/role', requireUser, async (req, res) => {
 
   sendToUser(partner.id, { type: 'role', myRole: partner.coupleRole, partnerRole: parsed.data.role });
   res.json({ myRole: updated.coupleRole, coupleId });
-});
+}));
 
 const settingsSchema = z.object({
   packId: z.string().min(1).nullable().optional(),
+  // Switches the active pack to a real AI-generated couple session instead
+  // of one of the 3 bundled packs in src/couple/packs.ts. A plain string
+  // (not just relying on `packId` alone) because picking one needs a
+  // server-side lookup+copy step `packId` alone doesn't (see below) —
+  // `null` explicitly clears back to a bundled pack.
+  generationId: z.string().min(1).nullable().optional(),
   paused: z.boolean().optional(),
   thresholdM: z.number().int().min(10).max(2000).optional(),
 });
 
 /** Either partner may update the shared pack/pause/threshold — both are
  *  equal owners of the couple's settings, same as the source feature. */
-coupleRouter.patch('/couple/settings', requireUser, async (req, res) => {
+coupleRouter.patch('/couple/settings', requireUser, asyncHandler(async (req, res) => {
   const parsed = settingsSchema.safeParse(req.body);
   if (!parsed.success) {
     res.status(400).json({ error: parsed.error.flatten() });
@@ -170,13 +184,59 @@ coupleRouter.patch('/couple/settings', requireUser, async (req, res) => {
     return;
   }
 
-  const updated = await db.couple.update({ where: { id: coupleId }, data: parsed.data });
+  const { generationId, ...rest } = parsed.data;
+  let data: Parameters<typeof db.couple.update>[0]['data'] = rest;
 
-  if (partner) {
-    sendToUser(partner.id, { type: 'settings', packId: updated.packId, paused: updated.paused, thresholdM: updated.thresholdM });
+  if (generationId !== undefined) {
+    if (generationId === null) {
+      // Explicit clear — fall back to a bundled pack (packId, if also sent
+      // in this same request, is applied via `rest` above).
+      data = { ...data, customPackTogetherUrl: null, customPackAUrl: null, customPackBUrl: null };
+    } else {
+      // Ownership + shape-scoped on purpose: only a COMPLETE couple session
+      // the caller actually owns can become the shared pack — a partner
+      // can't point the pack at someone else's creation, and a SOLO
+      // generation has no roleA/roleB half to split when apart.
+      const generation = await db.generation.findFirst({
+        where: { id: generationId, userId, subjectMode: 'COUPLE', status: 'COMPLETE' },
+      });
+      if (!generation || !generation.outputKey || !generation.outputKeyA || !generation.outputKeyB) {
+        res.status(404).json({ error: 'That creation isn’t a finished couple photo you own.' });
+        return;
+      }
+      // publicUrlForBusted, not publicUrlFor: these three URLs are a
+      // SNAPSHOT persisted into this Couple row (unlike generations.ts's
+      // own GET routes, which recompute the URL fresh on every read) — see
+      // storage.ts's publicUrlForBusted doc comment. Busting it here means
+      // a pack picked, then later regenerated (generationsRegenerate.ts,
+      // which also refreshes this same row when it touches the active
+      // pack's generation — see that route), still has a URL string that's
+      // guaranteed to differ from whatever the client/CDN cached before.
+      data = {
+        ...data,
+        packId: generationId,
+        customPackTogetherUrl: publicUrlForBusted(generation.outputKey, generation.updatedAt),
+        customPackAUrl: publicUrlForBusted(generation.outputKeyA, generation.updatedAt),
+        customPackBUrl: publicUrlForBusted(generation.outputKeyB, generation.updatedAt),
+      };
+    }
   }
-  res.json({ packId: updated.packId, paused: updated.paused, thresholdM: updated.thresholdM });
-});
+
+  const updated = await db.couple.update({ where: { id: coupleId }, data });
+
+  const payload = {
+    packId: updated.packId,
+    customPackTogetherUrl: updated.customPackTogetherUrl,
+    customPackAUrl: updated.customPackAUrl,
+    customPackBUrl: updated.customPackBUrl,
+    paused: updated.paused,
+    thresholdM: updated.thresholdM,
+  };
+  if (partner) {
+    sendToUser(partner.id, { type: 'settings', ...payload });
+  }
+  res.json(payload);
+}));
 
 // ─── Location ───────────────────────────────────────────────────────────
 
@@ -193,7 +253,7 @@ const locationSchema = z.object({
  * The push is best-effort only: the client's own low-frequency poll
  * (src/couple/bootstrap.ts) is the reliable fallback if the socket is down.
  */
-coupleRouter.post('/couple/location', requireUser, async (req, res) => {
+coupleRouter.post('/couple/location', requireUser, asyncHandler(async (req, res) => {
   const parsed = locationSchema.safeParse(req.body);
   if (!parsed.success) {
     res.status(400).json({ error: parsed.error.flatten() });
@@ -223,7 +283,7 @@ coupleRouter.post('/couple/location', requireUser, async (req, res) => {
   });
 
   res.status(204).end();
-});
+}));
 
 // ─── Unlink ───────────────────────────────────────────────────────────────
 
@@ -233,7 +293,7 @@ coupleRouter.post('/couple/location', requireUser, async (req, res) => {
  * code so they aren't stranded with no way to re-pair afterward (the old
  * code was already consumed the moment it was redeemed — see profile.ts).
  */
-coupleRouter.post('/couple/unlink', requireUser, async (req, res) => {
+coupleRouter.post('/couple/unlink', requireUser, asyncHandler(async (req, res) => {
   const userId = res.locals.userId as string;
   const me = await loadWithPartner(userId);
   const partner = resolvePartner(me);
@@ -275,7 +335,7 @@ coupleRouter.post('/couple/unlink', requireUser, async (req, res) => {
 
   sendToUser(partner.id, { type: 'unlinked' });
   res.status(204).end();
-});
+}));
 
 // ─── Report partner ─────────────────────────────────────────────────────
 // Intentionally NOT implemented yet — the client's Report Partner button

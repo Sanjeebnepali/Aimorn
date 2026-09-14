@@ -5,13 +5,20 @@ import { requireUser } from '../middleware/requireUser.js';
 import { db } from '../lib/db.js';
 import { generatePairingCode, generateUsername } from '../lib/codes.js';
 import { sendToUser } from '../realtime/coupleSocket.js';
+import { asyncHandler } from '../lib/asyncHandler.js';
+import { TRIAL_ADS_REQUIRED } from '../lib/creditsConfig.js';
 
 export const profileRouter = Router();
 
 // Only the fields onboarding/pairing ever need on the client — never spread
 // the raw Prisma row into a response, so a future column (email, credits
 // internals, whatever) doesn't leak out just because it exists on the table.
-function toProfileJson(user: {
+// Exported: creditsRoutes.ts (ad-reward/trial/buy-credits/subscribe/etc. —
+// split out 2026-09-11 to keep this file under the workspace's 350-line
+// module limit) builds every one of its responses through this same shape,
+// so a client parsing a ProfileResponse never has to care which route it
+// came from.
+export function toProfileJson(user: {
   id: string;
   displayName: string | null;
   avatarKey: string | null;
@@ -21,7 +28,25 @@ function toProfileJson(user: {
   pairingCode: string | null;
   partnerId: string | null;
   onboardedAt: Date | null;
+  credits: number;
+  points: number;
+  subscriptionTier?: 'FREE' | 'TRIAL' | 'PRO' | 'ULTRA';
+  subscriptionExpiresAt?: Date | null;
+  lastDailyCreditReset?: Date | null;
+  adWatchesToday?: number;
+  trialAdsWatched?: number;
+  trialUsedAt?: Date | null;
+  partner?: any;
 }) {
+  const isSelfSubscribed = !!(user.subscriptionTier && user.subscriptionTier !== 'FREE' &&
+    (!user.subscriptionExpiresAt || new Date(user.subscriptionExpiresAt) > new Date()));
+
+  const isPartnerSubscribed = !!(user.partner && user.partner.subscriptionTier && user.partner.subscriptionTier !== 'FREE' &&
+    (!user.partner.subscriptionExpiresAt || new Date(user.partner.subscriptionExpiresAt) > new Date()));
+
+  const isSubscribed = isSelfSubscribed || isPartnerSubscribed;
+  const activeTier = isSelfSubscribed ? user.subscriptionTier : (isPartnerSubscribed ? user.partner.subscriptionTier : 'FREE');
+
   return {
     id: user.id,
     displayName: user.displayName,
@@ -32,15 +57,43 @@ function toProfileJson(user: {
     pairingCode: user.pairingCode,
     hasPartner: user.partnerId !== null,
     onboarded: user.onboardedAt !== null,
+    credits: user.credits,
+    points: user.points,
+    subscriptionTier: isSubscribed ? (activeTier ?? 'PRO') : 'FREE',
+    subscriptionExpiresAt: user.subscriptionExpiresAt ?? user.partner?.subscriptionExpiresAt ?? null,
+    isSubscribed,
+    sharedViaPartner: !isSelfSubscribed && isPartnerSubscribed,
+    adWatchesToday: user.adWatchesToday ?? 0,
+    lastDailyCreditReset: user.lastDailyCreditReset ?? null,
+    // Free-trial progress — see POST /profile/trial/watch-ad in
+    // creditsRoutes.ts. `trialEligible` is the one field the client actually
+    // needs to decide what to show (still collecting ads vs. already used,
+    // ever); the raw watched/required pair drives the progress bar.
+    trialAdsWatched: user.trialUsedAt ? TRIAL_ADS_REQUIRED : (user.trialAdsWatched ?? 0),
+    trialAdsRequired: TRIAL_ADS_REQUIRED,
+    trialEligible: !user.trialUsedAt,
   };
 }
 
-/** Lets the client check onboarding status on app boot without re-submitting the form. */
-profileRouter.get('/profile/me', requireUser, async (req, res) => {
+/** Lets the client check onboarding status on app boot without re-submitting
+ * the form. Also the one place Profile's stat row (src/app/(tabs)/profile/
+ * index.tsx) gets its real numbers from — added 2026-09-11: those three
+ * cards ("18 Wallpapers", "6 Credits Left", paired status) used to be two
+ * hardcoded literals and one real value, so no amount of generating or
+ * spending ever moved them. `generationCount` only counts COMPLETE
+ * generations — a still-PROCESSING or FAILED one was never a wallpaper you
+ * actually got. */
+profileRouter.get('/profile/me', requireUser, asyncHandler(async (req, res) => {
   const userId = res.locals.userId as string;
-  const user = await db.user.findUniqueOrThrow({ where: { id: userId } });
-  res.json(toProfileJson(user));
-});
+  const [user, generationCount] = await Promise.all([
+    db.user.findUniqueOrThrow({
+      where: { id: userId },
+      include: { partner: true },
+    }),
+    db.generation.count({ where: { userId, status: 'COMPLETE' } }),
+  ]);
+  res.json({ ...toProfileJson(user), generationCount });
+}));
 
 const onboardingSchema = z.object({
   displayName: z.string().min(1).max(60),
@@ -57,7 +110,7 @@ const onboardingSchema = z.object({
  * one changing out from under a user who already shared it would break
  * whatever they shared it into.
  */
-profileRouter.post('/profile/onboarding', requireUser, async (req, res) => {
+profileRouter.post('/profile/onboarding', requireUser, asyncHandler(async (req, res) => {
   const parsed = onboardingSchema.safeParse(req.body);
   if (!parsed.success) {
     res.status(400).json({ error: parsed.error.flatten() });
@@ -115,7 +168,7 @@ profileRouter.post('/profile/onboarding', requireUser, async (req, res) => {
       );
 
   res.json(toProfileJson(user));
-});
+}));
 
 const pairSchema = z.object({
   code: z.string().min(1),
@@ -128,7 +181,7 @@ const pairSchema = z.object({
  * in the same transaction so it can't also be redeemed by a second person
  * racing the first.
  */
-profileRouter.post('/profile/pair', requireUser, async (req, res) => {
+profileRouter.post('/profile/pair', requireUser, asyncHandler(async (req, res) => {
   const parsed = pairSchema.safeParse(req.body);
   if (!parsed.success) {
     res.status(400).json({ error: parsed.error.flatten() });
@@ -165,4 +218,4 @@ profileRouter.post('/profile/pair', requireUser, async (req, res) => {
   sendToUser(partner.id, { type: 'linked', partnerId: userId, partnerDisplayName: updatedSelf.displayName });
 
   res.json(toProfileJson(updatedSelf));
-});
+}));

@@ -18,7 +18,15 @@ import { useCoupleStore } from './store';
 
 type ServerMessage =
   | { type: 'partner-location'; lat: number; lng: number; accuracyM: number | null; updatedAt: string }
-  | { type: 'settings'; packId: string | null; paused: boolean; thresholdM: number }
+  | {
+      type: 'settings';
+      packId: string | null;
+      customPackTogetherUrl: string | null;
+      customPackAUrl: string | null;
+      customPackBUrl: string | null;
+      paused: boolean;
+      thresholdM: number;
+    }
   | { type: 'role'; myRole: CoupleRole | null; partnerRole: CoupleRole | null }
   | { type: 'linked'; partnerId: string; partnerDisplayName: string | null }
   | { type: 'unlinked' };
@@ -103,7 +111,14 @@ function handleMessage(raw: unknown): void {
         .setPartnerLocation(msg.lat, msg.lng, new Date(msg.updatedAt).getTime(), msg.accuracyM);
       break;
     case 'settings':
-      useCoupleStore.getState().setSettings({ packId: msg.packId, paused: msg.paused, thresholdM: msg.thresholdM });
+      useCoupleStore.getState().setSettings({
+        packId: msg.packId,
+        customPackTogetherUrl: msg.customPackTogetherUrl,
+        customPackAUrl: msg.customPackAUrl,
+        customPackBUrl: msg.customPackBUrl,
+        paused: msg.paused,
+        thresholdM: msg.thresholdM,
+      });
       break;
     case 'role': {
       // Sent from the recipient's own point of view — `myRole` is this
@@ -116,6 +131,9 @@ function handleMessage(raw: unknown): void {
         myRole: msg.myRole,
         partnerRole: msg.partnerRole,
         packId: s.packId,
+        customPackTogetherUrl: s.customPackTogetherUrl,
+        customPackAUrl: s.customPackAUrl,
+        customPackBUrl: s.customPackBUrl,
         paused: s.paused,
         thresholdM: s.thresholdM,
       });

@@ -41,10 +41,10 @@ import { type CoupleRole, type ProfileResponse, useApi } from '../../utils/api';
  *     re-fetched fresh from the signed-in Clerk account on every launch
  *     (`bootstrapCoupleFeature`), so the old "Restore" banner solved a
  *     problem this backend doesn't have. Dropped, not ported.
- *   - No subscription/premium gate — `@/couple/paywall`'s `hasCouplePremium()`
- *     is a permanent `true` today (Amora has no billing infra at all yet;
- *     see that file's doc comment), so the donor app's Couple-Premium lock
- *     button was removed rather than wired to a check that can never fail.
+ *   - No subscription/premium gate on PAIRING itself — linking a partner
+ *     stays free regardless of subscription; only generation credits (see
+ *     generations.ts's Couple Share Bonus) are gated. The donor app's
+ *     Couple-Premium lock button was removed rather than ported here.
  *
  * Re-themed 2026-09-08 onto Amora's real gradient-glass system (`GradientScreen`
  * / `GlassCard` / `useAppTheme()`) — this screen used to render through the
@@ -95,16 +95,24 @@ export default function CoupleSetup() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSignedIn]);
 
+  // Deps are `profile` (the whole object), not `profile?.pairingCode` — the
+  // Compiler's own static analysis infers a dependency on the full object
+  // whenever the body narrows it with an early-return guard first (it can't
+  // prove the narrowed field alone is what changed), and a manual dep array
+  // narrower than that inferred one makes it skip optimizing the component
+  // entirely (react-hooks/preserve-manual-memoization). `profile` changing
+  // is a superset of `profile?.pairingCode` changing, so this is still
+  // correct, just matches what the compiler can actually verify.
   const onCopy = useCallback(async () => {
     if (!profile?.pairingCode) return;
     await Clipboard.setStringAsync(profile.pairingCode);
     toast(t('couple.setup.codeCopied'));
-  }, [profile?.pairingCode, t]);
+  }, [profile, t]);
 
   const onShare = useCallback(async () => {
     if (!profile?.pairingCode) return;
     await Share.share({ message: t('couple.setup.shareMessage', { code: profile.pairingCode }) });
-  }, [profile?.pairingCode, t]);
+  }, [profile, t]);
 
   const onAccept = useCallback(async () => {
     if (!isSignedIn) {

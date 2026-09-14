@@ -87,9 +87,12 @@
     "title": "Create",
     "subtitle": "Design a wallpaper, together or solo",
     "recreatingTemplate": "Recreating Template",
+    "recreatingPost": "Recreating {{name}}'s post",
+    "untitledPost": "Untitled post",
     "whoIsInThis": "Who's in this?",
     "couple": "Couple",
     "solo": "Solo",
+    "group": "Group",
     "you": "You",
     "partner": "Partner",
     "pickStyle": "Pick a Style",
@@ -102,7 +105,61 @@
     "recreateFusion": "Recreate Fusion",
     "generateFusion": "Generate Fusion",
     "creditsCaption": "Uses 1 credit · about 30 seconds",
-    "suggestions": ["Sunset Beach", "Neon Tokyo", "Snowy Cabin", "Vintage Film"]
+    "needYourPhoto": "Add your photo first",
+    "needPartnerPhoto": "Add your partner's photo too",
+    "uploadFailed": "Couldn't upload your photo — try again",
+    "uploading": "Uploading…",
+    "creditsCaptionCouple": "Uses 3 credits · about 30 seconds",
+    "suggestions": [
+      "Sunset Beach",
+      "Neon Tokyo",
+      "Snowy Cabin",
+      "Rainy City Street"
+    ]
+  },
+  "createChoice": {
+    "title": "Create Something",
+    "subtitle": "Pick how you want to create",
+    "tipsTitle": "Good to Know",
+    "tipPrompt": "For sharper, more detailed results, skip templates and use General with your own written prompt — free-text descriptions consistently outperform picking a theme.",
+    "tipMistakes": "AI can still get details wrong sometimes — a face, marking, or proportion may come out slightly off. We're actively working to improve this.",
+    "tipAngles": "Uploading 2-3 photos from different angles (instead of just one) gives the AI a much stronger, more accurate lock on your real face.",
+    "couple": "Couple",
+    "coupleDesc": "Recreate a scene together",
+    "single": "Single",
+    "singleDesc": "Recreate a scene solo",
+    "general": "General",
+    "generalDesc": "Any photo, any prompt — no template needed",
+    "generalTitle": "Reimagine Your Photo",
+    "generalSubtitle": "Upload a photo and describe anything — your face stays, everything else is up to you",
+    "describeAnything": "Describe what you want",
+    "freeformPlaceholder": "Turn me into a 1985 yearbook photo, feathered hair, film grain…",
+    "trendingNow": "Trending Now",
+    "needDescription": "Describe what you want first",
+    "generateGeneral": "Generate",
+    "freeformSuggestions": [
+      "1980s Yearbook Photo",
+      "1990s Film Throwback",
+      "Y2K Flash Photography",
+      "Old Money Editorial",
+      "Studio Ghibli Anime Portrait",
+      "Renaissance Oil Painting"
+    ],
+    "group": "Group",
+    "groupDesc": "2-4 people, one photo together",
+    "groupTitle": "Group Photo",
+    "groupSubtitle": "Add everyone's photo and describe the scene — every face stays recognizable",
+    "groupPlaceholder": "A rooftop party at golden hour, string lights, film grain…",
+    "generateGroup": "Generate",
+    "groupCreditsCaption": "Uses 2 credits · about 30 seconds",
+    "groupSuggestions": [
+      "Friend Group Photo",
+      "Squad Goals",
+      "Family Portrait",
+      "Reunion Photo",
+      "Rooftop Party",
+      "Graduation Day"
+    ]
   },
   "profile": {
     "title": "Profile",
@@ -115,13 +172,23 @@
     "creditsLeft": "Credits Left",
     "paired": "Paired",
     "notPaired": "Not Paired",
+    "pointsEarned": "{{count}} points earned",
+    "pointsRedeemHint": "Tap to turn these into credits",
+    "pointsRedeemedTitle": "Redeemed ✨",
+    "pointsRedeemedBody": "+{{count}} credits added to your balance.",
+    "pointsRedeemFailedTitle": "Couldn’t Redeem",
+    "pointsRedeemFailedBody": "Something went wrong — try again in a moment.",
     "pairedWith": "Paired with {{name}}",
     "defaultPartner": "your partner",
     "notPairedYet": "Not paired yet",
     "pairedHint": "Wallpaper syncs automatically when you’re close together",
     "notPairedHint": "Link up in the Couple tab to unlock proximity wallpapers",
     "premiumTitle": "Amora Premium",
-    "benefits": ["Unlimited generations", "No watermark on exports", "8K wallpaper resolution"],
+    "benefits": [
+      "Unlimited generations",
+      "No watermark on exports",
+      "8K wallpaper resolution"
+    ],
     "upgrade": "Upgrade · $6.99/mo",
     "appearance": "Appearance",
     "appearanceSubtitle": "All dark, zero light mode — pick your mood",
@@ -148,7 +215,9 @@
       "privacy": "Privacy & Location",
       "language": "Language",
       "help": "Help & Support",
-      "signOut": "Sign Out"
+      "about": "About This App",
+      "signOut": "Sign Out",
+      "deleteAccount": "Delete Account"
     }
   },
   "couple": {
@@ -244,7 +313,10 @@
     },
     "packPicker": {
       "title": "Choose a couple pack",
-      "subtitle": "Either of you can pick. The pack defines the together image AND both solo halves. Role labels (Boy/Girl, Sun/Moon, …) come from the pack — your side stays the same when you switch packs."
+      "subtitle": "Either of you can pick. The pack defines the together image AND both solo halves. Role labels (Boy/Girl, Sun/Moon, …) come from the pack — your side stays the same when you switch packs.",
+      "yourCreations": "Your creations",
+      "yourFusion": "Your Fusion",
+      "starterPacks": "Starter packs"
     },
     "partnerCard": {
       "you": "You",
@@ -304,6 +376,16 @@
     "trendingFusions": "Trending Fusions",
     "popularThisWeek": "Popular This Week",
     "emptyCategory": "No wallpapers in this category yet — try another one.",
+    "trendingCreations": "Trending Creations",
+    "recentPost": "Recent Post",
+    "communityCreation": "Community Creation",
+    "noPostsYet": "No one has shared a creation yet — be the first from Profile → Share Your Creation.",
+    "loadMore": "Load More",
+    "loadingMore": "Loading…",
+    "recreated": "recreated",
+    "exitTitle": "Leave Amora?",
+    "exitBody": "Your creations and couple wallpaper are saved — you can jump right back in anytime.",
+    "exitConfirm": "Exit",
     "categories": {
       "all": "All",
       "sunset": "Sunset",
@@ -355,5 +437,47 @@
     "pairedAlertBody": "Your accounts are linked — wallpapers will sync automatically.",
     "couldntLinkTitle": "Couldn’t Link Accounts",
     "shareCodeMessage": "Join me on Amora! Use my pairing code to link up: {{code}}"
+  },
+  "notices": {
+    "coupleDisclaimerTitle": "Before you share this 💛",
+    "coupleDisclaimerBody": "This is an early version of Amora — we're actively upgrading it, and it'll run more smoothly as it grows. It's AI, so it can make mistakes sometimes. One more thing: recreating a theme captures its overall look and vibe, not an exact copy every time. Full details anytime in Profile → About This App."
+  },
+  "about": {
+    "title": "About Amora",
+    "versionSectionTitle": "An early version",
+    "versionSectionBody": "Amora is a new app, still growing. We're actively upgrading it, and it'll run more smoothly as more of it gets built out — thank you for being here this early.",
+    "aiSectionTitle": "This is AI",
+    "aiSectionBody": "Every wallpaper here is generated by an AI model, not hand-made. It can make mistakes sometimes — an odd detail, a feature that doesn't quite match, a style that doesn't land the way you expected. If a result looks off, trying again (or adjusting the description) often helps.",
+    "themeSectionTitle": "How theme recreation works",
+    "themeSectionBody": "\"Recreating\" a template or someone's post captures that scene's overall look, mood, and composition — it isn't a pixel-for-pixel copy from A to Z. Expect the same vibe, not an identical duplicate, every time.",
+    "communitySectionTitle": "Sharing & points",
+    "communitySectionBody": "Sharing a creation puts it on everyone's Home feed, where others can view it or recreate it themselves. Every 100 times your post gets recreated by someone else, you earn 1 point — redeemable in Profile for spendable credits. Your own views on your own post, and recreating your own post, don't count toward this.",
+    "creditsSectionTitle": "Credits",
+    "creditsSectionBody": "Generating a wallpaper costs credits — 1 for a solo photo, 3 for a couple fusion (it makes three images: together, and a solo portrait of each of you). New accounts start with a few free credits to try it out.",
+    "licensesSectionTitle": "Open Source Licenses",
+    "licensesSectionBody": "Amora is built with the help of open-source software and AI models. Tap to see what's inside.",
+    "licensesTitle": "Open Source Licenses",
+    "licensesIntro": "Amora is built on open-source software. We're grateful to the people who make it, and this page credits every package bundled into this app, as their licenses require.",
+    "licensesMitTitle": "MIT License",
+    "licensesFontsTitle": "Fonts (SIL Open Font License 1.1)",
+    "licensesFontsBody": "Manrope and Playfair Display are free and open-source fonts. The OFL permits using, studying, modifying, and redistributing them, alone or bundled with software, provided the fonts themselves are never sold on their own.",
+    "licensesAiTitle": "AI & Backend Technology",
+    "licensesAiBody": "Amora's photo generation is powered by Google's Gemini API under Google's own API terms. Face and skin-tone correction runs on Google's MediaPipe and OpenCV (both Apache License 2.0) on Amora's own servers — they're not bundled into this app, but we wanted you to know what's behind the scenes."
+  },
+  "deleteAccount": {
+    "title": "Delete Account",
+    "intro": "This permanently deletes your Amora account and everything in it. This can't be undone.",
+    "whatGetsDeletedTitle": "What gets deleted",
+    "itemPhotos": "Every photo you've uploaded and every AI wallpaper you've generated",
+    "itemPosts": "Your shared posts, along with their views and recreation history",
+    "itemCouple": "Your couple link — your partner will be notified and unpaired automatically",
+    "itemCredits": "Your credits, points, and purchase history",
+    "subscriptionNoteTitle": "Have an active subscription?",
+    "subscriptionNoteBody": "Deleting your account does not cancel billing — cancel it from your {{store}} subscription settings first, or you may keep being charged.",
+    "confirmLabel": "Type DELETE to confirm",
+    "confirmPlaceholder": "DELETE",
+    "confirmButton": "Delete My Account",
+    "deletingButton": "Deleting…",
+    "errorTitle": "Couldn't delete account"
   }
 }

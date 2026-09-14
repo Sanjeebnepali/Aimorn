@@ -190,6 +190,15 @@ const styles = StyleSheet.create({
     padding: Spacing.md,
     fontSize: 13,
     minHeight: 72,
+    // Confirmed live 2026-09-11 on a similarly-unbounded multiline field
+    // (create-form.tsx's description box): with no maxHeight, a long
+    // enough typed/pasted report just keeps growing the box until the
+    // actively-typed cursor line is pinned right against the keyboard's
+    // top edge with zero room — "the keyboard hides the text area." A
+    // capped height plus RN's default internal-scroll-when-overflowing
+    // multiline behavior keeps this box a fixed, sane size regardless of
+    // how much gets typed.
+    maxHeight: 120,
     textAlignVertical: 'top',
   },
   buttons: { flexDirection: 'row', gap: Spacing.sm, marginTop: Spacing.lg },
