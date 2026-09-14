@@ -1,0 +1,99 @@
+# Render "Blueprint" — lets you deploy amora-server with New → Blueprint,
+# pointing at this GitHub repo, instead of hand-configuring a web service
+# through Render's UI. Render reads this file, provisions the service, and
+# (for every `sync: false` var below) prompts you once for the real value —
+# nothing secret lives in this file itself.
+#
+# Docker runtime, not Render's native Node runtime: this repo's server
+# already has server/Dockerfile (multi-stage, already written with Render
+# in mind — see its own header comment), and Docker gives us one thing the
+# native Node runtime can't: apt-get install openssl for Prisma's engine
+# binary (see the Dockerfile's own comment on why that's needed on
+# node:22-slim). Fields verified against Render's current Blueprint spec
+# (render.com/docs/blueprint-spec) before writing this, not guessed.
+services:
+  - name: amora-server
+    type: web
+    runtime: docker
+    # This is a monorepo (the Expo app lives at the repo root, the server
+    # under server/) — both paths are relative to the REPO root, which is
+    # what Render clones, not to this file's own location (same thing here
+    # since this file IS at the repo root, but stated for clarity).
+    dockerfilePath: ./server/Dockerfile
+    dockerContext: ./server
+    healthCheckPath: /health
+    # Free tier to start — real tradeoff worth knowing before you rely on
+    # it: Render's free web services spin down after ~15 minutes idle and
+    # take roughly 30-60s to cold-start the next request, and any open
+    # WebSocket connection (couple-proximity live distance, live post view
+    # counts — see realtime/coupleSocket.ts and realtime/postsSocket.ts)
+    # gets dropped on spin-down. Fine for confirming the deploy pipeline
+    # itself works; bump this to a paid plan (e.g. `starter`) before
+    # relying on it for real users — one line to change, here or in
+    # Render's dashboard, no other config needed either way.
+    plan: free
+    region: oregon
+    envVars:
+      # --- Required at boot (server/src/env.ts throws without these) -----
+      - key: DATABASE_URL
+        sync: false
+      - key: DATABASE_URL_UNPOOLED
+        sync: false
+      - key: CLERK_SECRET_KEY
+        sync: false
+      - key: CLERK_PUBLISHABLE_KEY
+        sync: false
+
+      # --- Object storage (Cloudflare R2) — optional at boot, but real
+      # generations/uploads 503 without them; set these for a working app --
+      - key: S3_ENDPOINT
+        sync: false
+      - key: S3_REGION
+        value: auto
+      - key: S3_BUCKET
+        sync: false
+      - key: S3_ACCESS_KEY_ID
+        sync: false
+      - key: S3_SECRET_ACCESS_KEY
+        sync: false
+      - key: S3_PUBLIC_BASE_URL
+        sync: false
+
+      # --- AI provider (Hugging Face Qwen-Image-Edit) — the one actually
+      # wired up and verified this app runs on; see server/.env.example --
+      - key: HF_TOKEN
+        sync: false
+      - key: HF_QWEN_MODEL
+        value: Qwen/Qwen-Image-Edit-2511
+
+      # --- AI provider (Google Gemini) — optional; set only if you've
+      # actually pointed generations at it (server/src/lib/ai/nanoBanana.ts) -
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: GEMINI_MODEL
+        value: gemini-3.1-flash-image
+
+      # --- RevenueCat (real billing) — optional at boot; POST
+      # /webhooks/revenuecat and /iap/sync just 503 until both are set --
+      - key: REVENUECAT_SECRET_API_KEY
+        sync: false
+      - key: REVENUECAT_WEBHOOK_AUTHORIZATION
+        sync: false
+
+      # Deliberately NOT set: FACE_CORRECT_PYTHON. The optional face/color-
+      # correction step (server/src/lib/faceGeometry.ts) shells out to a
+      # local Python + MediaPipe + OpenCV install that this Docker image
+      # doesn't include — by design, not an oversight, to keep the image
+      # small and the deploy simple for a first production launch. That
+      # function fails OPEN on purpose (see its own doc comment): with no
+      # Python available, every generation just silently skips this one
+      # cosmetic enhancement and uses the uncorrected image instead —
+      # nothing breaks, nothing 500s. Revisit only if you want that
+      # enhancement live in production too; it needs a heavier image
+      # (python3 + pip install mediapipe opencv-python + the ~3.6MB
+      # server/models/face_landmarker.task file copied in).
+
+      # PORT is intentionally NOT set here — Render injects its own PORT
+      # env var into the container, and env.ts already reads
+      # process.env.PORT (default 4000 only as a local-dev fallback), so
+      # this just works without any extra configuration.
