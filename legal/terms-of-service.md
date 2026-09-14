@@ -1,16 +1,14 @@
 # Amora Terms of Service
 
-**Last updated: [FILL IN DATE BEFORE PUBLISHING]**
+**Last updated: September 15, 2026**
 
-These Terms of Service ("Terms") are a legal agreement between you and [YOUR NAME / COMPANY NAME] ("Amora," "we," "us," or "our") governing your use of the Amora mobile app (the "App"). By creating an account or using Amora, you agree to these Terms and to our [Privacy Policy]. If you don't agree, don't use the App.
+These Terms of Service ("Terms") are a legal agreement between you and Sanjeeb Nepali ("Amora," "we," "us," or "our") governing your use of the Amora mobile app (the "App"). By creating an account or using Amora, you agree to these Terms and to our [Privacy Policy](privacy-policy.html). If you don't agree, don't use the App.
 
 ---
 
 ## 1. Eligibility
 
 You must be at least **13 years old** (or the minimum age of digital consent where you live, if higher) to use Amora. If you're under 18, you confirm you have a parent or guardian's permission to use the App and, where applicable, to make purchases. By using Amora, you represent that you meet these requirements.
-
-*(Developer note: pick the actual minimum age you want to enforce and keep it consistent with the Privacy Policy and any in-app age check you add.)*
 
 ---
 
@@ -70,7 +68,7 @@ You agree not to use Amora to:
 - Circumvent credit costs, payment requirements, or content moderation
 - Violate any applicable law
 
-If you see content on Amora that violates these Terms, please report it using the in-app reporting tool, or contact [SUPPORT EMAIL].
+If you see content on Amora that violates these Terms, please report it using the in-app reporting tool, or contact sanjunepali2007@gmail.com.
 
 ---
 
@@ -131,7 +129,7 @@ The couple-proximity wallpaper feature requires location permission and is entir
 
 ## 10. Intellectual Property
 
-Amora's app, branding, logo, and underlying software (excluding Your Content) are owned by [YOUR NAME / COMPANY NAME] and protected by intellectual property law. Amora is built in part on open-source software and third-party AI models — see the in-app "About → Open Source Licenses" screen for full attribution. Nothing in these Terms transfers any Amora intellectual property to you beyond the limited right to use the App as intended.
+Amora's app, branding, logo, and underlying software (excluding Your Content) are owned by Sanjeeb Nepali and protected by intellectual property law. Amora is built in part on open-source software and third-party AI models — see the in-app "About → Open Source Licenses" screen for full attribution. Nothing in these Terms transfers any Amora intellectual property to you beyond the limited right to use the App as intended.
 
 ---
 
@@ -151,7 +149,7 @@ THE APP IS PROVIDED "AS IS" AND "AS AVAILABLE," WITHOUT WARRANTIES OF ANY KIND, 
 
 ## 13. Limitation of Liability
 
-TO THE MAXIMUM EXTENT PERMITTED BY LAW, [YOUR NAME / COMPANY NAME] WILL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES, OR ANY LOSS OF DATA, PROFITS, OR GOODWILL, ARISING FROM YOUR USE OF THE APP. OUR TOTAL LIABILITY FOR ANY CLAIM RELATED TO THE APP WILL NOT EXCEED THE AMOUNT YOU PAID US IN THE 12 MONTHS BEFORE THE CLAIM AROSE, OR $50 IF YOU HAVEN'T PAID US ANYTHING.
+TO THE MAXIMUM EXTENT PERMITTED BY LAW, Sanjeeb Nepali WILL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES, OR ANY LOSS OF DATA, PROFITS, OR GOODWILL, ARISING FROM YOUR USE OF THE APP. OUR TOTAL LIABILITY FOR ANY CLAIM RELATED TO THE APP WILL NOT EXCEED THE AMOUNT YOU PAID US IN THE 12 MONTHS BEFORE THE CLAIM AROSE, OR $50 IF YOU HAVEN'T PAID US ANYTHING.
 
 Some jurisdictions don't allow the exclusion of certain warranties or the limitation of certain damages, so some of the above limitations may not apply to you.
 
@@ -159,13 +157,13 @@ Some jurisdictions don't allow the exclusion of certain warranties or the limita
 
 ## 14. Indemnification
 
-You agree to indemnify and hold [YOUR NAME / COMPANY NAME] harmless from any claim, loss, or damage (including reasonable legal fees) arising from your violation of these Terms, your Content, or your misuse of the App.
+You agree to indemnify and hold Sanjeeb Nepali harmless from any claim, loss, or damage (including reasonable legal fees) arising from your violation of these Terms, your Content, or your misuse of the App.
 
 ---
 
 ## 15. Governing Law & Disputes
 
-*(Developer note: fill in your actual jurisdiction — e.g., "These Terms are governed by the laws of [STATE/COUNTRY], without regard to conflict-of-law principles, and any dispute will be resolved in the courts located in [CITY, STATE/COUNTRY]." Consider whether you want an arbitration clause; that's a decision worth a quick read of your specific country's consumer-protection rules, not something to copy blindly.)*
+These Terms are governed by the laws of the **Republic of Korea**, without regard to its conflict-of-law principles. Any dispute arising out of or relating to these Terms or the App will be subject to the exclusive jurisdiction of the courts of the Republic of Korea. If you access Amora from outside the Republic of Korea, you're responsible for complying with your own local laws as well.
 
 ---
 
@@ -177,16 +175,5 @@ We may update these Terms from time to time. If we make material changes, we'll 
 
 ## 17. Contact
 
-**Email:** [SUPPORT EMAIL]
-**Developer:** [YOUR NAME / COMPANY NAME]
-
----
-
-### For the developer — placeholders to fill in before publishing
-
-- `[FILL IN DATE BEFORE PUBLISHING]`
-- `[SUPPORT EMAIL]` — appears several times
-- `[YOUR NAME / COMPANY NAME]` — your legal name or registered business name (appears several times)
-- Section 1 — confirm your actual minimum age policy
-- Section 15 — fill in your real jurisdiction; this section is a placeholder and not usable as-is
-- Keep credit/subscription pricing in Section 7 in sync with `server/src/lib/creditsConfig.ts` if you ever change it there
+**Email:** sanjunepali2007@gmail.com
+**Developer:** Sanjeeb Nepali

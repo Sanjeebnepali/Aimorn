@@ -1,10 +1,10 @@
 # Amora Privacy Policy
 
-**Last updated: [FILL IN DATE BEFORE PUBLISHING]**
+**Last updated: September 15, 2026**
 
 This Privacy Policy explains what information Amora ("Amora," "we," "us," or "our") collects when you use the Amora mobile app (the "App"), why we collect it, how it's used, and the choices you have. By using Amora, you agree to the collection and use of information as described here.
 
-If anything below doesn't match what the App actually does by the time you read this, that's a bug in this policy, not a hidden feature — please tell us at [SUPPORT EMAIL].
+If anything below doesn't match what the App actually does by the time you read this, that's a bug in this policy, not a hidden feature — please tell us at sanjunepali2007@gmail.com.
 
 ---
 
@@ -110,7 +110,7 @@ We keep your information for as long as your account is active, so the App can f
 ## 7. Your Rights and Choices
 
 - **Delete your account and data:** Profile → Delete Account, inside the App. This is a real, permanent deletion — it removes your photos, posts, credits, points, purchase history, and couple link, and unpairs your partner automatically. It does not cancel an active subscription — cancel that separately from your Apple ID or Google Play subscription settings, or you may keep being charged. See the in-app screen for full detail before you use it.
-- **Access or correct your data:** contact us at [SUPPORT EMAIL] and we'll help you review or correct the information we hold about you.
+- **Access or correct your data:** contact us at sanjunepali2007@gmail.com and we'll help you review or correct the information we hold about you.
 - **Location:** turn off proximity wallpapers anytime in the Couple tab; the App simply won't read or share your location while it's off.
 - **Ads:** you can limit ad personalization through your device's own ad settings (e.g., Android Settings → Privacy → Ads), and where a consent form is shown (EEA/UK), you can change your choice at any time from Amora's privacy settings.
 - **Marketing communications:** we currently don't send marketing email; if that changes, any such email will include an unsubscribe option.
@@ -121,21 +121,21 @@ If you're in the EEA, UK, or a jurisdiction with similar law, you may also have 
 
 ## 8. Photos of Other People (Couple/Group Mode)
 
-When you upload a photo of another person — your partner, a friend, a family member — to generate a Couple or Group creation, **you confirm that you have that person's permission to upload their photo and have it processed by Amora and its AI providers as described in this policy.** Don't upload identifiable photos of someone who hasn't agreed to it. If someone believes their photo was uploaded without consent, contact us at [SUPPORT EMAIL] and we will investigate and remove it.
+When you upload a photo of another person — your partner, a friend, a family member — to generate a Couple or Group creation, **you confirm that you have that person's permission to upload their photo and have it processed by Amora and its AI providers as described in this policy.** Don't upload identifiable photos of someone who hasn't agreed to it. If someone believes their photo was uploaded without consent, contact us at sanjunepali2007@gmail.com and we will investigate and remove it.
 
 ---
 
 ## 9. Children's Privacy
 
-Amora is not directed at, and is not intended for use by, children under **13** (or the minimum age of digital consent in your country, if higher — 16 in some EU member states). We do not knowingly collect personal information from children below that age. If we learn that we've collected information from a child under the applicable age without appropriate consent, we'll delete it. If you believe a child has used Amora and provided us information, contact [SUPPORT EMAIL].
-
-*(Amora's development team: confirm and, if needed, add an actual age-confirmation step at sign-up — this policy states a minimum age but the App itself doesn't currently verify it. See our own notes on this.)*
+Amora is not directed at, and is not intended for use by, children under **13** (or the minimum age of digital consent in your country, if higher — 16 in some EU member states). We do not knowingly collect personal information from children below that age. If we learn that we've collected information from a child under the applicable age without appropriate consent, we'll delete it. If you believe a child has used Amora and provided us information, contact sanjunepali2007@gmail.com.
 
 ---
 
 ## 10. International Data Transfers
 
 Amora's infrastructure providers (including Clerk, Cloudflare, Google, Hugging Face, and Neon) operate servers in multiple countries, including the United States. By using Amora, you understand your information may be processed in a country other than the one you live in, which may have different data protection laws. We rely on our providers' own compliance mechanisms (such as Standard Contractual Clauses, where applicable) for these transfers.
+
+If you're in South Korea, this means your information is generally processed outside the Republic of Korea. Amora is operated from South Korea and takes reasonable steps consistent with the Personal Information Protection Act (PIPA) for users there; if you have PIPA-specific questions or requests, contact us at the email in Section 13.
 
 ---
 
@@ -155,14 +155,7 @@ We may update this Privacy Policy from time to time. If we make material changes
 
 Questions, requests, or concerns about this policy or your data:
 
-**Email:** [SUPPORT EMAIL]
-**Developer:** [YOUR NAME / COMPANY NAME]
+**Email:** sanjunepali2007@gmail.com
+**Developer:** Sanjeeb Nepali
 
----
-
-### For the developer — placeholders to fill in before publishing
-
-- `[FILL IN DATE BEFORE PUBLISHING]` — the date you actually publish this
-- `[SUPPORT EMAIL]` — a real, monitored email address (appears 5 times)
-- `[YOUR NAME / COMPANY NAME]` — your legal name or business name, for the Contact section
-- Confirm the minimum age in Section 9 matches what you actually want to enforce, and consider adding a real age-confirmation checkbox to onboarding — right now the app doesn't verify age at all, which this policy should not overstate.
+See also our [Terms of Service](terms-of-service.html).
