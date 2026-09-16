@@ -7,6 +7,7 @@ import { env } from './env.js';
 import { attachCoupleSocketServer } from './realtime/coupleSocket.js';
 import { attachPostsSocketServer } from './realtime/postsSocket.js';
 import { accountDeleteRouter } from './routes/accountDelete.js';
+import { adminRouter } from './routes/admin.js';
 import { coupleRouter } from './routes/couple.js';
 import { creditsRouter } from './routes/creditsRoutes.js';
 import { generationsRouter } from './routes/generations.js';
@@ -69,6 +70,7 @@ app.use(coupleRouter);
 app.use(revenueCatWebhookRouter);
 app.use(iapSyncRouter);
 app.use(accountDeleteRouter);
+app.use(adminRouter);
 
 // Catches whatever asyncHandler.ts's per-route wrapping forwards via
 // next(err) — the actual fix for the crash above, at the level it should

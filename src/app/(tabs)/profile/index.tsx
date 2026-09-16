@@ -43,7 +43,7 @@ export default function ProfileScreen() {
   // isSignedIn starts `undefined` for one tick while Clerk restores a cached
   // session from expo-secure-store — treated as signed-out here so the
   // screen never flashes a stale/fake identity before that resolves.
-  const { isSignedIn } = useAuth();
+  const { isSignedIn, userId } = useAuth();
   const { user } = useUser();
   const { signOut } = useClerk();
 
@@ -88,6 +88,12 @@ export default function ProfileScreen() {
     { icon: 'globe', label: t('profile.settings.language'), actionKey: 'language' },
     { icon: 'help', label: t('profile.settings.help'), actionKey: 'help' },
     { icon: 'sparkle', label: t('profile.settings.about'), actionKey: 'about' },
+    // Reachable only when signed in as the app owner's own account (see
+    // admin/broadcast.tsx's own ADMIN_USER_ID doc comment) — real users
+    // never see this row at all, rather than seeing a feature that 403s.
+    ...(userId === 'user_3Io0RPzPfuxr3LtBs9RhwPRcU2k'
+      ? [{ icon: 'mail', label: 'Send Announcement', actionKey: 'broadcast' } as SettingsRowItem]
+      : []),
     { icon: 'logout', label: isSignedIn ? t('profile.settings.signOut') : t('auth.logIn'), danger: !!isSignedIn, actionKey: 'logout' },
     // Only shown once signed in — deleting an account you're not signed
     // into makes no sense, and the server route requires a real session
@@ -127,6 +133,14 @@ export default function ProfileScreen() {
     }
     if (row.actionKey === 'notifications') {
       router.push('/settings/notifications');
+      return;
+    }
+    if (row.actionKey === 'privacy') {
+      router.push('/settings/privacy');
+      return;
+    }
+    if (row.actionKey === 'broadcast') {
+      router.push('/admin/broadcast');
       return;
     }
     if (row.actionKey === 'logout') {

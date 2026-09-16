@@ -7,7 +7,7 @@ import { generatePairingCode, generateUsername } from '../lib/codes.js';
 import { sendToUser } from '../realtime/coupleSocket.js';
 import { asyncHandler } from '../lib/asyncHandler.js';
 import { TRIAL_ADS_REQUIRED } from '../lib/creditsConfig.js';
-import { sendPushToUser } from '../lib/push.js';
+import { sendPushToUser, subscribeToBroadcastTopic, unsubscribeFromBroadcastTopic } from '../lib/push.js';
 
 export const profileRouter = Router();
 
@@ -253,7 +253,11 @@ profileRouter.patch('/profile/push-token', requireUser, asyncHandler(async (req,
     return;
   }
   const userId = res.locals.userId as string;
-  await db.user.update({ where: { id: userId }, data: { pushToken: parsed.data.token } });
+  const user = await db.user.update({ where: { id: userId }, data: { pushToken: parsed.data.token } });
+  // Joins this device to the broadcast topic (see lib/push.ts's own doc
+  // comment) — skipped if this account has notifications muted, so a
+  // freshly-(re)registered token never silently opts a muted user back in.
+  if (user.notificationsEnabled) void subscribeToBroadcastTopic(parsed.data.token);
   res.json({ success: true });
 }));
 
@@ -275,5 +279,13 @@ profileRouter.patch('/profile/notification-settings', requireUser, asyncHandler(
     where: { id: userId },
     data: { notificationsEnabled: parsed.data.enabled },
   });
+  // Keeps broadcast-topic membership in lockstep with this exact toggle —
+  // see lib/push.ts's own doc comment for why topic membership, not a
+  // filter at send time, is what actually respects "muted" for a broadcast.
+  if (user.pushToken) {
+    void (parsed.data.enabled
+      ? subscribeToBroadcastTopic(user.pushToken)
+      : unsubscribeFromBroadcastTopic(user.pushToken));
+  }
   res.json(toProfileJson(user));
 }));

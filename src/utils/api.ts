@@ -16,6 +16,7 @@ import type {
   CoupleResponse,
 } from './apiTypes';
 import { request } from './apiClient';
+import { buildAdminApi } from './adminApi';
 import { buildCoupleApi } from './coupleApi';
 
 // Re-exported so every existing `import { ProfileResponse } from '.../utils/api'`
@@ -294,6 +295,8 @@ export function useApi() {
     // workspace's 350-line module cap before account deletion (below) needed
     // room too. See coupleApi.ts's own doc comment.
     ...buildCoupleApi(getToken),
+    // ─── Admin (app-owner only) ─────────────────────────────────────────
+    ...buildAdminApi(getToken),
 
     // ─── Account ────────────────────────────────────────────────────────
     /**

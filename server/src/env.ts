@@ -101,6 +101,15 @@ const envSchema = z.object({
   // Firebase credentials uploaded to it, so going straight to FCM skips a
   // redundant hop with no loss of capability.
   FIREBASE_SERVICE_ACCOUNT_JSON: z.string().min(1).optional(),
+  // The app owner's own Clerk user id — the one account allowed to call
+  // POST /admin/broadcast (routes/admin.ts). Deliberately reuses the
+  // existing Clerk session check (requireUser) plus this one id comparison
+  // rather than a separate admin-auth system/role table: this is a
+  // solo-developer app with exactly one trusted operator, so a second auth
+  // mechanism would be pure overhead. Optional at boot — a server with this
+  // unset simply has no working admin route yet (403s), same "fail per
+  // request" shape as every other optional credential in this file.
+  ADMIN_USER_ID: z.string().min(1).optional(),
 });
 
 const parsed = envSchema.safeParse(process.env);

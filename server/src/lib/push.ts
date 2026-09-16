@@ -43,6 +43,61 @@ export function isPushConfigured(): boolean {
 }
 
 /**
+ * The one FCM topic every opted-in device belongs to — what lets
+ * sendBroadcastNotification() below reach every user with a single FCM
+ * call instead of one send per row in the User table (which wouldn't
+ * scale, and FCM's own multicast send() caps at 500 tokens per call
+ * anyway). Topic membership, not the User.notificationsEnabled column
+ * alone, is what actually gates delivery here — a broadcast is a plain
+ * fire-and-forget to this topic name, so a user who's toggled
+ * notifications off MUST be unsubscribed at that moment (see
+ * routes/profile.ts's push-token/notification-settings handlers, the only
+ * two places that call subscribe/unsubscribeFromBroadcastTopic) rather
+ * than filtered out at send time, which topic sends have no hook for.
+ */
+const BROADCAST_TOPIC = 'all-users';
+
+/** Best-effort, same reasoning as sendPushToUser below — a failed
+ * subscribe just means this device misses broadcasts until the next
+ * successful token registration, never something worth failing the
+ * caller's own real request over. */
+export async function subscribeToBroadcastTopic(token: string): Promise<void> {
+  if (!ensureInitialized()) return;
+  await getMessaging().subscribeToTopic([token], BROADCAST_TOPIC).catch((err) => {
+    console.warn('subscribeToBroadcastTopic failed:', err);
+  });
+}
+
+export async function unsubscribeFromBroadcastTopic(token: string): Promise<void> {
+  if (!ensureInitialized()) return;
+  await getMessaging().unsubscribeFromTopic([token], BROADCAST_TOPIC).catch((err) => {
+    console.warn('unsubscribeFromBroadcastTopic failed:', err);
+  });
+}
+
+/**
+ * Sends one push to EVERY subscribed device at once — the "new feature,
+ * event, announcement" kind of notification every app sends, distinct
+ * from sendPushToUser's one-to-one personal pushes (partner paired, etc).
+ * Real callers: POST /admin/broadcast (routes/profile.ts), gated to the
+ * app owner's own account via ADMIN_USER_ID — there's no in-app UI for
+ * anyone else to reach this, same "one trusted operator, no separate
+ * admin auth system" shape as a solo-developer app needs.
+ */
+export async function sendBroadcastNotification(
+  notification: { title: string; body: string },
+  data?: Record<string, string>,
+): Promise<void> {
+  if (!ensureInitialized()) throw new Error('Push notifications aren’t configured (no Firebase credentials).');
+  await getMessaging().send({
+    topic: BROADCAST_TOPIC,
+    notification,
+    data,
+    android: { priority: 'high' },
+  });
+}
+
+/**
  * Sends one push to whatever device `userId` last registered a token from
  * (see PATCH /profile/push-token) — best-effort and silent on every
  * failure mode (not configured, no token yet, notifications muted, or a

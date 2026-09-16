@@ -224,6 +224,17 @@
       "osBlockedNotice": "Notifications are blocked for Amora in your device settings — enabling this switch won’t deliver anything until you allow them there.",
       "saveFailed": "Couldn’t save that — please try again."
     },
+    "privacy": {
+      "legalSection": "Legal",
+      "privacyPolicy": "Privacy Policy",
+      "termsOfService": "Terms of Service",
+      "locationSection": "Location",
+      "locationExplainer": "Amora uses your location only to show distance to your linked partner and switch your wallpaper when you're near them. It's shared only with your linked partner, never sold or used for advertising.",
+      "locationGranted": "Background location is on — proximity updates even when the app is closed.",
+      "locationForegroundOnly": "Location is on only while the app is open.",
+      "locationDenied": "Location access is off.",
+      "openLocationSettings": "Open Location Settings"
+    },
     "settings": {
       "myPosts": "Share Your Creation",
       "security": "Account & Security",
