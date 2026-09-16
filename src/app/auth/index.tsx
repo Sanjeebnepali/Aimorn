@@ -2,11 +2,13 @@ import { useClerk, useSignIn, useSignUp, useSSO } from '@clerk/expo';
 import * as AuthSession from 'expo-auth-session';
 import { router } from 'expo-router';
 import { useState } from 'react';
-import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Pressable, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 
 import { showAlert } from '@/alerts/store';
+import { styles } from '@/components/auth/auth-screen.styles';
+import { ForgotPasswordFlow } from '@/components/auth/forgot-password-flow';
 import { VerifyEmailStep } from '@/components/auth/verify-email-step';
 import { GlassCard } from '@/components/primitives/glass-card';
 import { GradientButton } from '@/components/primitives/gradient-button';
@@ -16,15 +18,8 @@ import { IconButton } from '@/components/primitives/icon-button';
 import { SegmentToggle } from '@/components/primitives/segment-toggle';
 import { useWarmUpBrowser } from '@/hooks/use-warm-up-browser';
 import { useOnboardingStore } from '@/onboarding/store';
-import { fonts } from '@/theme/tokens';
 import { useAppTheme } from '@/theme/use-app-theme';
-
-// Clerk's `ClerkError` puts a developer-facing string in `message` and a
-// user-safe one in `longMessage` — falls back to `message` for the rare
-// error that doesn't set it, rather than showing nothing.
-function errorMessage(error: { longMessage?: string; message: string }): string {
-  return error.longMessage ?? error.message;
-}
+import { clerkErrorMessage as errorMessage } from '@/utils/clerkError';
 
 export default function AuthScreen() {
   const theme = useAppTheme();
@@ -34,7 +29,7 @@ export default function AuthScreen() {
 
   // 'verify' only exists for the sign-up path — Clerk requires proving
   // ownership of the email before it will issue a session for a new account.
-  const [step, setStep] = useState<'form' | 'verify'>('form');
+  const [step, setStep] = useState<'form' | 'verify' | 'forgotPassword'>('form');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [code, setCode] = useState('');
@@ -161,8 +156,13 @@ export default function AuthScreen() {
       // (matches every OTHER deep link exercised this session, which always
       // had a path after the scheme, e.g. `amora://profile`). Giving it a
       // real path makes it an unambiguous, launchable deep link the same
-      // way; `sso-callback` doesn't need to be a real route — Clerk's own
-      // SDK consumes the redirect before expo-router ever sees it navigate.
+      // way. `sso-callback` MUST be a real route (src/app/sso-callback.tsx)
+      // — confirmed live 2026-09-16 that on this Android setup, expo-router
+      // DOES see this redirect navigate (in addition to, not instead of,
+      // expo-web-browser's own pending-session listener resolving this same
+      // startSSOFlow() call below), and with no matching route it showed
+      // Router's built-in "Unmatched Route" error screen for what was
+      // actually a successful sign-in.
       const redirectUrl = AuthSession.makeRedirectUri({ path: 'sso-callback' });
       const { createdSessionId, setActive, authSessionResult } = await startSSOFlow({
         strategy: 'oauth_google',
@@ -188,7 +188,7 @@ export default function AuthScreen() {
   }
 
   function handleForgotPassword() {
-    showAlert(t('auth.forgotPasswordTitle'), t('auth.forgotPasswordBody'));
+    setStep('forgotPassword');
   }
 
   // Swapping mode mid-flow (or backing out of the modal) leaves behind a
@@ -201,6 +201,17 @@ export default function AuthScreen() {
     setCode('');
     void signIn.reset();
     void signUp.reset();
+  }
+
+  if (step === 'forgotPassword') {
+    return (
+      <ForgotPasswordFlow
+        signIn={signIn}
+        initialEmail={email}
+        onClose={() => setStep('form')}
+        onDone={goToAppOrOnboarding}
+      />
+    );
   }
 
   if (step === 'verify') {
@@ -328,26 +339,3 @@ export default function AuthScreen() {
     </GradientScreen>
   );
 }
-
-const styles = StyleSheet.create({
-  fill: { flex: 1 },
-  content: { flex: 1, paddingHorizontal: 24, paddingTop: 8, paddingBottom: 20, gap: 24 },
-  brandBlock: { alignItems: 'center', gap: 10, marginTop: 8 },
-  headline: { fontFamily: fonts.display, fontSize: 23 },
-  subtitle: { fontFamily: fonts.body, fontSize: 14, textAlign: 'center', lineHeight: 18 },
-  fields: { gap: 12 },
-  inputRow: { flexDirection: 'row', alignItems: 'center', gap: 11, paddingHorizontal: 16, paddingVertical: 15 },
-  input: { flex: 1, fontFamily: fonts.body, fontSize: 13, padding: 0 },
-  disabled: { opacity: 0.5 },
-  forgot: { alignSelf: 'flex-end', fontFamily: fonts.bodyBold, fontSize: 13 },
-  dividerRow: { flexDirection: 'row', alignItems: 'center', gap: 10 },
-  dividerLine: { flex: 1, height: 1 },
-  dividerText: { fontFamily: fonts.body, fontSize: 12.5 },
-  socialBlock: { gap: 10 },
-  socialButton: { alignItems: 'center', justifyContent: 'center', paddingVertical: 13 },
-  socialLabel: { fontFamily: fonts.bodyBold, fontSize: 13 },
-  spacer: { flex: 1 },
-  footerRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6 },
-  footerText: { fontFamily: fonts.body, fontSize: 14 },
-  footerLink: { fontFamily: fonts.bodyBold, fontSize: 14 },
-});

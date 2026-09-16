@@ -9,6 +9,15 @@ const DEFAULT_AVATAR_URI = 'https://images.unsplash.com/photo-1625241152315-4a69
 interface ProfileState {
   avatarUri: string;
   setAvatarUri: (uri: string) => void;
+  /** Wipes the chosen avatar back to the default and clears the on-disk
+   * copy — must be called on sign-out. `amora-profile` is an
+   * un-namespaced AsyncStorage key shared by whichever account is
+   * currently signed in, so without this a previous account's chosen
+   * profile photo kept showing up as a *different* account's avatar after
+   * sign-out/sign-in on the same device — same cross-account leak class as
+   * `data/gallery-store.ts`'s own `reset()`, found and fixed alongside it
+   * 2026-09-16. */
+  reset: () => void;
 }
 
 /**
@@ -22,6 +31,10 @@ export const useProfileStore = create<ProfileState>()(
     (set) => ({
       avatarUri: DEFAULT_AVATAR_URI,
       setAvatarUri: (avatarUri) => set({ avatarUri }),
+      reset: () => {
+        set({ avatarUri: DEFAULT_AVATAR_URI });
+        void useProfileStore.persist.clearStorage();
+      },
     }),
     {
       name: 'amora-profile',

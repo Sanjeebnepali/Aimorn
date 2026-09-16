@@ -79,6 +79,19 @@ export async function loginPurchases(userId: string): Promise<void> {
 export async function logoutPurchases(): Promise<void> {
   if (!configured) return;
   try {
+    // Guard with isAnonymous() first — RootLayout's teardown effect fires
+    // on every cold boot that resolves `isSignedIn === false` (a fresh
+    // install, or any launch before ever signing in), not just a real
+    // sign-out of a previously logged-in RevenueCat identity. Calling
+    // logOut() unconditionally there hit the SDK's own "Called logOut but
+    // the current user is anonymous" warning on literally every one of
+    // those boots — confirmed live 2026-09-16, it's not just a console
+    // line: Expo's LogBox notification banner it triggers sits fixed at
+    // the bottom of the screen and overlaps the real tab bar, blocking
+    // taps on it for as long as the banner stays up (same interference
+    // class as this file's neighbor _layout.tsx already silences for a
+    // known Clerk dev-key warning).
+    if (await Purchases.isAnonymous()) return;
     await Purchases.logOut();
   } catch {
     // Same reasoning as loginPurchases — non-fatal either way.

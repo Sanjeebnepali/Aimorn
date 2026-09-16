@@ -46,7 +46,7 @@ export function PaywallModal({
   // cards below (watch-for-a-credit, watch-toward-the-trial) show the SAME
   // ad; there's nothing placement-specific about which "1 rewarded ad
   // unit" plays, only what the server credits afterward differs.
-  const { showAd, isReady: adReady } = useRewardedAdReward();
+  const { showAd, isReady: adReady, loadTimedOut: adLoadTimedOut } = useRewardedAdReward();
 
   const [loadingAction, setLoadingAction] = useState<string | null>(null);
   const busy = loadingAction !== null || purchasingId !== null || restoring;
@@ -204,6 +204,7 @@ export function PaywallModal({
               trialAdsRequired={trialAdsRequired}
               busy={busy}
               adReady={adReady}
+              adLoadTimedOut={adLoadTimedOut}
               loadingAction={loadingAction}
               onWatchAd={handleWatchAd}
               onWatchTrialAd={handleWatchTrialAd}

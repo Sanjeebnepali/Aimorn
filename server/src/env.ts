@@ -87,6 +87,20 @@ const envSchema = z.object({
   // anyone who finds the webhook URL from POSTing fake "purchase" events and
   // granting themselves free credits.
   REVENUECAT_WEBHOOK_AUTHORIZATION: z.string().min(1).optional(),
+
+  // --- Push notifications (Firebase Cloud Messaging) ------------------------
+  // Optional at boot, same "fail per-request, not at startup" reasoning as
+  // S3_*/HF_TOKEN above — see lib/push.ts's isPushConfigured(). The FULL
+  // service account JSON (Firebase Console → Project Settings → Service
+  // Accounts → Generate new private key), as one single-line string, not a
+  // file path — a file wouldn't survive a Render-style deploy that only
+  // carries env vars, not arbitrary uploaded files. Deliberately raw FCM via
+  // firebase-admin, not Expo's own hosted push service: this project has no
+  // EAS project linked (see app.json/AGENTS.md — builds are local, not
+  // EAS-managed), and Expo's push relay still needs these exact same
+  // Firebase credentials uploaded to it, so going straight to FCM skips a
+  // redundant hop with no loss of capability.
+  FIREBASE_SERVICE_ACCOUNT_JSON: z.string().min(1).optional(),
 });
 
 const parsed = envSchema.safeParse(process.env);

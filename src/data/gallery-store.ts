@@ -97,6 +97,17 @@ type GalleryStoreState = {
    * preserved by id rather than reset, since favoriting is still a
    * local-only preference the server doesn't track. */
   syncFromServer: (generations: ServerGeneration[]) => void;
+  /** Wipes both the in-memory state AND the on-disk AsyncStorage copy —
+   * must be called on sign-out. Without this, `STORAGE_KEY`/`FAVORITES_KEY`
+   * are plain un-namespaced keys shared by whichever account is currently
+   * signed in, so a previous account's generated wallpapers stayed in this
+   * store (and got shown/pickable in Gallery and Create Post) after
+   * signing out and even after a *different* account signed in, until that
+   * new account happened to visit the Gallery tab and its `syncFromServer`
+   * call overwrote them — a real cross-account privacy leak, confirmed live
+   * 2026-09-16. Same fix shape as `couple/store.ts`'s own `reset()`, which
+   * solved this exact class of bug for couple-pairing state earlier. */
+  reset: () => void;
 };
 
 /** The subset of GenerationResponse (src/utils/api.ts) this store actually
@@ -229,5 +240,10 @@ export const useGalleryStore = create<GalleryStoreState>((set, get) => ({
     } catch {
       // fallback
     }
+  },
+
+  reset: () => {
+    set({ creations: [], favorites: {} });
+    AsyncStorage.multiRemove([STORAGE_KEY, FAVORITES_KEY]).catch(() => {});
   },
 }));

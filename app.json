@@ -32,7 +32,8 @@
         "android.permission.FOREGROUND_SERVICE",
         "android.permission.FOREGROUND_SERVICE_LOCATION",
         "android.permission.RECEIVE_BOOT_COMPLETED"
-      ]
+      ],
+      "googleServicesFile": "./google-services.json"
     },
     "web": {
       "output": "static",
@@ -78,6 +79,7 @@
         }
       ],
       "expo-localization",
+      "expo-notifications",
       [
         "react-native-google-mobile-ads",
         {

@@ -43,6 +43,10 @@ export type ProfileResponse = {
   trialAdsWatched?: number;
   trialAdsRequired?: number;
   trialEligible?: boolean;
+  /** Real user-controlled push-notification preference (Profile →
+   * Notifications) — see server's User.notificationsEnabled doc comment for
+   * why this is separate from the OS-level permission check. */
+  notificationsEnabled?: boolean;
 };
 
 export type CoupleRole = 'A' | 'B';

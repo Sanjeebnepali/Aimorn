@@ -65,7 +65,15 @@ export function usePaywallPurchases(visible: boolean, onSuccess?: (profile: Prof
     async (productId: string): Promise<boolean> => {
       const pkg = packages[productId];
       if (!pkg) {
-        showAlert('Not Available', 'This item isn’t available for purchase right now — please try again shortly.');
+        // Confirmed live 2026-09-16: on this account, `Purchases.getOfferings()`
+        // (the effect above) doesn't fail transiently — RevenueCat rejects it
+        // every single time with `ConfigurationError` because no Play Store
+        // products are registered against any Offering in the RevenueCat
+        // dashboard yet (see https://rev.cat/how-to-configure-offerings). A
+        // "try again shortly" message would be actively misleading here: no
+        // amount of retrying from the app fixes a dashboard that has no
+        // products configured — only setting them up there does.
+        showAlert('Not Available', 'This item isn’t set up for purchase yet — check back once it’s configured on the store side.');
         return false;
       }
       setPurchasingId(productId);

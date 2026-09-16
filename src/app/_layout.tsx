@@ -25,7 +25,11 @@ import { BrandSplash } from '@/components/brandSplash/BrandSplash';
 import { ThemedAlertHost } from '@/components/primitives/themed-alert';
 import { PremiumAlertHost } from '@/components/PremiumAlert';
 import { bootstrapCoupleFeature, teardownCoupleFeature } from '@/couple/bootstrap';
+import { useGalleryStore } from '@/data/gallery-store';
 import { configurePurchases, loginPurchases, logoutPurchases } from '@/iap/purchases';
+import { configureNotificationHandler, registerForPushNotifications } from '@/notifications/register';
+import { useProfileStore } from '@/profile/store';
+import { useApi } from '@/utils/api';
 // Side-effect import — runs i18next.init() (see that file's doc comment)
 // before anything below renders. Must be imported somewhere that loads
 // before the first screen; the root layout is the earliest app-owned module.
@@ -68,6 +72,13 @@ configurePurchases();
 // on any button that's tapped before this resolves.
 void configureAds();
 
+// Same module-scope, boot-once timing as configureAds() just above — sets
+// how a notification displays while the app is in the foreground. Not
+// gated on sign-in: harmless (and cheap) to configure before anyone's
+// signed in, and this must run before any push could possibly arrive
+// anyway, so there's no reason to delay it behind auth resolving.
+configureNotificationHandler();
+
 // Client-side config vars are inlined into the JS bundle at build time (see
 // .env.example) rather than read from process.env at runtime, so this must
 // be read at module scope, not inside the component. Thrown here — instead
@@ -90,6 +101,7 @@ if (!clerkPublishableKey) {
  */
 function RootNavigator() {
   const { isSignedIn, userId } = useAuth();
+  const api = useApi();
   const hasOnboarded = useHasCompletedOnboarding(userId);
   // `isSignedIn` is `undefined` for one tick while Clerk resolves a cached
   // session — treated as "don't force onboarding yet" so a returning user
@@ -115,9 +127,21 @@ function RootNavigator() {
       // doc comment for why that's what lets the server's webhook/sync
       // routes credit the right account with no separate mapping table.
       void loginPurchases(userId);
+      // Registers this device's real push token — see notifications/
+      // register.ts's own doc comment for why every sign-in, not just the
+      // first one (a token can rotate at any time per FCM's own docs).
+      void registerForPushNotifications(api);
     } else if (isSignedIn === false) {
       void teardownCoupleFeature();
       void logoutPurchases();
+      // Clears any previous account's generated wallpapers/avatar out of
+      // local state + AsyncStorage — both stores are un-namespaced local
+      // caches shared by whichever account is signed in, so without this a
+      // signed-out (or newly signed-in different) account kept seeing the
+      // last account's private generated images and profile photo. See
+      // each store's own reset() doc comment.
+      useGalleryStore.getState().reset();
+      useProfileStore.getState().reset();
     }
   }, [isSignedIn, userId]);
 
@@ -145,6 +169,7 @@ function RootNavigator() {
        * button) fixed it. */}
       <Stack.Screen name="template/[id]" />
       <Stack.Screen name="auth/index" options={{ presentation: 'modal' }} />
+      <Stack.Screen name="sso-callback" options={{ presentation: 'modal', animation: 'fade' }} />
     </Stack>
   );
 }

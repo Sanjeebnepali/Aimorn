@@ -21,6 +21,12 @@ expo-env.d.ts
 # doc comment) — *.jks above already covers the actual keystore file itself;
 # this covers the passwords/alias sitting next to it at the project root.
 keystore.properties
+# Firebase's own per-environment Android config (real FCM/project identifiers
+# for push notifications — see app.json's android.googleServicesFile and
+# src/notifications/register.ts's own doc comment). Not a hard secret the
+# way keystore.properties is, but still environment-specific and
+# regeneratable from the Firebase console, so it doesn't belong in git.
+google-services.json
 
 # Metro
 .metro-health-check*

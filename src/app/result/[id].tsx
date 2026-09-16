@@ -38,9 +38,7 @@ export default function ResultScreen() {
   const { t } = useTranslation();
   const api = useApi();
   const hasPartner = useCoupleStore((s) => s.hasPartner);
-  const { id, mode } = useLocalSearchParams<{ id: string; mode?: string }>();
-  const isSolo = mode === 'solo';
-  const bg = isSolo ? resultBackgrounds.solo : resultBackgrounds.couple;
+  const { id, mode: routeMode } = useLocalSearchParams<{ id: string; mode?: string }>();
   const localTarget = useRef<View | null>(null);
   const wallpaperShotRef = useRef<ViewShotRef>(null);
 
@@ -48,6 +46,24 @@ export default function ResultScreen() {
   const deleteCreation = useGalleryStore((state) => state.deleteCreation);
   const updateCreationImage = useGalleryStore((state) => state.updateCreationImage);
   const item = creations.find((c) => c.id === id);
+  // The real, durable source of truth is the creation's OWN stored mode
+  // (`item.mode` — set from the server's `subjectMode` for every synced
+  // creation, see gallery-store.ts's syncFromServer) — the route `mode`
+  // param is only a same-navigation hint from loading.tsx right after a
+  // fresh generation, kept as a fallback for the one render before `item`
+  // is found. Bug found live 2026-09-16: gallery/index.tsx's "open an
+  // existing creation" navigation (`router.push({ pathname: '/result/[id]',
+  // params: { id: c.id } })`) never passed `mode` at all, so revisiting a
+  // real couple creation from the Gallery tab (as opposed to landing here
+  // straight off generating it) silently lost every mode-gated bit of UI —
+  // the couple background, the solo/together pane switcher, and the "Use as
+  // Our Couple Pack" button — even though the photo itself was genuinely a
+  // couple creation. Reading `item.mode` first fixes every one of those
+  // call sites at once instead of patching each navigation site to
+  // remember to pass `mode`.
+  const mode = item?.mode ?? (routeMode as 'solo' | 'couple' | 'group' | undefined) ?? 'couple';
+  const isSolo = mode === 'solo';
+  const bg = isSolo ? resultBackgrounds.solo : resultBackgrounds.couple;
   // A couple session produces 3 images (together + solo "You" + solo
   // "Partner", see server/src/routes/generations.ts) — this switcher is
   // the only place in the app that shows all 3, since the together shot is

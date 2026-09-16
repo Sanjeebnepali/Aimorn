@@ -10,11 +10,19 @@ type FreeOptionsSectionProps = {
   trialAdsRequired: number;
   busy: boolean;
   /** Whether a real rewarded ad has actually finished preloading — see
-   * useRewardedAdReward's own doc comment. Both buttons stay disabled (with
-   * their own "Loading Ad…" label) until this is true, rather than letting
-   * a tap fire showAd() against an ad that isn't there yet and immediately
-   * reject. */
+   * useRewardedAdReward's own doc comment. Both buttons show their own
+   * "Loading Ad…" label until this is true, but stay TAPPABLE the whole
+   * time (see onWatchAd/onWatchTrialAd below) rather than disabled outright
+   * — a real device can have its very first ad request go unanswered
+   * forever (confirmed live 2026-09-16), and a button that's merely
+   * disabled with no explanation reads as the whole reward feature being
+   * broken, with no way to find out why or retry. */
   adReady: boolean;
+  /** True once a load has gone unanswered long enough to stop looking like
+   * "any second now" — swaps the label to something that tells the user
+   * this genuinely isn't available yet, rather than an indefinite spinner
+   * label. See useRewardedAdReward's own doc comment. */
+  adLoadTimedOut: boolean;
   loadingAction: string | null;
   onWatchAd: () => void;
   onWatchTrialAd: () => void;
@@ -37,6 +45,7 @@ export function FreeOptionsSection({
   trialAdsRequired,
   busy,
   adReady,
+  adLoadTimedOut,
   loadingAction,
   onWatchAd,
   onWatchTrialAd,
@@ -66,12 +75,14 @@ export function FreeOptionsSection({
         <TouchableOpacity
           style={[styles.actionBtn, { backgroundColor: theme.accent1, opacity: adReady ? 1 : 0.6 }]}
           onPress={onWatchAd}
-          disabled={busy || !adReady}
+          disabled={busy}
         >
           {loadingAction === 'ad' ? (
             <ActivityIndicator color="#FFF" size="small" />
           ) : (
-            <Text style={styles.actionBtnText}>{adReady ? '🎬 Watch 15s Ad' : 'Loading Ad…'}</Text>
+            <Text style={styles.actionBtnText}>
+              {adReady ? '🎬 Watch 15s Ad' : adLoadTimedOut ? 'Ad Unavailable — Tap to Retry' : 'Loading Ad…'}
+            </Text>
           )}
         </TouchableOpacity>
       </View>
@@ -106,13 +117,17 @@ export function FreeOptionsSection({
           <TouchableOpacity
             style={[styles.actionBtn, { backgroundColor: theme.accent1, marginTop: 10, opacity: adReady ? 1 : 0.6 }]}
             onPress={onWatchTrialAd}
-            disabled={busy || !adReady}
+            disabled={busy}
           >
             {loadingAction === 'trial' ? (
               <ActivityIndicator color="#FFF" size="small" />
             ) : (
               <Text style={styles.actionBtnText}>
-                {adReady ? `🎬 Watch Ad (${trialAdsWatched}/${trialAdsRequired})` : 'Loading Ad…'}
+                {adReady
+                  ? `🎬 Watch Ad (${trialAdsWatched}/${trialAdsRequired})`
+                  : adLoadTimedOut
+                    ? 'Ad Unavailable — Tap to Retry'
+                    : 'Loading Ad…'}
               </Text>
             )}
           </TouchableOpacity>

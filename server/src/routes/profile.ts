@@ -7,6 +7,7 @@ import { generatePairingCode, generateUsername } from '../lib/codes.js';
 import { sendToUser } from '../realtime/coupleSocket.js';
 import { asyncHandler } from '../lib/asyncHandler.js';
 import { TRIAL_ADS_REQUIRED } from '../lib/creditsConfig.js';
+import { sendPushToUser } from '../lib/push.js';
 
 export const profileRouter = Router();
 
@@ -36,6 +37,7 @@ export function toProfileJson(user: {
   adWatchesToday?: number;
   trialAdsWatched?: number;
   trialUsedAt?: Date | null;
+  notificationsEnabled?: boolean;
   partner?: any;
 }) {
   const isSelfSubscribed = !!(user.subscriptionTier && user.subscriptionTier !== 'FREE' &&
@@ -72,6 +74,7 @@ export function toProfileJson(user: {
     trialAdsWatched: user.trialUsedAt ? TRIAL_ADS_REQUIRED : (user.trialAdsWatched ?? 0),
     trialAdsRequired: TRIAL_ADS_REQUIRED,
     trialEligible: !user.trialUsedAt,
+    notificationsEnabled: user.notificationsEnabled ?? true,
   };
 }
 
@@ -216,6 +219,61 @@ profileRouter.post('/profile/pair', requireUser, asyncHandler(async (req, res) =
   // partner accepts, instead of waiting for its own poll — see
   // realtime/coupleSocket.ts.
   sendToUser(partner.id, { type: 'linked', partnerId: userId, partnerDisplayName: updatedSelf.displayName });
+  // The WebSocket push above only reaches the code-sharer while their app is
+  // open — a real push notification is what reaches them the rest of the
+  // time, which is the actual common case for "someone entered my pairing
+  // code" (you hand your code to your partner and they redeem it later,
+  // from wherever they are). First real, meaningful push-notification
+  // trigger in the app — see lib/push.ts's own doc comment for why this is
+  // the one event worth wiring first.
+  void sendPushToUser(partner.id, {
+    title: 'You’re paired! 💞',
+    body: `${updatedSelf.displayName ?? 'Someone'} just linked up with you on Amora.`,
+  });
 
   res.json(toProfileJson(updatedSelf));
+}));
+
+const pushTokenSchema = z.object({
+  token: z.string().min(1),
+});
+
+/**
+ * Registers (or replaces) this device's FCM token for the signed-in user —
+ * see lib/push.ts's own doc comment for why this is a raw FCM token, not an
+ * Expo push token. Called from the client right after a real permission
+ * grant (src/notifications/register.ts), and again on every sign-in — a
+ * token can rotate at any time per FCM's own docs, so "just once at signup"
+ * would silently go stale.
+ */
+profileRouter.patch('/profile/push-token', requireUser, asyncHandler(async (req, res) => {
+  const parsed = pushTokenSchema.safeParse(req.body);
+  if (!parsed.success) {
+    res.status(400).json({ error: parsed.error.flatten() });
+    return;
+  }
+  const userId = res.locals.userId as string;
+  await db.user.update({ where: { id: userId }, data: { pushToken: parsed.data.token } });
+  res.json({ success: true });
+}));
+
+const notificationSettingsSchema = z.object({
+  enabled: z.boolean(),
+});
+
+/** The real on/off switch behind Profile → Notifications — see
+ * User.notificationsEnabled's own schema comment for why this is separate
+ * from the OS-level permission check. */
+profileRouter.patch('/profile/notification-settings', requireUser, asyncHandler(async (req, res) => {
+  const parsed = notificationSettingsSchema.safeParse(req.body);
+  if (!parsed.success) {
+    res.status(400).json({ error: parsed.error.flatten() });
+    return;
+  }
+  const userId = res.locals.userId as string;
+  const user = await db.user.update({
+    where: { id: userId },
+    data: { notificationsEnabled: parsed.data.enabled },
+  });
+  res.json(toProfileJson(user));
 }));

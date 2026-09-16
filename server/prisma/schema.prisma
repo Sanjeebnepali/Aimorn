@@ -105,6 +105,26 @@ model User {
   /// Live GPS for the proximity check — one row per user, not per couple, so
   /// each side writes only its own row (see POST /couple/location).
   location   CoupleLocation?
+
+  /// This device's raw FCM registration token (Android) or APNs token
+  /// (iOS) — see expo-notifications' getDevicePushTokenAsync(), NOT an Expo
+  /// push token: this project has no EAS project linked (builds are local,
+  /// see AGENTS.md/workspace notes), so sending goes straight through
+  /// Firebase Cloud Messaging from server/src/lib/push.ts rather than
+  /// through Expo's own hosted push relay, which needs an EAS projectId
+  /// this app doesn't have. One token per user (not per device) is a
+  /// deliberate simplification — a user signed in on two devices only gets
+  /// pushes on whichever signed in most recently, acceptable for a V1 with
+  /// no multi-device push fan-out yet. Null until the app has actually
+  /// requested permission and registered one (see POST /profile/push-token).
+  pushToken             String?
+  /// Master on/off switch for this account's push notifications — a real,
+  /// user-controlled preference (Profile → Notifications), not just a
+  /// device-permission check, so a signed-in user can mute pushes without
+  /// revoking OS-level notification permission entirely. Every server-side
+  /// send site (see push.ts's sendPushToUser) must check this before
+  /// sending, not just whether pushToken is set.
+  notificationsEnabled  Boolean @default(true)
 }
 
 /// One row per RevenueCat purchase transaction ever actually credited —

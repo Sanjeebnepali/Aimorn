@@ -125,6 +125,10 @@ export default function ProfileScreen() {
       router.push('/settings/language');
       return;
     }
+    if (row.actionKey === 'notifications') {
+      router.push('/settings/notifications');
+      return;
+    }
     if (row.actionKey === 'logout') {
       if (!isSignedIn) {
         router.push('/auth');

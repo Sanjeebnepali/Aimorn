@@ -73,13 +73,19 @@
     "appleTitle": "Continue with Apple",
     "applePreviewBody": "Apple sign-in isn’t connected yet — this build is a preview.",
     "googleFailedTitle": "Google Sign-In Failed",
-    "forgotPasswordTitle": "Forgot Password",
-    "forgotPasswordBody": "Password recovery isn’t connected yet — this build is a preview.",
     "checkEmail": "Check your email",
     "enterCodeSentTo": "Enter the code we sent to {{email}}",
     "verifying": "Verifying…",
     "verify": "Verify",
-    "resendCode": "Resend code"
+    "resendCode": "Resend code",
+    "forgotEmailHeadline": "Reset your password",
+    "forgotEmailSubtitle": "Enter your account email and we’ll send you a reset code",
+    "sendingCode": "Sending…",
+    "sendResetCode": "Send reset code",
+    "forgotNewPasswordHeadline": "Set a new password",
+    "forgotNewPasswordSubtitle": "Choose a new password for your account",
+    "settingPassword": "Setting Password…",
+    "setNewPassword": "Set New Password"
   },
   "generate": {
     "titleRecreate": "Create",
@@ -207,6 +213,16 @@
       "subtitle": "Choose the language Amora shows everywhere in the app.",
       "systemDefault": "Follow device language",
       "systemDefaultSub": "Currently {{language}}"
+    },
+    "notifications": {
+      "pushTitle": "Push Notifications",
+      "pushBody": "Get notified the moment something happens, even when Amora isn’t open.",
+      "whatYouGet": "Right now, Amora sends a push when your partner links up using your pairing code. More notification types are on the way.",
+      "permissionNeededTitle": "Notifications Are Off",
+      "permissionNeededBody": "You’ve previously blocked notifications for Amora at the system level. Turn them back on in Settings to receive pushes.",
+      "openSettings": "Open Settings",
+      "osBlockedNotice": "Notifications are blocked for Amora in your device settings — enabling this switch won’t deliver anything until you allow them there.",
+      "saveFailed": "Couldn’t save that — please try again."
     },
     "settings": {
       "myPosts": "Share Your Creation",

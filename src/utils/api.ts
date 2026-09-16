@@ -269,6 +269,26 @@ export function useApi() {
       return getToken().then((token) => request<ProfileResponse>('/iap/sync', token, { method: 'POST' }));
     },
 
+    // ─── Push notifications ─────────────────────────────────────────────
+    /** Registers this device's real FCM token — see server's push.ts doc
+     * comment. Called from src/notifications/register.ts right after a
+     * real permission grant, and again on every sign-in (a token can
+     * rotate at any time per FCM's own docs). */
+    registerPushToken(token: string): Promise<void> {
+      return getToken().then((authToken) =>
+        request('/profile/push-token', authToken, { method: 'PATCH', body: JSON.stringify({ token }) }),
+      );
+    },
+    /** The real on/off switch behind Profile → Notifications. */
+    updateNotificationSettings(enabled: boolean): Promise<ProfileResponse> {
+      return getToken().then((authToken) =>
+        request<ProfileResponse>('/profile/notification-settings', authToken, {
+          method: 'PATCH',
+          body: JSON.stringify({ enabled }),
+        }),
+      );
+    },
+
     // ─── Couple proximity ────────────────────────────────────────────────
     // Split into its own builder 2026-09-14 — this file was already at the
     // workspace's 350-line module cap before account deletion (below) needed
