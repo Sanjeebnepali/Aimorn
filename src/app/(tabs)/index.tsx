@@ -83,6 +83,7 @@ export default function HomeScreen() {
   const [feedPosts, setFeedPosts] = useState<PostResponse[]>([]);
   const [feedCursor, setFeedCursor] = useState<string | null>(null);
   const [feedLoadingMore, setFeedLoadingMore] = useState(false);
+  const [unreadNotifications, setUnreadNotifications] = useState(0);
 
   useFocusEffect(
     useCallback(() => {
@@ -94,6 +95,12 @@ export default function HomeScreen() {
           setFeedCursor(nextCursor);
         })
         .catch(() => {});
+      // Re-checked every time Home regains focus (not just on mount) so the
+      // bell's badge clears the moment the user comes back from actually
+      // reading the feed (notifications/index.tsx marks everything viewed
+      // on its own mount) — a stale badge that never updates would train
+      // users to ignore it.
+      api.getNotifications().then((res) => setUnreadNotifications(res.unreadCount)).catch(() => {});
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []),
   );
@@ -165,6 +172,16 @@ export default function HomeScreen() {
               <Text style={[styles.wordmark, { color: theme.ink }]}>Amora</Text>
             </View>
             <View style={styles.headerActions}>
+              <View>
+                <IconButton name="bell" size={42} iconSize={18} color={theme.ink} onPress={() => router.push('/notifications')} />
+                {/* A plain dot, not a count — the exact number matters far
+                 * less here than "something's new," and a two-digit badge
+                 * on a 42px circular button has no room to render cleanly
+                 * anyway. */}
+                {unreadNotifications > 0 && (
+                  <View style={[styles.badgeDot, { backgroundColor: theme.accent1, borderColor: theme.bg1 }]} />
+                )}
+              </View>
               <IconButton name="plus" size={42} iconSize={20} color={theme.ink} onPress={() => router.push('/create-post')} />
               {/* Was `router.push('/(tabs)/profile')` — a crown/premium
                * icon detouring to a whole other tab, which the user then
@@ -309,6 +326,15 @@ const styles = StyleSheet.create({
   content: { paddingHorizontal: 20, paddingTop: 16, paddingBottom: 165, gap: 28 },
   header: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6 },
   headerActions: { flexDirection: 'row', alignItems: 'center', gap: 10 },
+  badgeDot: {
+    position: 'absolute',
+    top: 2,
+    right: 2,
+    width: 12,
+    height: 12,
+    borderRadius: 6,
+    borderWidth: 2,
+  },
   brand: { flexDirection: 'row', alignItems: 'center', gap: 9 },
   brandLogo: { width: 28, height: 28 },
   wordmark: { fontFamily: fonts.display, fontSize: 24 },

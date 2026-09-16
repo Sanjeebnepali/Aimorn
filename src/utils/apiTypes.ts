@@ -114,3 +114,20 @@ export type CoupleResponse = {
   thresholdM: number;
   partnerLocation: { lat: number; lng: number; accuracyM: number | null; updatedAt: string } | null;
 };
+
+export type NotificationScope = 'PERSONAL' | 'BROADCAST';
+
+export type NotificationItem = {
+  id: string;
+  scope: NotificationScope;
+  title: string;
+  body: string;
+  createdAt: string;
+  unread: boolean;
+};
+
+export type NotificationsResponse = {
+  items: NotificationItem[];
+  nextCursor: string | null;
+  unreadCount: number;
+};

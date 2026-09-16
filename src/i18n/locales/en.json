@@ -5,6 +5,10 @@
     "gallery": "Gallery",
     "profile": "Profile"
   },
+  "notifications": {
+    "title": "Notifications",
+    "empty": "Nothing here yet — you'll see updates and announcements as they happen."
+  },
   "common": {
     "cancel": "Cancel",
     "ok": "OK",

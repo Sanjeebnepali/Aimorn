@@ -95,6 +95,13 @@ export async function sendBroadcastNotification(
     data,
     android: { priority: 'high' },
   });
+  // One row covers every recipient (see NotificationScope's own doc
+  // comment) — written after a successful send, not before: an admin
+  // broadcast that fails to send shouldn't leave a phantom row in
+  // everyone's in-app history for something that never actually went out.
+  await db.notification.create({
+    data: { scope: 'BROADCAST', title: notification.title, body: notification.body },
+  });
 }
 
 /**
@@ -112,6 +119,15 @@ export async function sendPushToUser(
   notification: { title: string; body: string },
   data?: Record<string, string>,
 ): Promise<void> {
+  // Recorded in the in-app Notification History regardless of whether the
+  // OS push itself actually goes out below (no token yet, muted, FCM
+  // down) — this row means "this real event happened to you," which is
+  // still true, and still worth seeing next time this user opens the
+  // in-app feed, even on a device that never got the live push for it.
+  await db.notification.create({ data: { scope: 'PERSONAL', userId, title: notification.title, body: notification.body } }).catch((err) => {
+    console.warn('sendPushToUser: failed to record notification history:', err);
+  });
+
   if (!ensureInitialized()) return;
   try {
     const user = await db.user.findUnique({

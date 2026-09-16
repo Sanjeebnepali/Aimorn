@@ -125,6 +125,47 @@ model User {
   /// send site (see push.ts's sendPushToUser) must check this before
   /// sending, not just whether pushToken is set.
   notificationsEnabled  Boolean @default(true)
+  /// When this account last opened the in-app Notification History screen
+  /// — a Notification (below) is "unread" purely by comparing its
+  /// createdAt against this timestamp, not a per-row read flag. Cheap and
+  /// correct for a single linear feed: a per-Notification read table would
+  /// only matter if unread state could be marked per-item, which this V1
+  /// deliberately doesn't do (see notifications.tsx's own doc comment).
+  /// Null means "never opened it" — every notification is unread.
+  notificationsViewedAt DateTime?
+  notifications         Notification[]
+}
+
+enum NotificationScope {
+  /// Sent to exactly one user (userId set) — partner-paired, etc. See
+  /// lib/push.ts's sendPushToUser.
+  PERSONAL
+  /// Sent to every opted-in user at once (userId null) — one row covers
+  /// the whole audience rather than fanning out a write per recipient,
+  /// which wouldn't scale and isn't needed since a broadcast's content is
+  /// identical for everyone. See lib/push.ts's sendBroadcastNotification.
+  BROADCAST
+}
+
+/// The in-app Notification History record of every push actually sent —
+/// independent of whether the OS notification tray still shows it (that's
+/// ephemeral and platform-controlled; this is the durable, in-app list a
+/// user can scroll back through). Written by lib/push.ts at the same
+/// moment the real FCM send happens, never on its own — there's no
+/// "notification" here that wasn't actually pushed.
+model Notification {
+  id        String             @id @default(cuid())
+  scope     NotificationScope
+  /// Set for PERSONAL, null for BROADCAST — see NotificationScope's own
+  /// doc comment for why a broadcast doesn't get one row per recipient.
+  userId    String?
+  user      User?              @relation(fields: [userId], references: [id])
+  title     String
+  body      String
+  createdAt DateTime           @default(now())
+
+  @@index([userId, createdAt])
+  @@index([scope, createdAt])
 }
 
 /// One row per RevenueCat purchase transaction ever actually credited —
