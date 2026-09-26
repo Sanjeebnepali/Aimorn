@@ -386,5 +386,8 @@
     "confirmButton": "Mein Konto löschen",
     "deletingButton": "Wird gelöscht…",
     "errorTitle": "Konto konnte nicht gelöscht werden"
+  },
+  "templateDetail": {
+    "note": "Wir behalten dein Gesicht und übernehmen diesen Look – Outfit, Licht und Kulisse – für ein brandneues Foto von dir."
   }
 }

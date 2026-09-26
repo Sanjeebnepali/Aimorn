@@ -386,5 +386,8 @@
     "confirmButton": "Excluir minha conta",
     "deletingButton": "Excluindo…",
     "errorTitle": "Não foi possível excluir a conta"
+  },
+  "templateDetail": {
+    "note": "Mantemos o seu rosto e emprestamos este visual — roupa, iluminação e cenário — para criar uma foto totalmente nova de você."
   }
 }

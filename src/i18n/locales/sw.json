@@ -386,5 +386,8 @@
     "confirmButton": "Futa Akaunti Yangu",
     "deletingButton": "Inafuta…",
     "errorTitle": "Imeshindwa kufuta akaunti"
+  },
+  "templateDetail": {
+    "note": "Tunahifadhi uso wako na kuazima mwonekano huu — mavazi, mwanga na mandhari — ili kutengeneza picha mpya kabisa yako."
   }
 }

@@ -386,5 +386,8 @@
     "confirmButton": "Burahin ang Aking Account",
     "deletingButton": "Binuburang…",
     "errorTitle": "Hindi mabura ang account"
+  },
+  "templateDetail": {
+    "note": "Pinapanatili namin ang mukha mo at hinihiram ang look na ito — kasuotan, ilaw at lugar — para gumawa ng bagong-bagong litrato mo."
   }
 }

@@ -386,5 +386,8 @@
     "confirmButton": "Padam Akaun Saya",
     "deletingButton": "Memadam…",
     "errorTitle": "Gagal memadam akaun"
+  },
+  "templateDetail": {
+    "note": "Kami mengekalkan wajah anda dan meminjam gaya ini — pakaian, pencahayaan dan latar — untuk mencipta foto baharu anda."
   }
 }

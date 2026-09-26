@@ -386,5 +386,8 @@
     "confirmButton": "Elimina il mio account",
     "deletingButton": "Eliminazione…",
     "errorTitle": "Impossibile eliminare l'account"
+  },
+  "templateDetail": {
+    "note": "Manteniamo il tuo viso e prendiamo in prestito questo look — outfit, luce e ambientazione — per creare una foto tutta nuova di te."
   }
 }

@@ -510,5 +510,8 @@
     "confirmButton": "Delete My Account",
     "deletingButton": "Deleting…",
     "errorTitle": "Couldn't delete account"
+  },
+  "templateDetail": {
+    "note": "We keep your face and borrow this look — outfit, lighting and setting — to create a brand-new photo of you."
   }
 }

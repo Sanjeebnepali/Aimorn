@@ -386,5 +386,8 @@
     "confirmButton": "내 계정 삭제",
     "deletingButton": "삭제 중…",
     "errorTitle": "계정을 삭제하지 못했습니다"
+  },
+  "templateDetail": {
+    "note": "당신의 얼굴은 그대로 두고, 이 룩(의상·조명·배경)만 빌려 완전히 새로운 사진을 만들어 드려요."
   }
 }

@@ -386,5 +386,8 @@
     "confirmButton": "删除我的账户",
     "deletingButton": "正在删除…",
     "errorTitle": "账户删除失败"
+  },
+  "templateDetail": {
+    "note": "保留你的面孔，借用这款造型（服装、灯光和场景），为你生成一张全新的照片。"
   }
 }

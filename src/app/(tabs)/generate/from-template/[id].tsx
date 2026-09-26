@@ -11,5 +11,5 @@ export default function GenerateFromTemplateScreen() {
   // fall back to the blank flow rather than rendering an empty banner.
   if (!template) return <Redirect href="/generate" />;
 
-  return <CreateForm template={template} />;
+  return <CreateForm template={template} initialSubject={template.defaultSubject} />;
 }

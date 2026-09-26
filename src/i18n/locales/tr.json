@@ -386,5 +386,8 @@
     "confirmButton": "Hesabımı Sil",
     "deletingButton": "Siliniyor…",
     "errorTitle": "Hesap silinemedi"
+  },
+  "templateDetail": {
+    "note": "Yüzünüzü koruyor, bu görünümü — kıyafet, ışık ve mekân — ödünç alarak sizin yepyeni bir fotoğrafınızı oluşturuyoruz."
   }
 }

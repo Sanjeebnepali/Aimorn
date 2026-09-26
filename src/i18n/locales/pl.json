@@ -386,5 +386,8 @@
     "confirmButton": "Usuń moje konto",
     "deletingButton": "Usuwanie…",
     "errorTitle": "Nie udało się usunąć konta"
+  },
+  "templateDetail": {
+    "note": "Zachowujemy Twoją twarz i pożyczamy ten look — strój, oświetlenie i scenerię — by stworzyć zupełnie nowe zdjęcie z Tobą."
   }
 }

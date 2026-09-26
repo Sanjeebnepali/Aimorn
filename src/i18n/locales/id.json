@@ -386,5 +386,8 @@
     "confirmButton": "Hapus Akun Saya",
     "deletingButton": "Menghapus…",
     "errorTitle": "Gagal menghapus akun"
+  },
+  "templateDetail": {
+    "note": "Kami mempertahankan wajah Anda dan meminjam tampilan ini — pakaian, pencahayaan, dan latar — untuk membuat foto baru dari Anda."
   }
 }

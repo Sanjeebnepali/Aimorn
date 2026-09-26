@@ -386,5 +386,8 @@
     "confirmButton": "Radera mitt konto",
     "deletingButton": "Raderar…",
     "errorTitle": "Det gick inte att radera kontot"
+  },
+  "templateDetail": {
+    "note": "Vi behåller ditt ansikte och lånar den här looken — outfit, ljus och miljö — för att skapa ett helt nytt foto av dig."
   }
 }

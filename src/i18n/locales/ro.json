@@ -386,5 +386,8 @@
     "confirmButton": "Șterge contul meu",
     "deletingButton": "Se șterge…",
     "errorTitle": "Contul nu a putut fi șters"
+  },
+  "templateDetail": {
+    "note": "Îți păstrăm chipul și împrumutăm acest look — ținută, iluminare și decor — pentru a crea o fotografie complet nouă cu tine."
   }
 }

@@ -386,5 +386,8 @@
     "confirmButton": "Smazat můj účet",
     "deletingButton": "Mazání…",
     "errorTitle": "Účet se nepodařilo smazat"
+  },
+  "templateDetail": {
+    "note": "Zachováme tvůj obličej a půjčíme si tento look — outfit, světlo a prostředí — abychom vytvořili úplně novou fotku tebe."
   }
 }

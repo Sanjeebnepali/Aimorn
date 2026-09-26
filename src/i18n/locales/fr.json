@@ -386,5 +386,8 @@
     "confirmButton": "Supprimer mon compte",
     "deletingButton": "Suppression…",
     "errorTitle": "Impossible de supprimer le compte"
+  },
+  "templateDetail": {
+    "note": "Nous gardons votre visage et empruntons ce look — tenue, éclairage et décor — pour créer une toute nouvelle photo de vous."
   }
 }

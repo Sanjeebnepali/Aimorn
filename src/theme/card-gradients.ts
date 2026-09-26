@@ -12,4 +12,5 @@ export const cardGradients = {
   vintageParis: ['#9f7849', '#60361e'] as const,
   cyberDate: ['#2b3b81', '#864ad2'] as const,
   rainyWindow: ['#496684', '#0e2c3f'] as const,
+  kpopIdol: ['#ff2f92', '#1a0612'] as const,
 } as const;

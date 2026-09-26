@@ -1,6 +1,7 @@
 import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
 import { router, useLocalSearchParams } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 import { Pressable, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -33,6 +34,7 @@ function formatCount(n: number): string {
  */
 export default function TemplateDetailScreen() {
   const theme = useAppTheme();
+  const { t } = useTranslation();
   const { width, height } = useWindowDimensions();
   const { id } = useLocalSearchParams<{ id: string }>();
   const template = getTemplate(id);
@@ -124,6 +126,8 @@ export default function TemplateDetailScreen() {
           <View style={styles.infoBlock}>
             {template.handle ? <Text style={[styles.handle, { color: theme.ink }]}>{template.handle}</Text> : null}
             <Text style={[styles.label, { color: theme.ink }]}>{template.label}</Text>
+            {/* What the app actually does with a template, said plainly: it keeps the user's face and borrows only the look. */}
+            <Text style={[styles.note, { color: theme.ink }]}>{t('templateDetail.note')}</Text>
           </View>
 
           <GradientButton
@@ -164,4 +168,5 @@ const styles = StyleSheet.create({
   infoBlock: { gap: 4 },
   handle: { fontFamily: fonts.bodyBold, fontSize: 13, opacity: 0.85 },
   label: { fontFamily: fonts.display, fontSize: 24 },
+  note: { fontFamily: fonts.body, fontSize: 13.5, lineHeight: 19, opacity: 0.88, marginTop: 2 },
 });

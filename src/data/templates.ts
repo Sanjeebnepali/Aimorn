@@ -29,6 +29,9 @@ export type Template = {
    * that doesn't have a real shot yet (Cyber Date, Rainy Window, etc.), and
    * the category follows the template's intended theme the same way. */
   category: TemplateCategory;
+  /** Which "Who's in this?" choice the create screen starts on. Left unset, it starts on Couple like every other template;
+   * set to 'solo' for a look designed for one person (the user can still switch). */
+  defaultSubject?: 'couple' | 'solo';
 };
 
 /** Resolves a bundled `require(...)` image module to the plain URI string
@@ -44,6 +47,18 @@ function local(assetModule: number): string {
  * browser, and looked up by GenerateTemplate — id here is what round-trips
  * through the `/generate/from-template/[id]` route param. */
 export const TEMPLATES: Template[] = [
+  {
+    id: 'kpopIdol',
+    label: 'K-Pop Idol',
+    colors: cardGradients.kpopIdol,
+    // A generic idol-photoshoot look in black and hot pink. Deliberately not named after any group or artist and not
+    // imitating any real person (trademarks / likeness rights, and app-store policy) — see the server's
+    // sceneBriefsManual.ts. The photo is an AI-generated fictional model. No handle or view/like counts: those fields are
+    // placeholders on the other templates, and a brand-new template has no real numbers to show.
+    imageUrl: local(require('../../assets/templates/kpop-idol.jpg')),
+    category: 'neon',
+    defaultSubject: 'solo',
+  },
   {
     id: 'goldenHour',
     label: 'Golden Hour',

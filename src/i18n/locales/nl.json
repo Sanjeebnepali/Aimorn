@@ -386,5 +386,8 @@
     "confirmButton": "Mijn account verwijderen",
     "deletingButton": "Bezig met verwijderen…",
     "errorTitle": "Account kon niet worden verwijderd"
+  },
+  "templateDetail": {
+    "note": "We behouden je gezicht en lenen deze look — outfit, licht en decor — om een gloednieuwe foto van jou te maken."
   }
 }

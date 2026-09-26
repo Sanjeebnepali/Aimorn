@@ -25,6 +25,16 @@ import { buildNotificationsApi } from './notificationsApi';
 // 2026-09-11 to keep this file under the workspace's 350-line module limit).
 export type { UsageMode, ProfileResponse, CoupleRole, GenerationStatus, GenerationResponse, PostAuthor, PostResponse, CoupleResponse };
 
+/**
+ * Build-time switch for trying the v2 "inspired-by" template mode from a device (server/src/lib/templateMode.ts explains the
+ * modes). Set EXPO_PUBLIC_TEMPLATE_MODE=inspired in .env to send it on every generation request; leave it unset in
+ * production so the server decides. Anything other than the two known values is ignored.
+ */
+const TEMPLATE_MODE_OVERRIDE: 'exact' | 'inspired' | undefined =
+  process.env.EXPO_PUBLIC_TEMPLATE_MODE === 'inspired' || process.env.EXPO_PUBLIC_TEMPLATE_MODE === 'exact'
+    ? process.env.EXPO_PUBLIC_TEMPLATE_MODE
+    : undefined;
+
 export function useApi() {
   const { getToken } = useAuth();
 
@@ -114,9 +124,13 @@ export function useApi() {
        * ever sent alongside subjectMode: 'SOLO' and no templateId, the one
        * combination the server's own zod refine actually accepts it for. */
       freeform?: boolean;
+      /** Which template pipeline the server should use — see server/src/lib/templateMode.ts. Callers normally leave this out
+       * and let the server decide (today: 'exact'); the build-time switch below fills it in for testing v2. */
+      templateMode?: 'exact' | 'inspired';
     }): Promise<GenerationResponse> {
       return getToken().then((token) =>
-        request<GenerationResponse>('/generations', token, { method: 'POST', body: JSON.stringify(input) }),
+        // `undefined` values are dropped by JSON.stringify, so with no env switch the request body is exactly what it was before.
+        request<GenerationResponse>('/generations', token, { method: 'POST', body: JSON.stringify({ templateMode: TEMPLATE_MODE_OVERRIDE, ...input }) }),
       );
     },
     getGeneration(id: string): Promise<GenerationResponse> {

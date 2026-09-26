@@ -386,5 +386,8 @@
     "confirmButton": "Xóa tài khoản của tôi",
     "deletingButton": "Đang xóa…",
     "errorTitle": "Không thể xóa tài khoản"
+  },
+  "templateDetail": {
+    "note": "Chúng tôi giữ nguyên khuôn mặt của bạn và mượn phong cách này — trang phục, ánh sáng và bối cảnh — để tạo một bức ảnh hoàn toàn mới của bạn."
   }
 }
