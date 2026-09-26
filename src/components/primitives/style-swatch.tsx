@@ -1,6 +1,6 @@
 import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Image as RNImage, Pressable, StyleSheet, Text, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import { Icon, type IconName } from '@/components/primitives/icon';
@@ -27,6 +27,15 @@ export const STYLE_OPTIONS: StyleOption[] = [
     icon: 'styleRealistic',
     imageUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=400&auto=format&fit=crop',
     colors: ['#c19985', '#6e5344'],
+  },
+  {
+    // Generic idol-photoshoot look (black and hot pink) — deliberately not named after any group or artist. The server turns this style
+    // into the full K-pop look (server/src/lib/styleLook.ts). Local thumbnail: the other swatches are remote Unsplash photos.
+    key: 'kpop',
+    labelKey: 'style.kpop',
+    icon: 'styleNeon',
+    imageUrl: RNImage.resolveAssetSource(require('../../../assets/styles/kpop.jpg')).uri,
+    colors: ['#ff2f92', '#1a0612'],
   },
   {
     key: 'neon',
