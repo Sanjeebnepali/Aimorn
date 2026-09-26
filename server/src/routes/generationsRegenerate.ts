@@ -12,6 +12,7 @@ import { generateSoloPart, generateTogetherPart, loadPersonPhotos } from '../lib
 import { NanoBananaProvider } from '../lib/ai/nanoBanana.js';
 import type { ImageFusionProvider } from '../lib/ai/provider.js';
 import { asyncHandler } from '../lib/asyncHandler.js';
+import { userSafeMessage } from '../lib/generationErrors.js';
 
 export const generationsRegenerateRouter = Router();
 
@@ -283,7 +284,9 @@ generationsRegenerateRouter.post('/generations/:id/regenerate', requireUser, asy
       outputUrlB: busted(updated.outputKeyB),
     });
   } catch (err) {
-    const errorMessage = err instanceof Error ? err.message : 'Regeneration failed';
-    res.status(502).json({ error: errorMessage });
+    // Real error logged for us; the client only gets a safe message (see
+    // lib/generationErrors.ts).
+    console.error(`Regeneration of ${req.params.id} failed:`, err);
+    res.status(502).json({ error: userSafeMessage(err) });
   }
 }));

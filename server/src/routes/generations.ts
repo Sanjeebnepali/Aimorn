@@ -11,6 +11,7 @@ import { awardPointsForRegeneration } from '../lib/points.js';
 import { NanoBananaProvider } from '../lib/ai/nanoBanana.js';
 import type { ImageFusionProvider } from '../lib/ai/provider.js';
 import { asyncHandler } from '../lib/asyncHandler.js';
+import { userSafeMessage } from '../lib/generationErrors.js';
 
 export const generationsRouter = Router();
 
@@ -247,9 +248,13 @@ generationsRouter.post('/generations', requireUser, asyncHandler(async (req, res
       outputUrlB: job.b ? publicUrlFor(job.b.key) : null,
     });
   } catch (err) {
+    // The REAL error is stored on the row and logged for us; the client only
+    // ever gets userSafeMessage's text (a raw provider error once leaked
+    // Google's billing message to users — see lib/generationErrors.ts).
     const errorMessage = err instanceof Error ? err.message : 'Generation failed';
+    console.error(`Generation ${generation.id} failed:`, err);
     await db.generation.update({ where: { id: generation.id }, data: { status: 'FAILED', errorMessage } });
-    res.status(502).json({ error: errorMessage, generationId: generation.id });
+    res.status(502).json({ error: userSafeMessage(err), generationId: generation.id });
   }
 }));
 

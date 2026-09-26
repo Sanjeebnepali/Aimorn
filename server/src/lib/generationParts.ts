@@ -4,6 +4,7 @@ import { COUPLE_PEOPLE_RETRY_NOTE, IDENTITY_RETRY_NOTE, SINGLE_PERSON_RETRY_NOTE
 import { reduceEditSeam } from './imagePostProcess.js';
 import { assessGenerationOutput } from './ai/outputQuality.js';
 import { countPeopleInImage } from './ai/personCount.js';
+import { UserFacingError } from './generationErrors.js';
 import { judgeIdentity } from './ai/identityJudge.js';
 import { correctFaceToneAndScale } from './faceGeometry.js';
 import type { TemplateImage } from '../data/templateImages.js';
@@ -64,7 +65,7 @@ async function ensureHeadcount(params: {
   if (retriedCount === null || retriedCount === expected) return retried;
 
   console.error(`Headcount check failed again after retry (expected ${expected}, saw ${retriedCount}) — failing the job instead of shipping it.`);
-  throw new Error(failureMessage);
+  throw new UserFacingError(failureMessage);
 }
 
 /** Hard failures (wrong person / wrong headcount) keep retrying up to this many
@@ -194,7 +195,7 @@ export async function generateSoloPart(params: {
   // over failing; otherwise fail the job (nothing is charged on failure).
   if (softOnlyFallback) return softOnlyFallback;
   console.error(`Solo generation failed all ${MAX_SOLO_ATTEMPTS} attempts — failing the job instead of shipping a wrong result.`);
-  throw new Error(
+  throw new UserFacingError(
     sawWrongPerson
       ? "We couldn't match your photo closely enough this time. Try a clearer, front-facing photo (no screenshots or heavy filters). You weren't charged."
       : "We couldn't get a clean single-person portrait this time. You weren't charged — please try again.",
