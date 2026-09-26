@@ -11,7 +11,12 @@ import {
   sanitizeUserPrompt,
   type PromptInput,
 } from './promptBuilder.js';
-import { EQUAL_CAMERA_DISTANCE_HARD_CONSTRAINT, NATURAL_HEAD_PROPORTION_CONSTRAINT, UNIFORM_PHOTO_QUALITY_CONSTRAINT } from './promptQualityConstraints.js';
+import {
+  EQUAL_CAMERA_DISTANCE_HARD_CONSTRAINT,
+  NATURAL_HEAD_PROPORTION_CONSTRAINT,
+  SINGLE_PERSON_ONLY_HARD_CONSTRAINT,
+  UNIFORM_PHOTO_QUALITY_CONSTRAINT,
+} from './promptQualityConstraints.js';
 
 /**
  * Split out of promptBuilder.ts 2026-09-12 — adding GROUP mode's dispatch
@@ -128,16 +133,26 @@ export function buildFreeformScenePrompt(input: PromptInput): string {
     ? 'Whatever new outfit the scene above calls for, render it fully modest and non-revealing — never generate nudity or exposed intimate areas, no matter what the description says.'
     : 'Never remove, alter, or extend past a person’s actual clothing from their reference photo.';
 
+  // SOLO only: a couple session's two solo portraits reuse the couple's own
+  // description as their scene (see SINGLE_PERSON_ONLY_HARD_CONSTRAINT's doc
+  // comment for the real bug this stops), so it goes immediately AFTER
+  // sceneLine — closest to the text it has to override. EQUAL_CAMERA_DISTANCE
+  // is also skipped for SOLO: it's worded entirely about "both people in the
+  // couple standing side-by-side", which directly contradicts a one-person
+  // image — a two-person instruction sitting inside a one-person prompt.
+  const isSolo = input.subjectMode === 'SOLO';
+
   return [
     subjectLine,
     BODY_TYPE_HARD_CONSTRAINT,
     FACIAL_ACCESSORY_LINE,
     FULL_BODY_SKIN_TONE_HARD_CONSTRAINT,
     NATURAL_HEAD_PROPORTION_CONSTRAINT,
-    EQUAL_CAMERA_DISTANCE_HARD_CONSTRAINT,
+    isSolo ? '' : EQUAL_CAMERA_DISTANCE_HARD_CONSTRAINT,
     UNIFORM_PHOTO_QUALITY_CONSTRAINT,
     fidelityLine,
     sceneLine,
+    isSolo ? SINGLE_PERSON_ONLY_HARD_CONSTRAINT : '',
     styleLine,
     extraLine,
     formatLine,

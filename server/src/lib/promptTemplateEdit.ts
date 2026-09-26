@@ -10,6 +10,7 @@ import {
   SEAMLESS_INTEGRATION_HARD_CONSTRAINT,
   type PromptInput,
 } from './promptBuilder.js';
+import { SINGLE_PERSON_ONLY_HARD_CONSTRAINT } from './promptQualityConstraints.js';
 
 /**
  * Split out of promptBuilder.ts 2026-09-12 — adding the "General" freeform
@@ -134,7 +135,14 @@ export function buildTemplateEditPrompt(input: PromptInput): string {
     'The person currently shown in the template photo is a PLACEHOLDER model — their face, hairstyle, and identity must be COMPLETELY discarded, not partially kept or blended with the real reference person. If you find yourself keeping any part of the placeholder\'s face shape, eyes, or hairstyle "because it looks good," that is the failure this task is checking for.';
   const subjectLine = `This is a precise image-EDITING task. The FIRST attached image is the exact template photo showing two people together. Look at ${referenceImages} and identify which of the template people they correspond to (matching apparent gender, age, and build). The output must be a SOLO portrait of ONLY that one matching person: COMPLETELY DISCARD AND REMOVE the second (unmatched) template person from the frame, filling the background seamlessly with the template photo's environment. PRESERVE THE MATCHING PERSON'S EXACT CLOTHING, BODY POSTURE, POSE, BACKGROUND SETTING, LIGHTING, AND CAMERA ANGLE 100% AS SHOWN IN THE TEMPLATE PHOTO. ${templateModelReplacementLine} Replace ONLY their head — face AND hair — with the reference photos' real person: match their exact facial structure, eye shape, nose shape, jawline, skin tone, hair color/length/style, AND any bindi, facial piercing, earring, nose ring, mole, freckle, or scar visible in their reference photos. Do not idealize, slim, beautify, or alter proportions. Preserve their actual facial features precisely, and use their reference photos' real skin tone and texture across their ENTIRE face and all exposed body skin (arms, neck, chest, legs), recoloring the template's original body skin to match their real reference skin tone.`;
 
-  return [subjectLine, BODY_TYPE_HARD_CONSTRAINT, FACIAL_ACCESSORY_LINE, HEAD_SCALE_HARD_CONSTRAINT, FULL_BODY_SKIN_TONE_HARD_CONSTRAINT, SEAMLESS_INTEGRATION_HARD_CONSTRAINT, handArtifactLine, styleLine, additionalNoteLine, formatLine, modestyLine]
+  // The subjectLine above already says "remove the second person," but a
+  // couple session's user note (additionalNoteLine, e.g. "couple on the
+  // beach") is appended to this same prompt, so the explicit, isolated
+  // single-person constraint is repeated here too — see
+  // SINGLE_PERSON_ONLY_HARD_CONSTRAINT's doc comment for the real bug.
+  const singlePersonLine = input.subjectMode === 'SOLO' ? SINGLE_PERSON_ONLY_HARD_CONSTRAINT : '';
+
+  return [subjectLine, singlePersonLine, BODY_TYPE_HARD_CONSTRAINT, FACIAL_ACCESSORY_LINE, HEAD_SCALE_HARD_CONSTRAINT, FULL_BODY_SKIN_TONE_HARD_CONSTRAINT, SEAMLESS_INTEGRATION_HARD_CONSTRAINT, handArtifactLine, styleLine, additionalNoteLine, formatLine, modestyLine]
     .filter(Boolean)
     .join(' ');
 }

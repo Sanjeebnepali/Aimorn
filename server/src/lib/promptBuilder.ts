@@ -290,13 +290,16 @@ export function buildAdditionalNoteLine(description: string | undefined): string
  * 350-line module cap) can reuse it instead of duplicating it. */
 export function buildFormatLine(subjectMode: PromptInput['subjectMode']): string {
   const wallpaperFraming =
-    'VERTICAL 9:16 PHONE WALLPAPER COMPOSITION — frame the subject aesthetically in the upper 75% of the screen with balanced headroom for smartphone lock-screen clock widgets.';
+    // The "leave that headroom empty" clause was added 2026-09-26: the
+    // clock-widget wording alone made the model draw a literal fake lock-
+    // screen clock ("9:16") into the sky in 2 of 6 real verification images.
+    'VERTICAL 9:16 PHONE WALLPAPER COMPOSITION — frame the subject aesthetically in the upper 75% of the screen with balanced headroom for smartphone lock-screen clock widgets. Leave that headroom as plain sky/background: do NOT render any clock, time, numbers, text, watermark, logo, or UI elements anywhere in the image.';
   const whoLine =
     subjectMode === 'COUPLE'
       ? 'both people fully visible in an intimate, aesthetic couple wallpaper pose'
       : subjectMode === 'GROUP'
         ? 'everyone in the group fully visible, naturally arranged together in one wallpaper shot'
-        : 'the person fully visible in a stylish, photorealistic solo wallpaper pose';
+        : 'ONLY this one person fully visible, alone in the frame, in a stylish, photorealistic solo wallpaper pose';
   return `Compose as a premium 9:16 mobile wallpaper, ${whoLine}, consistent lighting across the image. ${wallpaperFraming}`;
 }
 

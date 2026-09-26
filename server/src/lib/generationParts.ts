@@ -1,7 +1,9 @@
 import { getObjectBytes } from './storage.js';
 import { buildTemplateCompositePrompt, buildTemplateFaceSwapPrompt, buildFusionPrompt } from './promptBuilder.js';
+import { COUPLE_PEOPLE_RETRY_NOTE, SINGLE_PERSON_RETRY_NOTE } from './promptQualityConstraints.js';
 import { reduceEditSeam } from './imagePostProcess.js';
 import { assessGenerationOutput } from './ai/outputQuality.js';
+import { countPeopleInImage } from './ai/personCount.js';
 import { correctFaceToneAndScale } from './faceGeometry.js';
 import type { TemplateImage } from '../data/templateImages.js';
 import type { FusionOutput, ImageFusionProvider } from './ai/provider.js';
@@ -29,15 +31,51 @@ export async function loadPersonPhotos(keys: string[]): Promise<PersonPhotos> {
 }
 
 /**
+ * Headcount gate — the safety net behind the SINGLE_PERSON_ONLY prompt
+ * constraint (promptQualityConstraints.ts), added 2026-09-26 after a real,
+ * reproduced bug where a couple session's "solo" portraits came back as
+ * two-person images. A prompt can only ask; this actually checks. If the
+ * result's headcount is wrong, `retry` regenerates once (callers pass a
+ * retry that also appends a correction note naming the failure — a retry
+ * with only a new seed can just reproduce the same misread of the scene).
+ * If the retry is STILL wrong, this throws rather than shipping it: a
+ * "solo" image with two people in it is a broken result, not a
+ * lower-quality one, and both callers (POST /generations and the regenerate
+ * route) only charge credits AFTER this returns, so throwing costs the user
+ * nothing while returning a wrong-headcount image as a success would.
+ *
+ * `count === null` (the vision call itself failed) is treated as "unknown,
+ * don't block" — see personCount.ts for why this fails open.
+ */
+async function ensureHeadcount(params: {
+  result: FusionOutput;
+  expected: number;
+  retry: () => Promise<FusionOutput>;
+  failureMessage: string;
+}): Promise<FusionOutput> {
+  const { result, expected, retry, failureMessage } = params;
+  const count = await countPeopleInImage(result.imageBytes, result.mimeType);
+  if (count === null || count === expected) return result;
+
+  console.warn(`Headcount check failed (expected ${expected}, saw ${count}) — retrying once with a correction note and perturbed seed.`);
+  const retried = await retry();
+  const retriedCount = await countPeopleInImage(retried.imageBytes, retried.mimeType);
+  if (retriedCount === null || retriedCount === expected) return retried;
+
+  console.error(`Headcount check failed again after retry (expected ${expected}, saw ${retriedCount}) — failing the job instead of shipping it.`);
+  throw new Error(failureMessage);
+}
+
+/**
  * One person's solo portrait: generate → (if templated) correct face tone/
  * scale → verify via assessGenerationOutput → retry once with a perturbed
- * seed if that check failed. Used for COUPLE's two solo portraits, for a
- * plain SOLO generation, and for GROUP (whose "prompt" already encodes all
- * N people via promptGroup.ts — this function doesn't need to know GROUP
- * exists, it just runs whatever prompt it's handed against whatever photos
- * it's handed). `photos` is deliberately generic ("this call's own subject",
- * not always literally "You") so the same function serves photoA, photoB,
- * or a solo/group photoA with no partner at all.
+ * seed if that check failed → (if `singlePerson`) verify the headcount. Used for COUPLE's two solo portraits, for a plain SOLO
+ * generation, and for GROUP (whose "prompt" already encodes all N people via
+ * promptGroup.ts — this function doesn't need to know GROUP exists, it just
+ * runs whatever prompt it's handed against whatever photos it's handed).
+ * `photos` is deliberately generic ("this call's own subject", not always
+ * literally "You") so the same function serves photoA, photoB, or a
+ * solo/group photoA with no partner at all.
  */
 export async function generateSoloPart(params: {
   photos: PersonPhotos;
@@ -51,34 +89,58 @@ export async function generateSoloPart(params: {
   retrySeedOffset: number;
   styleKey: string;
   provider: ImageFusionProvider;
+  /** True for every real solo portrait (COUPLE's two solos, a plain SOLO):
+   * the finished image must show exactly one person. A caller-supplied flag
+   * rather than always-on because this same function also serves GROUP,
+   * where the right headcount is N and this check must NOT run — a boolean
+   * (not a free-form count) because the retry's correction note
+   * (SINGLE_PERSON_RETRY_NOTE) is only correct for "exactly one." Omitted =
+   * no headcount check, same as before this option existed. */
+  singlePerson?: boolean;
 }): Promise<FusionOutput> {
-  const { photos, templateImage, prompt, seed, retrySeedOffset, styleKey, provider } = params;
-  let currentSeed = seed;
-  let res = await provider.generate({ photoA: photos, templateImage, prompt, seed: currentSeed });
-  if (!templateImage) return res;
+  const { photos, templateImage, prompt, seed, retrySeedOffset, styleKey, provider, singlePerson } = params;
 
-  let corrected = await correctFaceToneAndScale({
-    templateImageBytes: templateImage.bytes,
-    generatedImageBytes: res.imageBytes,
-    referencePhotos: [photos[0]?.bytes].filter((b): b is Buffer => !!b),
-  });
-  const check = await assessGenerationOutput({
-    resultBytes: corrected.imageBytes,
-    resultMimeType: res.mimeType,
-    referencePhotos: photos,
-    styleKey,
-  });
-  if (!check.ok) {
-    console.warn(`Solo quality check failed (${check.reason}) — retrying once with perturbed seed.`);
-    currentSeed = seed + retrySeedOffset;
-    res = await provider.generate({ photoA: photos, templateImage, prompt, seed: currentSeed });
-    corrected = await correctFaceToneAndScale({
+  // One generate (+ template face/skin correction) attempt, factored out so
+  // the quality-check retry and the headcount retry below both rerun exactly
+  // the same steps with only the seed/prompt changed.
+  const produce = async (attemptSeed: number, attemptPrompt: string): Promise<FusionOutput> => {
+    const res = await provider.generate({ photoA: photos, templateImage, prompt: attemptPrompt, seed: attemptSeed });
+    if (!templateImage) return res;
+    const corrected = await correctFaceToneAndScale({
       templateImageBytes: templateImage.bytes,
       generatedImageBytes: res.imageBytes,
       referencePhotos: [photos[0]?.bytes].filter((b): b is Buffer => !!b),
     });
+    return { ...res, imageBytes: corrected.imageBytes };
+  };
+
+  let result = await produce(seed, prompt);
+
+  // Fidelity check is templated-only, exactly as before this refactor: a
+  // plain freeform result has never gone through assessGenerationOutput, and
+  // turning it on there would add paid retries the user never asked for.
+  if (templateImage) {
+    const check = await assessGenerationOutput({
+      resultBytes: result.imageBytes,
+      resultMimeType: result.mimeType,
+      referencePhotos: photos,
+      styleKey,
+    });
+    if (!check.ok) {
+      console.warn(`Solo quality check failed (${check.reason}) — retrying once with perturbed seed.`);
+      result = await produce(seed + retrySeedOffset, prompt);
+    }
   }
-  return { ...res, imageBytes: corrected.imageBytes };
+
+  if (!singlePerson) return result;
+  return ensureHeadcount({
+    result,
+    expected: 1,
+    // A different offset than the fidelity retry above (+5000), so a job
+    // that already burned that retry doesn't land on the same seed again.
+    retry: () => produce(seed + retrySeedOffset + 5000, `${prompt} ${SINGLE_PERSON_RETRY_NOTE}`),
+    failureMessage: "We couldn't get a clean single-person portrait this time. You weren't charged — please try again.",
+  });
 }
 
 /**
@@ -101,19 +163,28 @@ export async function generateTogetherPart(params: {
   const { photoA, photoB, templateImage, templateId, styleKey, description, seed, provider } = params;
 
   if (!templateImage) {
-    return provider.generate({
-      photoA,
-      photoB,
-      prompt: buildFusionPrompt({
-        subjectMode: 'COUPLE',
-        templateId,
-        styleKey,
-        description,
-        hasTemplateImage: false,
-        photoACount: photoA.length,
-        photoBCount: photoB.length,
-      }),
-      seed,
+    const freeformPrompt = buildFusionPrompt({
+      subjectMode: 'COUPLE',
+      templateId,
+      styleKey,
+      description,
+      hasTemplateImage: false,
+      photoACount: photoA.length,
+      photoBCount: photoB.length,
+    });
+    const first = await provider.generate({ photoA, photoB, prompt: freeformPrompt, seed });
+
+    // Headcount gate for the same reason as generateSoloPart's — here the
+    // model composes the whole scene from scratch, so it can just as easily
+    // return one person or an invented third. Deliberately NOT applied to
+    // the templated branch below: the template photo itself already fixes
+    // that scene at exactly two people, so the failure this guards against
+    // can't occur there.
+    return ensureHeadcount({
+      result: first,
+      expected: 2,
+      retry: () => provider.generate({ photoA, photoB, prompt: `${freeformPrompt} ${COUPLE_PEOPLE_RETRY_NOTE}`, seed: seed + 3000 }),
+      failureMessage: "We couldn't get a clean couple photo this time. You weren't charged — please try again.",
     });
   }
 

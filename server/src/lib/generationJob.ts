@@ -142,8 +142,8 @@ export async function runFusionJob(input: FusionJobInput): Promise<FusionJobResu
 
     const [together, a, b] = await Promise.all([
       generateTogetherPart({ photoA, photoB, templateImage, templateId, styleKey, description, seed, provider }),
-      generateSoloPart({ photos: photoA, templateImage, prompt: soloPromptA, seed, retrySeedOffset: 101, styleKey, provider }),
-      generateSoloPart({ photos: photoB, templateImage, prompt: soloPromptB, seed, retrySeedOffset: 202, styleKey, provider }),
+      generateSoloPart({ photos: photoA, templateImage, prompt: soloPromptA, seed, retrySeedOffset: 101, styleKey, provider, singlePerson: true }),
+      generateSoloPart({ photos: photoB, templateImage, prompt: soloPromptB, seed, retrySeedOffset: 202, styleKey, provider, singlePerson: true }),
     ]);
 
     const [uploadedTogether, uploadedA, uploadedB] = await Promise.all([
@@ -165,7 +165,10 @@ export async function runFusionJob(input: FusionJobInput): Promise<FusionJobResu
     groupPhotoCount: subjectMode === 'GROUP' ? photoA.length : undefined,
   });
 
-  const solo = await generateSoloPart({ photos: photoA, templateImage, prompt: togetherPrompt, seed, retrySeedOffset: 303, styleKey, provider });
+  // GROUP's headcount is N (its prompt encodes every person), so only a real
+  // SOLO gets the exactly-one-person gate — see generateSoloPart's own
+  // `singlePerson` doc comment.
+  const solo = await generateSoloPart({ photos: photoA, templateImage, prompt: togetherPrompt, seed, retrySeedOffset: 303, styleKey, provider, singlePerson: subjectMode === 'SOLO' });
 
   return { seed, together: await uploadResult({ userId, generationId, suffix: '', result: solo }) };
 }

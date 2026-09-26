@@ -180,6 +180,9 @@ generationsRegenerateRouter.post('/generations/:id/regenerate', requireUser, asy
           retrySeedOffset: 1,
           styleKey: generation.styleKey,
           provider,
+          // Same rule as generationJob.ts: only a real SOLO is exactly one
+          // person; GROUP's headcount is N, so it skips the gate.
+          singlePerson: generation.subjectMode === 'SOLO',
         });
       }
     } else {
@@ -192,6 +195,8 @@ generationsRegenerateRouter.post('/generations/:id/regenerate', requireUser, asy
         hasTemplateImage: !!templateImage,
         photoACount: photos.length,
       });
+      // part 'a'/'b' are a couple session's individual portraits — this is
+      // the exact path that shipped two-person "solos" before 2026-09-26.
       result = await generateSoloPart({
         photos,
         templateImage,
@@ -200,6 +205,7 @@ generationsRegenerateRouter.post('/generations/:id/regenerate', requireUser, asy
         retrySeedOffset: 1,
         styleKey: generation.styleKey,
         provider,
+        singlePerson: true,
       });
     }
 
