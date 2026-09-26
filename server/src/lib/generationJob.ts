@@ -1,7 +1,7 @@
 import { putObjectBytes } from './storage.js';
 import { buildFusionPrompt } from './promptBuilder.js';
 import { templateImageFor } from '../data/templateImages.js';
-import { SCENE_BRIEFS } from '../data/sceneBriefs.js';
+import { sceneBriefFor } from './sceneBrief.js';
 import { enhanceScene } from './promptEnhancer.js';
 import type { TemplateMode } from './templateMode.js';
 import { generateSoloPart, generateTogetherPart, loadPersonPhotos } from './generationParts.js';
@@ -128,7 +128,7 @@ export async function runFusionJob(input: FusionJobInput): Promise<FusionJobResu
   // provider.generate call below stays correct either way.
   // v2: with a scene brief for this template, the template photo is withheld entirely (see promptSceneBrief.ts for
   // why); a template with no brief, GROUP, or 'exact' mode all fall through to today's behavior unchanged.
-  const sceneBrief = templateMode === 'inspired' && subjectMode !== 'GROUP' && templateId ? SCENE_BRIEFS[templateId] : undefined;
+  const sceneBrief = templateMode === 'inspired' && subjectMode !== 'GROUP' ? sceneBriefFor(templateId) : undefined;
   const templateImage = sceneBrief ? undefined : templateImageFor(templateId);
 
   if (subjectMode === 'COUPLE' && photoB) {

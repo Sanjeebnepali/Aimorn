@@ -17,6 +17,7 @@ export const THEME_PROMPTS: Record<string, string> = {
   vintageParis: 'a Parisian street, warm vintage tone, old-world architecture',
   cyberDate: 'a futuristic cyberpunk city street, glowing signage, rain-slicked pavement',
   rainyWindow: 'looking out through a rain-streaked window, soft ambient indoor light',
+  kpopIdol: 'a sleek K-pop idol style photoshoot: glossy black studio, hot-pink neon light bars, haze, editorial flash lighting',
 };
 
 export const DEFAULT_THEME_PROMPT = 'a warm, softly lit scene that suits a phone wallpaper';

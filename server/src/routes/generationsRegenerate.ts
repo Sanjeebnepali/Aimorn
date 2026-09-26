@@ -14,7 +14,7 @@ import type { ImageFusionProvider } from '../lib/ai/provider.js';
 import { asyncHandler } from '../lib/asyncHandler.js';
 import { userSafeMessage } from '../lib/generationErrors.js';
 import { templateModeFor } from '../lib/templateMode.js';
-import { SCENE_BRIEFS } from '../data/sceneBriefs.js';
+import { sceneBriefFor } from '../lib/sceneBrief.js';
 
 export const generationsRegenerateRouter = Router();
 
@@ -132,7 +132,7 @@ generationsRegenerateRouter.post('/generations/:id/regenerate', requireUser, asy
     // Same v2 decision as a fresh job (lib/templateMode.ts). A generation's mode isn't stored, so a regenerated image uses the
     // mode current for this user, which can differ from the one the original was made in.
     const sceneBrief =
-      templateModeFor(userId) === 'inspired' && generation.subjectMode !== 'GROUP' && generation.templateId ? SCENE_BRIEFS[generation.templateId] : undefined;
+      templateModeFor(userId) === 'inspired' && generation.subjectMode !== 'GROUP' ? sceneBriefFor(generation.templateId ?? undefined) : undefined;
     const templateImage = sceneBrief ? undefined : templateImageFor(generation.templateId ?? undefined);
 
     // Deliberately perturbed, never the original seed: resending the exact
