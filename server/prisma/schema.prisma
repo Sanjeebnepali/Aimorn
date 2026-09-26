@@ -293,6 +293,10 @@ model Generation {
   styleKey    String
   subjectMode SubjectMode
   description String?
+  /// The scene text ACTUALLY used when the user's short `description` was expanded by lib/promptEnhancer.ts (null = not
+  /// enhanced). Stored so regenerating one image of this job reuses the exact same scene as its siblings instead of
+  /// re-enhancing (and possibly drifting), and so a client can show what was really used.
+  sceneDescription String?
   /// S3/R2 object key for the "You" photo — always the FIRST of possibly
   /// several reference angles of that person (photoAExtraKeys holds any
   /// more). Kept as the single source every other feature already reads

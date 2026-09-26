@@ -2,6 +2,7 @@ import { putObjectBytes } from './storage.js';
 import { buildFusionPrompt } from './promptBuilder.js';
 import { templateImageFor } from '../data/templateImages.js';
 import { SCENE_BRIEFS } from '../data/sceneBriefs.js';
+import { enhanceScene } from './promptEnhancer.js';
 import type { TemplateMode } from './templateMode.js';
 import { generateSoloPart, generateTogetherPart, loadPersonPhotos } from './generationParts.js';
 import type { FusionOutput, ImageFusionProvider } from './ai/provider.js';
@@ -71,6 +72,8 @@ export type FusionJobInput = {
 
 export type FusionJobResult = {
   seed: number;
+  /** Set when the user's short description was expanded (lib/promptEnhancer.ts); the caller stores it on the row. */
+  enhancedDescription?: string;
   together: UploadedResult;
   a?: UploadedResult;
   b?: UploadedResult;
@@ -95,12 +98,20 @@ export type FusionJobResult = {
  * revisit this without changing what the route returns.
  */
 export async function runFusionJob(input: FusionJobInput): Promise<FusionJobResult> {
-  const { userId, generationId, subjectMode, templateId, styleKey, description, photoAKeys, photoBKeys, provider, freeform, templateMode } = input;
+  const { userId, generationId, subjectMode, templateId, styleKey, description: rawDescription, photoAKeys, photoBKeys, provider, freeform, templateMode } = input;
 
-  const [photoA, photoB] = await Promise.all([
+  // Plain Generate mode only (no template, not the General mode whose description already has full creative authority,
+  // not GROUP): a short idea is expanded into a richer scene. Runs IN PARALLEL with loading the photos so the ~4s text call
+  // adds no wait. Falls back to the user's own text on any problem (see promptEnhancer.ts). Clothing is not invented here:
+  // people keep the clothes from their own photos unless the user asked for something.
+  const wantsEnhance = !templateId && !freeform && subjectMode !== 'GROUP' && !!rawDescription?.trim();
+  const [photoA, photoB, enhancement] = await Promise.all([
     loadPersonPhotos(photoAKeys),
     photoBKeys ? loadPersonPhotos(photoBKeys) : Promise.resolve(undefined),
+    wantsEnhance ? enhanceScene({ description: rawDescription!, subjectMode: subjectMode as 'SOLO' | 'COUPLE', includeOutfit: false }) : Promise.resolve(null),
   ]);
+  const description = enhancement?.enhanced ? enhancement.text : rawDescription;
+  const enhancedDescription = enhancement?.enhanced ? enhancement.text : undefined;
 
   // One seed for every image in this session (see FusionInput.seed's doc
   // comment) — fal.ai's own docs confirm the same seed + same prompt on the
@@ -191,7 +202,7 @@ export async function runFusionJob(input: FusionJobInput): Promise<FusionJobResu
       uploadResult({ userId, generationId, suffix: 'a', result: a }),
       uploadResult({ userId, generationId, suffix: 'b', result: b }),
     ]);
-    return { seed, together: uploadedTogether, a: uploadedA, b: uploadedB };
+    return { seed, enhancedDescription, together: uploadedTogether, a: uploadedA, b: uploadedB };
   }
 
   const togetherPrompt = buildFusionPrompt({
@@ -211,5 +222,5 @@ export async function runFusionJob(input: FusionJobInput): Promise<FusionJobResu
   // `singlePerson` doc comment.
   const solo = await generateSoloPart({ photos: photoA, templateImage, prompt: togetherPrompt, seed, retrySeedOffset: 303, styleKey, provider, singlePerson: subjectMode === 'SOLO' });
 
-  return { seed, together: await uploadResult({ userId, generationId, suffix: '', result: solo }) };
+  return { seed, enhancedDescription, together: await uploadResult({ userId, generationId, suffix: '', result: solo }) };
 }

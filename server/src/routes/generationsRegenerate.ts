@@ -148,7 +148,9 @@ generationsRegenerateRouter.post('/generations/:id/regenerate', requireUser, asy
     const seed = baseSeed + 400 + Math.floor(Math.random() * 100);
 
     const effectiveDescription = [
-      generation.description,
+      // The scene the ORIGINAL job actually used (an enhanced version of a short idea, if it was enhanced) so this one image stays
+      // in the same scene family as its siblings; the raw description otherwise.
+      generation.sceneDescription ?? generation.description,
       customPrompt
         ? `[USER REFINEMENT EDIT: "${customPrompt}". Lock theme/style to "${generation.styleKey}". Keep original scene lighting and quality high while updating clothing, dress, expression, or section details as specified.]`
         : null,

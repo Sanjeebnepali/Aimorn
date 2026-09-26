@@ -223,6 +223,7 @@ generationsRouter.post('/generations', requireUser, asyncHandler(async (req, res
           outputKey: job.together.key,
           outputKeyA: job.a?.key,
           outputKeyB: job.b?.key,
+          sceneDescription: job.enhancedDescription ?? null,
           seed: job.seed,
           provider: job.together.provider,
           model: job.together.model,

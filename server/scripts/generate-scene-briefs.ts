@@ -18,6 +18,7 @@ import { GoogleGenAI } from '@google/genai';
 
 import { env } from '../src/env.js';
 import { templateImageFor } from '../src/data/templateImages.js';
+import { IDENTITY_WORDS } from '../src/lib/identityWords.js';
 
 const TEMPLATE_IDS = [
   'goldenHour', 'cityLights', 'firstDance', 'beachSunset', 'rooftopNight', 'cherryBlossom',
@@ -28,11 +29,6 @@ const BRIEF_PROMPT = `Write a SCENE BRIEF describing this photo's LOOK so a diff
 
 // Words that would leak a stand-in's identity into the brief. Word-boundary
 // matched so legit terms like "bangles" or "surface" are not flagged.
-// Body/identity descriptions are flagged; garment details are not. "slim black tie" / "slim trousers"
-// describe clothing (a real false positive we hit), so body-shape adjectives are only flagged when they
-// describe a person: followed by a body/person noun ("slim build", "athletic woman").
-const IDENTITY_WORDS = /\b(hair|hairstyle|face|faces|skin|eyes|brunette|blonde|redhead|bangs|curly|wavy|complexion|beard|mustache|moustache|ethnicity|young|elderly|teen|teenage)\b|\b(slim|slender|petite|curvy|muscular|athletic|stocky|heavyset|tall|short)\s+(build|figure|frame|body|physique|woman|man|person|model|waist|torso)\b/gi;
-
 /** The model sometimes wraps the brief in markdown or a title; the brief is
  * prompt material, so strip that. */
 const tidy = (text: string) => text.split('**').join('').replace(/^\s*#*\s*SCENE BRIEF:?\s*/i, '').split(/\s+/).join(' ').trim();
