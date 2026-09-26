@@ -159,9 +159,16 @@ generationsRegenerateRouter.post('/generations/:id/regenerate', requireUser, asy
     let result;
     if (part === 'together') {
       if (generation.subjectMode === 'COUPLE' && photoB) {
+        // Same chaining as a fresh job (generationJob.ts explains the measurement): with no template photo, build the
+        // together shot from the CURRENT solo portraits, not the raw uploads. Skipped if the user replaced a person's
+        // photo for this regenerate — an explicit new photo should be used as given.
+        const chain =
+          !templateImage && generation.outputKeyA && generation.outputKeyB && !overridePhotoAKey && !overridePhotoBKey
+            ? await Promise.all([loadPersonPhotos([generation.outputKeyA]), loadPersonPhotos([generation.outputKeyB])])
+            : null;
         result = await generateTogetherPart({
-          photoA,
-          photoB,
+          photoA: chain ? chain[0] : photoA,
+          photoB: chain ? chain[1] : photoB,
           templateImage,
           templateId: generation.templateId ?? undefined,
           styleKey: generation.styleKey,

@@ -150,11 +150,41 @@ export async function runFusionJob(input: FusionJobInput): Promise<FusionJobResu
       photoACount: photoB.length,
     });
 
-    const [together, a, b] = await Promise.all([
-      generateTogetherPart({ photoA, photoB, templateImage, templateId, styleKey, description, seed, provider, sceneBrief }),
-      generateSoloPart({ photos: photoA, templateImage, prompt: soloPromptA, seed, retrySeedOffset: 101, styleKey, provider, singlePerson: true }),
-      generateSoloPart({ photos: photoB, templateImage, prompt: soloPromptB, seed, retrySeedOffset: 202, styleKey, provider, singlePerson: true }),
-    ]);
+    const soloA = () => generateSoloPart({ photos: photoA, templateImage, prompt: soloPromptA, seed, retrySeedOffset: 101, styleKey, provider, singlePerson: true });
+    const soloB = () => generateSoloPart({ photos: photoB, templateImage, prompt: soloPromptB, seed, retrySeedOffset: 202, styleKey, provider, singlePerson: true });
+
+    let together: FusionOutput;
+    let a: FusionOutput;
+    let b: FusionOutput;
+    if (templateImage) {
+      // Exact-template mode keeps its own together flow (a template composite); unchanged.
+      [together, a, b] = await Promise.all([
+        generateTogetherPart({ photoA, photoB, templateImage, templateId, styleKey, description, seed, provider, sceneBrief }),
+        soloA(),
+        soloB(),
+      ]);
+    } else {
+      // CHAINED together shot (plain and v2 modes — no template photo). The two solo portraits go first and are verified
+      // as before; the couple photo is then built from THOSE portraits instead of the raw uploads. Measured on a real
+      // device job (2026-09-26): with raw uploads the same person's face drifted from image to image (and one woman got
+      // an invented bindi); with the verified solos as references the man's face was closer to his real photo in 12/16
+      // pairwise comparisons and closer to his own solo in 16/16, and the faces held steady across attempts. The raw
+      // photos are often poor references (screenshots, filters, wide-angle selfies); the solos are clean, front-facing
+      // portraits of the same person. Cost is unchanged (still 3 images); latency roughly doubles for the together shot
+      // because it now waits for the solos.
+      [a, b] = await Promise.all([soloA(), soloB()]);
+      together = await generateTogetherPart({
+        photoA: [{ bytes: a.imageBytes, mimeType: a.mimeType }],
+        photoB: [{ bytes: b.imageBytes, mimeType: b.mimeType }],
+        templateImage,
+        templateId,
+        styleKey,
+        description,
+        seed,
+        provider,
+        sceneBrief,
+      });
+    }
 
     const [uploadedTogether, uploadedA, uploadedB] = await Promise.all([
       uploadResult({ userId, generationId, suffix: '', result: together }),
