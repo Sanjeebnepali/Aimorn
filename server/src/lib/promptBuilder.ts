@@ -289,18 +289,25 @@ export function buildAdditionalNoteLine(description: string | undefined): string
  * that file (split out 2026-09-12 to keep this one under the workspace's
  * 350-line module cap) can reuse it instead of duplicating it. */
 export function buildFormatLine(subjectMode: PromptInput['subjectMode']): string {
+  // Deliberately says NOTHING about clocks, widgets, the "9:16" ratio, numbers,
+  // or text — reworded 2026-09-26 after fake lock-screen clocks kept appearing
+  // in generated images: a literal "9:16" in the sky (2 of 6 verification
+  // images), then — after a first fix that added "do NOT render any clock" —
+  // TWO drawn analog clock faces in a real regenerated image. The old wording
+  // ("headroom for smartphone lock-screen clock widgets", next to "9:16",
+  // which itself reads as a time) named the exact thing we didn't want, and a
+  // negation of it only named it again. The aspect ratio doesn't need to be in
+  // the prompt at all: nanoBanana.ts enforces it via imageConfig.aspectRatio.
+  // So this only describes the composition we DO want, positively.
   const wallpaperFraming =
-    // The "leave that headroom empty" clause was added 2026-09-26: the
-    // clock-widget wording alone made the model draw a literal fake lock-
-    // screen clock ("9:16") into the sky in 2 of 6 real verification images.
-    'VERTICAL 9:16 PHONE WALLPAPER COMPOSITION — frame the subject aesthetically in the upper 75% of the screen with balanced headroom for smartphone lock-screen clock widgets. Leave that headroom as plain sky/background: do NOT render any clock, time, numbers, text, watermark, logo, or UI elements anywhere in the image.';
+    'VERTICAL PHONE WALLPAPER COMPOSITION — frame the subject aesthetically with balanced, calm, uncluttered headroom above them (plain natural sky or soft background).';
   const whoLine =
     subjectMode === 'COUPLE'
       ? 'both people fully visible in an intimate, aesthetic couple wallpaper pose'
       : subjectMode === 'GROUP'
         ? 'everyone in the group fully visible, naturally arranged together in one wallpaper shot'
         : 'ONLY this one person fully visible, alone in the frame, in a stylish, photorealistic solo wallpaper pose';
-  return `Compose as a premium 9:16 mobile wallpaper, ${whoLine}, consistent lighting across the image. ${wallpaperFraming}`;
+  return `Compose as a premium vertical mobile wallpaper, ${whoLine}, consistent lighting across the image. ${wallpaperFraming}`;
 }
 
 /**
