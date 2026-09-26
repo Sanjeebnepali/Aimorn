@@ -12,6 +12,7 @@ import { NanoBananaProvider } from '../lib/ai/nanoBanana.js';
 import type { ImageFusionProvider } from '../lib/ai/provider.js';
 import { asyncHandler } from '../lib/asyncHandler.js';
 import { userSafeMessage } from '../lib/generationErrors.js';
+import { templateModeFor } from '../lib/templateMode.js';
 
 export const generationsRouter = Router();
 
@@ -61,6 +62,8 @@ const createSchema = z
     // "the description fully controls pose/outfit" would undermine the
     // identity-fidelity guarantees those modes are actually built on.
     freeform: z.boolean().optional(),
+    // Optional explicit template pipeline (lib/templateMode.ts). Omitted = the server decides, so today's app is unaffected.
+    templateMode: z.enum(['exact', 'inspired']).optional(),
   })
   .refine((v) => v.subjectMode !== 'COUPLE' || !!v.photoBKeys?.length, {
     message: 'photoBKeys is required when subjectMode is COUPLE',
@@ -209,6 +212,7 @@ generationsRouter.post('/generations', requireUser, asyncHandler(async (req, res
       photoBKeys: input.photoBKeys,
       provider,
       freeform: input.freeform,
+      templateMode: templateModeFor(userId, input.templateMode),
     });
 
     const updated = await db.$transaction([

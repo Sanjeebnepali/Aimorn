@@ -63,6 +63,9 @@ const envSchema = z.object({
   // what decides whether a generation ships, so it gets the stronger model;
   // it's still a per-token text call, a small fraction of one image's cost.
   GEMINI_JUDGE_MODEL: z.string().default('gemini-3.8-flash'),
+  // Which template pipeline runs (lib/templateMode.ts): 'exact' = today's same-frame photo edit, 'inspired' =
+  // the v2 scene-brief mode. Default 'exact' so nothing changes for live users until this is flipped.
+  TEMPLATE_MODE: z.enum(['exact', 'inspired']).default('exact'),
 
   // Hugging Face Inference Providers — a free, fine-grained token scoped to
   // "Make calls to Inference Providers" only (huggingface.co/settings/tokens).

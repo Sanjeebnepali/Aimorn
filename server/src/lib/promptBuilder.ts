@@ -1,6 +1,7 @@
 import { buildTemplateEditPrompt } from './promptTemplateEdit.js';
 import { buildGroupScenePrompt } from './promptGroup.js';
 import { buildFreeformScenePrompt } from './promptFreeform.js';
+import { buildSceneBriefPrompt } from './promptSceneBrief.js';
 
 // Re-exported for generationJob.ts's existing `from './promptBuilder.js'`
 // import — moving the functions themselves to promptTemplateEdit.ts
@@ -68,6 +69,11 @@ export type PromptInput = {
    * grow a third, structurally different case).
    */
   groupPhotoCount?: number;
+  /**
+   * The v2 "inspired-by" template mode (promptSceneBrief.ts): a text brief of the template's look (data/sceneBriefs.ts).
+   * When set, the template PHOTO is not attached at all and this takes over the whole prompt. Never set for GROUP.
+   */
+  sceneBrief?: string;
 };
 
 const ORDINALS = ['first', 'second', 'third', 'fourth', 'fifth', 'sixth', 'seventh', 'eighth', 'ninth'];
@@ -328,6 +334,9 @@ export function buildFormatLine(subjectMode: PromptInput['subjectMode']): string
  * Cartoon Us).
  */
 export function buildFusionPrompt(input: PromptInput): string {
+  if (input.sceneBrief && input.subjectMode !== 'GROUP') {
+    return buildSceneBriefPrompt({ ...input, sceneBrief: input.sceneBrief });
+  }
   if (input.templateId && input.hasTemplateImage) {
     return buildTemplateEditPrompt(input);
   }

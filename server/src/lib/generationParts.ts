@@ -218,8 +218,11 @@ export async function generateTogetherPart(params: {
   description?: string;
   seed: number;
   provider: ImageFusionProvider;
+  /** v2 scene-brief mode (see promptSceneBrief.ts): the together shot is ONE call from the two people's photos plus this
+   * text, with no template photo. Only meaningful when `templateImage` is undefined. */
+  sceneBrief?: string;
 }): Promise<FusionOutput> {
-  const { photoA, photoB, templateImage, templateId, styleKey, description, seed, provider } = params;
+  const { photoA, photoB, templateImage, templateId, styleKey, description, seed, provider, sceneBrief } = params;
 
   if (!templateImage) {
     const freeformPrompt = buildFusionPrompt({
@@ -228,6 +231,7 @@ export async function generateTogetherPart(params: {
       styleKey,
       description,
       hasTemplateImage: false,
+      sceneBrief,
       photoACount: photoA.length,
       photoBCount: photoB.length,
     });

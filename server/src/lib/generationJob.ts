@@ -1,6 +1,8 @@
 import { putObjectBytes } from './storage.js';
 import { buildFusionPrompt } from './promptBuilder.js';
 import { templateImageFor } from '../data/templateImages.js';
+import { SCENE_BRIEFS } from '../data/sceneBriefs.js';
+import type { TemplateMode } from './templateMode.js';
 import { generateSoloPart, generateTogetherPart, loadPersonPhotos } from './generationParts.js';
 import type { FusionOutput, ImageFusionProvider } from './ai/provider.js';
 
@@ -62,6 +64,9 @@ export type FusionJobInput = {
    * buildFusionPrompt call that can ever actually receive it (the bottom,
    * no-template SOLO branch below; General mode never has a photoB). */
   freeform?: boolean;
+  /** 'inspired' = v2 scene-brief mode (promptSceneBrief.ts): the template PHOTO is never sent, only its text brief.
+   * Resolved by the caller (templateMode.ts). Omitted = 'exact', today's behavior. */
+  templateMode?: TemplateMode;
 };
 
 export type FusionJobResult = {
@@ -90,7 +95,7 @@ export type FusionJobResult = {
  * revisit this without changing what the route returns.
  */
 export async function runFusionJob(input: FusionJobInput): Promise<FusionJobResult> {
-  const { userId, generationId, subjectMode, templateId, styleKey, description, photoAKeys, photoBKeys, provider, freeform } = input;
+  const { userId, generationId, subjectMode, templateId, styleKey, description, photoAKeys, photoBKeys, provider, freeform, templateMode } = input;
 
   const [photoA, photoB] = await Promise.all([
     loadPersonPhotos(photoAKeys),
@@ -110,7 +115,10 @@ export async function runFusionJob(input: FusionJobInput): Promise<FusionJobResu
   // (promptBuilder.ts's template-image branch). undefined for no template,
   // or one with no real photo yet (Cartoon Us) — every buildFusionPrompt/
   // provider.generate call below stays correct either way.
-  const templateImage = templateImageFor(templateId);
+  // v2: with a scene brief for this template, the template photo is withheld entirely (see promptSceneBrief.ts for
+  // why); a template with no brief, GROUP, or 'exact' mode all fall through to today's behavior unchanged.
+  const sceneBrief = templateMode === 'inspired' && subjectMode !== 'GROUP' && templateId ? SCENE_BRIEFS[templateId] : undefined;
+  const templateImage = sceneBrief ? undefined : templateImageFor(templateId);
 
   if (subjectMode === 'COUPLE' && photoB) {
     // Same "solo portrait, this theme/style" instruction shape for both
@@ -129,6 +137,7 @@ export async function runFusionJob(input: FusionJobInput): Promise<FusionJobResu
       styleKey,
       description,
       hasTemplateImage: !!templateImage,
+      sceneBrief,
       photoACount: photoA.length,
     });
     const soloPromptB = buildFusionPrompt({
@@ -137,11 +146,12 @@ export async function runFusionJob(input: FusionJobInput): Promise<FusionJobResu
       styleKey,
       description,
       hasTemplateImage: !!templateImage,
+      sceneBrief,
       photoACount: photoB.length,
     });
 
     const [together, a, b] = await Promise.all([
-      generateTogetherPart({ photoA, photoB, templateImage, templateId, styleKey, description, seed, provider }),
+      generateTogetherPart({ photoA, photoB, templateImage, templateId, styleKey, description, seed, provider, sceneBrief }),
       generateSoloPart({ photos: photoA, templateImage, prompt: soloPromptA, seed, retrySeedOffset: 101, styleKey, provider, singlePerson: true }),
       generateSoloPart({ photos: photoB, templateImage, prompt: soloPromptB, seed, retrySeedOffset: 202, styleKey, provider, singlePerson: true }),
     ]);
@@ -160,6 +170,7 @@ export async function runFusionJob(input: FusionJobInput): Promise<FusionJobResu
     styleKey,
     description,
     hasTemplateImage: !!templateImage,
+    sceneBrief,
     freeform,
     photoACount: photoA.length,
     groupPhotoCount: subjectMode === 'GROUP' ? photoA.length : undefined,

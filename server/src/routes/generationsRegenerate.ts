@@ -13,6 +13,8 @@ import { NanoBananaProvider } from '../lib/ai/nanoBanana.js';
 import type { ImageFusionProvider } from '../lib/ai/provider.js';
 import { asyncHandler } from '../lib/asyncHandler.js';
 import { userSafeMessage } from '../lib/generationErrors.js';
+import { templateModeFor } from '../lib/templateMode.js';
+import { SCENE_BRIEFS } from '../data/sceneBriefs.js';
 
 export const generationsRegenerateRouter = Router();
 
@@ -127,7 +129,11 @@ generationsRegenerateRouter.post('/generations/:id/regenerate', requireUser, asy
       loadPersonPhotos(photoAKeys),
       photoBKeys ? loadPersonPhotos(photoBKeys) : Promise.resolve(undefined),
     ]);
-    const templateImage = templateImageFor(generation.templateId ?? undefined);
+    // Same v2 decision as a fresh job (lib/templateMode.ts). A generation's mode isn't stored, so a regenerated image uses the
+    // mode current for this user, which can differ from the one the original was made in.
+    const sceneBrief =
+      templateModeFor(userId) === 'inspired' && generation.subjectMode !== 'GROUP' && generation.templateId ? SCENE_BRIEFS[generation.templateId] : undefined;
+    const templateImage = sceneBrief ? undefined : templateImageFor(generation.templateId ?? undefined);
 
     // Deliberately perturbed, never the original seed: resending the exact
     // same seed + prompt + photos to the same model risks reproducing the
@@ -162,6 +168,7 @@ generationsRegenerateRouter.post('/generations/:id/regenerate', requireUser, asy
           description: effectiveDescription,
           seed,
           provider,
+          sceneBrief,
         });
       } else {
         const prompt = buildFusionPrompt({
@@ -170,6 +177,7 @@ generationsRegenerateRouter.post('/generations/:id/regenerate', requireUser, asy
           styleKey: generation.styleKey,
           description: effectiveDescription,
           hasTemplateImage: !!templateImage,
+          sceneBrief,
           photoACount: photoA.length,
           groupPhotoCount: generation.subjectMode === 'GROUP' ? photoA.length : undefined,
         });
@@ -194,6 +202,7 @@ generationsRegenerateRouter.post('/generations/:id/regenerate', requireUser, asy
         styleKey: generation.styleKey,
         description: effectiveDescription,
         hasTemplateImage: !!templateImage,
+        sceneBrief,
         photoACount: photos.length,
       });
       // part 'a'/'b' are a couple session's individual portraits — this is
