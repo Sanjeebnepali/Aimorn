@@ -5,6 +5,7 @@ import { reduceEditSeam } from './imagePostProcess.js';
 import { assessGenerationOutput } from './ai/outputQuality.js';
 import { countPeopleInImage } from './ai/personCount.js';
 import { UserFacingError } from './generationErrors.js';
+import { isPhotographicStyle } from '../data/styles.js';
 import { judgeIdentity } from './ai/identityJudge.js';
 import { correctFaceToneAndScale } from './faceGeometry.js';
 import type { TemplateImage } from '../data/templateImages.js';
@@ -122,7 +123,7 @@ export async function generateSoloPart(params: {
   singlePerson?: boolean;
 }): Promise<FusionOutput> {
   const { photos, templateImage, prompt, seed, retrySeedOffset, styleKey, provider, singlePerson } = params;
-  const checkIdentity = !!singlePerson && styleKey === 'realistic';
+  const checkIdentity = !!singlePerson && isPhotographicStyle(styleKey);
 
   // One generate (+ template face/skin correction) attempt.
   const produce = async (attemptSeed: number, attemptPrompt: string): Promise<FusionOutput> => {

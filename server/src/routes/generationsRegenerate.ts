@@ -14,6 +14,7 @@ import type { ImageFusionProvider } from '../lib/ai/provider.js';
 import { asyncHandler } from '../lib/asyncHandler.js';
 import { userSafeMessage } from '../lib/generationErrors.js';
 import { templateModeFor } from '../lib/templateMode.js';
+import { resolveLook } from '../lib/styleLook.js';
 import { sceneBriefFor } from '../lib/sceneBrief.js';
 
 export const generationsRegenerateRouter = Router();
@@ -131,9 +132,10 @@ generationsRegenerateRouter.post('/generations/:id/regenerate', requireUser, asy
     ]);
     // Same v2 decision as a fresh job (lib/templateMode.ts). A generation's mode isn't stored, so a regenerated image uses the
     // mode current for this user, which can differ from the one the original was made in.
-    const sceneBrief =
-      templateModeFor(userId) === 'inspired' && generation.subjectMode !== 'GROUP' ? sceneBriefFor(generation.templateId ?? undefined) : undefined;
-    const templateImage = sceneBrief ? undefined : templateImageFor(generation.templateId ?? undefined);
+    // The 'K-Pop' style resolves to the K-pop look exactly as in a fresh job (lib/styleLook.ts); everything below uses `look`.
+    const look = resolveLook({ templateId: generation.templateId ?? undefined, styleKey: generation.styleKey, templateMode: templateModeFor(userId), subjectMode: generation.subjectMode });
+    const sceneBrief = look.templateMode === 'inspired' && generation.subjectMode !== 'GROUP' ? sceneBriefFor(look.templateId) : undefined;
+    const templateImage = sceneBrief ? undefined : templateImageFor(look.templateId);
 
     // Deliberately perturbed, never the original seed: resending the exact
     // same seed + prompt + photos to the same model risks reproducing the
@@ -172,8 +174,8 @@ generationsRegenerateRouter.post('/generations/:id/regenerate', requireUser, asy
           photoA: chain ? chain[0] : photoA,
           photoB: chain ? chain[1] : photoB,
           templateImage,
-          templateId: generation.templateId ?? undefined,
-          styleKey: generation.styleKey,
+          templateId: look.templateId,
+          styleKey: look.styleKey,
           description: effectiveDescription,
           seed,
           provider,
@@ -182,8 +184,8 @@ generationsRegenerateRouter.post('/generations/:id/regenerate', requireUser, asy
       } else {
         const prompt = buildFusionPrompt({
           subjectMode: generation.subjectMode,
-          templateId: generation.templateId ?? undefined,
-          styleKey: generation.styleKey,
+          templateId: look.templateId,
+          styleKey: look.styleKey,
           description: effectiveDescription,
           hasTemplateImage: !!templateImage,
           sceneBrief,
@@ -196,7 +198,7 @@ generationsRegenerateRouter.post('/generations/:id/regenerate', requireUser, asy
           prompt,
           seed,
           retrySeedOffset: 1,
-          styleKey: generation.styleKey,
+          styleKey: look.styleKey,
           provider,
           // Same rule as generationJob.ts: only a real SOLO is exactly one
           // person; GROUP's headcount is N, so it skips the gate.
@@ -207,8 +209,8 @@ generationsRegenerateRouter.post('/generations/:id/regenerate', requireUser, asy
       const photos = part === 'a' ? photoA : (photoB as NonNullable<typeof photoB>);
       const prompt = buildFusionPrompt({
         subjectMode: 'SOLO',
-        templateId: generation.templateId ?? undefined,
-        styleKey: generation.styleKey,
+        templateId: look.templateId,
+        styleKey: look.styleKey,
         description: effectiveDescription,
         hasTemplateImage: !!templateImage,
         sceneBrief,
@@ -222,7 +224,7 @@ generationsRegenerateRouter.post('/generations/:id/regenerate', requireUser, asy
         prompt,
         seed,
         retrySeedOffset: 1,
-        styleKey: generation.styleKey,
+        styleKey: look.styleKey,
         provider,
         singlePerson: true,
       });

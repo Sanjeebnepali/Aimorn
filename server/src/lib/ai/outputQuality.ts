@@ -1,7 +1,7 @@
 import { GoogleGenAI } from '@google/genai';
 
 import { env } from '../../env.js';
-import { stylePromptFor } from '../../data/styles.js';
+import { isPhotographicStyle, stylePromptFor } from '../../data/styles.js';
 
 /**
  * Builds the checker prompt with the ACTUAL requested style named up front —
@@ -28,7 +28,7 @@ import { stylePromptFor } from '../../data/styles.js';
  * shipping whichever style the model felt like that call.
  */
 function buildOutputQualityPrompt(styleKey: string): string {
-  const isRealistic = styleKey === 'realistic';
+  const isRealistic = isPhotographicStyle(styleKey);
   const styleDescription = stylePromptFor(styleKey);
   const styleContextLine = isRealistic
     ? 'The requested rendering style for this generation is photorealistic — it should look like a real, unedited photograph.'

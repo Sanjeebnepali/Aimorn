@@ -3,6 +3,7 @@ import { buildFusionPrompt } from './promptBuilder.js';
 import { templateImageFor } from '../data/templateImages.js';
 import { sceneBriefFor } from './sceneBrief.js';
 import { enhanceScene } from './promptEnhancer.js';
+import { resolveLook } from './styleLook.js';
 import type { TemplateMode } from './templateMode.js';
 import { generateSoloPart, generateTogetherPart, loadPersonPhotos } from './generationParts.js';
 import type { FusionOutput, ImageFusionProvider } from './ai/provider.js';
@@ -98,7 +99,10 @@ export type FusionJobResult = {
  * revisit this without changing what the route returns.
  */
 export async function runFusionJob(input: FusionJobInput): Promise<FusionJobResult> {
-  const { userId, generationId, subjectMode, templateId, styleKey, description: rawDescription, photoAKeys, photoBKeys, provider, freeform, templateMode } = input;
+  const { userId, generationId, subjectMode, description: rawDescription, photoAKeys, photoBKeys, provider, freeform } = input;
+  // The 'K-Pop' style is resolved into the K-pop look FIRST, because everything below (enhancer, scene brief, identity check) keys off
+  // the resolved template/style/mode.
+  const { templateId, styleKey, templateMode } = resolveLook({ templateId: input.templateId, styleKey: input.styleKey, templateMode: input.templateMode, subjectMode });
 
   // Plain Generate mode only (no template, not the General mode whose description already has full creative authority,
   // not GROUP): a short idea is expanded into a richer scene. Runs IN PARALLEL with loading the photos so the ~4s text call
