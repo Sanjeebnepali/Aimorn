@@ -40,5 +40,12 @@ export const SINGLE_PERSON_RETRY_NOTE =
 export const COUPLE_PEOPLE_RETRY_NOTE =
   'CORRECTION: a previous attempt at this exact request showed the wrong number of people. This image must contain exactly TWO people — Person 1 and Person 2 from the reference photos, together — and nobody else anywhere in the frame.';
 
+/** Appended on a retry after identityJudge.ts found the result showed the
+ * template's placeholder model (or someone else) instead of the reference
+ * person — a retry with only a new seed can reproduce the same miss, so the
+ * retry names the exact failure. */
+export const IDENTITY_RETRY_NOTE =
+  "CORRECTION: a previous attempt at this exact request FAILED because the person shown was NOT the person in the reference photos — it kept a stock/placeholder model's face and hair instead. The result must show the reference photos' person: their exact face AND hair (color, length, style), completely replacing whoever was there before. Do not keep any part of the placeholder's face or hairstyle.";
+
 export const EQUAL_CAMERA_DISTANCE_HARD_CONSTRAINT =
   'HARD CONSTRAINT — EQUAL CAMERA DISTANCE & RELATIVE HEAD SCALE MATCH: Both people in the couple are standing side-by-side at the EXACT SAME DISTANCE from the camera lens. Even if one attached reference photo is a close-up selfie (large face in frame) and the other reference photo is a full-body back-camera photo (smaller face in frame), DO NOT render one person as a titan, giant, or larger relative to the other. Normalize both people\'s head heights, face widths, and body proportions to be anatomically equal and proportional to each other (male head size should be at most 1.05x to 1.08x the female head size, NEVER a titan or giant face). Both people MUST share the exact same camera scale and perspective.';

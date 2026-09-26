@@ -1,9 +1,10 @@
 import { getObjectBytes } from './storage.js';
 import { buildTemplateCompositePrompt, buildTemplateFaceSwapPrompt, buildFusionPrompt } from './promptBuilder.js';
-import { COUPLE_PEOPLE_RETRY_NOTE, SINGLE_PERSON_RETRY_NOTE } from './promptQualityConstraints.js';
+import { COUPLE_PEOPLE_RETRY_NOTE, IDENTITY_RETRY_NOTE, SINGLE_PERSON_RETRY_NOTE } from './promptQualityConstraints.js';
 import { reduceEditSeam } from './imagePostProcess.js';
 import { assessGenerationOutput } from './ai/outputQuality.js';
 import { countPeopleInImage } from './ai/personCount.js';
+import { judgeIdentity } from './ai/identityJudge.js';
 import { correctFaceToneAndScale } from './faceGeometry.js';
 import type { TemplateImage } from '../data/templateImages.js';
 import type { FusionOutput, ImageFusionProvider } from './ai/provider.js';
@@ -66,43 +67,63 @@ async function ensureHeadcount(params: {
   throw new Error(failureMessage);
 }
 
+/** Hard failures (wrong person / wrong headcount) keep retrying up to this many
+ * total attempts and then FAIL the job; soft failures get one retry only. 3
+ * balances "a stochastic generator usually lands within a couple of tries"
+ * against cost: every extra attempt is another paid image call, and the job
+ * is only charged to the user on success. */
+const MAX_SOLO_ATTEMPTS = 3;
+
 /**
  * One person's solo portrait: generate → (if templated) correct face tone/
- * scale → verify via assessGenerationOutput → retry once with a perturbed
- * seed if that check failed → (if `singlePerson`) verify the headcount. Used for COUPLE's two solo portraits, for a plain SOLO
- * generation, and for GROUP (whose "prompt" already encodes all N people via
- * promptGroup.ts — this function doesn't need to know GROUP exists, it just
- * runs whatever prompt it's handed against whatever photos it's handed).
- * `photos` is deliberately generic ("this call's own subject", not always
- * literally "You") so the same function serves photoA, photoB, or a
- * solo/group photoA with no partner at all.
+ * scale → EVALUATE → retry with a correction note until it passes → or fail.
+ *
+ * Rewritten 2026-09-26 (identity reliability). It used to generate, run one
+ * fuzzy quality check, retry ONCE if that failed, and ship the retry
+ * UNCHECKED — so a result that kept the template's stock model instead of
+ * the user (reproduced 3/3 with a screenshot reference, and hit live) went
+ * out the door whenever the retry was also wrong. Now every attempt is
+ * evaluated the same way and nothing that fails a HARD check ships:
+ *   - identity (ai/identityJudge.ts): is the person the reference, or the
+ *     template's placeholder? Only for realistic styles — a stylized result
+ *     legitimately doesn't resemble a photograph — and only when
+ *     `singlePerson`, since GROUP's `photos` are different people.
+ *   - headcount (ai/personCount.ts): exactly one person.
+ *   - soft (ai/outputQuality.ts, templated only): accessories, anatomy, skin
+ *     tone, hair color. Keeps its old semantics — one retry, then ship.
+ * If no attempt passes the hard checks the job throws; both callers (POST
+ * /generations, the regenerate route) charge credits only AFTER this
+ * returns, so a failed job costs the user nothing.
+ *
+ * Also used for GROUP (whose "prompt" already encodes all N people via
+ * promptGroup.ts — this function doesn't need to know GROUP exists; it just
+ * skips the person-specific checks). `photos` is deliberately generic
+ * ("this call's own subject", not always literally "You").
  */
 export async function generateSoloPart(params: {
   photos: PersonPhotos;
   templateImage: TemplateImage | undefined;
   prompt: string;
   seed: number;
-  /** Added to `seed` for the one retry attempt — callers pass a different
-   * offset per call-site (101/202/303 in the original code) purely so two
-   * concurrent solo calls sharing a base seed don't retry onto the SAME
-   * perturbed seed as each other by coincidence. Cosmetic, not load-bearing. */
+  /** Base for the perturbed seed of each retry — callers pass a different
+   * offset per call-site (101/202/303) purely so two concurrent solo calls
+   * sharing a base seed don't retry onto the SAME seed as each other by
+   * coincidence. Cosmetic, not load-bearing. */
   retrySeedOffset: number;
   styleKey: string;
   provider: ImageFusionProvider;
   /** True for every real solo portrait (COUPLE's two solos, a plain SOLO):
-   * the finished image must show exactly one person. A caller-supplied flag
-   * rather than always-on because this same function also serves GROUP,
-   * where the right headcount is N and this check must NOT run — a boolean
-   * (not a free-form count) because the retry's correction note
-   * (SINGLE_PERSON_RETRY_NOTE) is only correct for "exactly one." Omitted =
-   * no headcount check, same as before this option existed. */
+   * exactly one person, and `photos` are all angles of that one person. A
+   * caller-supplied flag rather than always-on because this function also
+   * serves GROUP, where the right headcount is N and the reference photos are
+   * different people — the person-specific checks must NOT run there. Omitted
+   * = no headcount or identity check. */
   singlePerson?: boolean;
 }): Promise<FusionOutput> {
   const { photos, templateImage, prompt, seed, retrySeedOffset, styleKey, provider, singlePerson } = params;
+  const checkIdentity = !!singlePerson && styleKey === 'realistic';
 
-  // One generate (+ template face/skin correction) attempt, factored out so
-  // the quality-check retry and the headcount retry below both rerun exactly
-  // the same steps with only the seed/prompt changed.
+  // One generate (+ template face/skin correction) attempt.
   const produce = async (attemptSeed: number, attemptPrompt: string): Promise<FusionOutput> => {
     const res = await provider.generate({ photoA: photos, templateImage, prompt: attemptPrompt, seed: attemptSeed });
     if (!templateImage) return res;
@@ -114,33 +135,70 @@ export async function generateSoloPart(params: {
     return { ...res, imageBytes: corrected.imageBytes };
   };
 
-  let result = await produce(seed, prompt);
+  // Runs every applicable check IN PARALLEL (they're independent, cheap
+  // vision calls) and reports which kinds failed.
+  const evaluate = async (candidate: FusionOutput) => {
+    const [identity, count, soft] = await Promise.all([
+      checkIdentity
+        ? judgeIdentity({ referencePhotos: photos, templateImage, resultBytes: candidate.imageBytes, resultMimeType: candidate.mimeType })
+        : Promise.resolve(null),
+      singlePerson ? countPeopleInImage(candidate.imageBytes, candidate.mimeType) : Promise.resolve(null),
+      // Templated-only, exactly as before: a plain freeform result has never
+      // gone through this, and enabling it would add paid retries.
+      templateImage
+        ? assessGenerationOutput({ resultBytes: candidate.imageBytes, resultMimeType: candidate.mimeType, referencePhotos: photos, styleKey })
+        : Promise.resolve(null),
+    ]);
+    return {
+      // 'unknown' (judge itself failed) and a null count deliberately pass.
+      wrongPerson: identity && (identity.verdict === 'placeholder' || identity.verdict === 'neither') ? identity : null,
+      wrongHeadcount: count !== null && count !== 1 ? count : null,
+      softFail: soft && !soft.ok ? soft.reason : null,
+    };
+  };
 
-  // Fidelity check is templated-only, exactly as before this refactor: a
-  // plain freeform result has never gone through assessGenerationOutput, and
-  // turning it on there would add paid retries the user never asked for.
-  if (templateImage) {
-    const check = await assessGenerationOutput({
-      resultBytes: result.imageBytes,
-      resultMimeType: result.mimeType,
-      referencePhotos: photos,
-      styleKey,
-    });
-    if (!check.ok) {
-      console.warn(`Solo quality check failed (${check.reason}) — retrying once with perturbed seed.`);
-      result = await produce(seed + retrySeedOffset, prompt);
+  const notes: string[] = [];
+  let softOnlyFallback: FusionOutput | undefined;
+  let sawWrongPerson = false;
+
+  for (let attempt = 0; attempt < MAX_SOLO_ATTEMPTS; attempt++) {
+    // A different, well-separated seed per attempt: resending the same seed
+    // with a near-identical prompt risks reproducing the exact same failure.
+    const attemptSeed = attempt === 0 ? seed : seed + retrySeedOffset + attempt * 5000;
+    const candidate = await produce(attemptSeed, notes.length ? `${prompt} ${notes.join(' ')}` : prompt);
+    const verdict = await evaluate(candidate);
+
+    if (verdict.wrongPerson) {
+      sawWrongPerson = true;
+      console.warn(`Solo identity check failed on attempt ${attempt + 1}/${MAX_SOLO_ATTEMPTS} (${verdict.wrongPerson.verdict}: ${verdict.wrongPerson.reason}).`);
+      if (!notes.includes(IDENTITY_RETRY_NOTE)) notes.push(IDENTITY_RETRY_NOTE);
+    }
+    if (verdict.wrongHeadcount !== null) {
+      console.warn(`Solo headcount check failed on attempt ${attempt + 1}/${MAX_SOLO_ATTEMPTS} (expected 1, saw ${verdict.wrongHeadcount}).`);
+      if (!notes.includes(SINGLE_PERSON_RETRY_NOTE)) notes.push(SINGLE_PERSON_RETRY_NOTE);
+    }
+
+    if (!verdict.wrongPerson && verdict.wrongHeadcount === null) {
+      if (!verdict.softFail) return candidate;
+      // Right person, right headcount, but a cosmetic defect: old semantics —
+      // one retry allowed, then ship what we have rather than fail a job over
+      // a cosmetic issue.
+      console.warn(`Solo quality check failed on attempt ${attempt + 1} (${verdict.softFail}).`);
+      if (attempt >= 1) return candidate;
+      softOnlyFallback = candidate;
     }
   }
 
-  if (!singlePerson) return result;
-  return ensureHeadcount({
-    result,
-    expected: 1,
-    // A different offset than the fidelity retry above (+5000), so a job
-    // that already burned that retry doesn't land on the same seed again.
-    retry: () => produce(seed + retrySeedOffset + 5000, `${prompt} ${SINGLE_PERSON_RETRY_NOTE}`),
-    failureMessage: "We couldn't get a clean single-person portrait this time. You weren't charged — please try again.",
-  });
+  // No attempt passed every hard check. A cosmetic-only earlier attempt is
+  // still a correct-person, correct-headcount image, so prefer shipping that
+  // over failing; otherwise fail the job (nothing is charged on failure).
+  if (softOnlyFallback) return softOnlyFallback;
+  console.error(`Solo generation failed all ${MAX_SOLO_ATTEMPTS} attempts — failing the job instead of shipping a wrong result.`);
+  throw new Error(
+    sawWrongPerson
+      ? "We couldn't match your photo closely enough this time. Try a clearer, front-facing photo (no screenshots or heavy filters). You weren't charged."
+      : "We couldn't get a clean single-person portrait this time. You weren't charged — please try again.",
+  );
 }
 
 /**

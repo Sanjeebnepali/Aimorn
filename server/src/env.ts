@@ -53,6 +53,16 @@ const envSchema = z.object({
   // on exactly this kind of error, so the gate silently no-op'd rather than
   // breaking generation — confirmed live 2026-09-12 before this fix.
   GEMINI_VISION_MODEL: z.string().default('gemini-3.5-flash-lite'),
+  // The model behind lib/ai/identityJudge.ts — the forced-choice "is the
+  // result the reference person or the template's placeholder?" verifier
+  // added 2026-09-26. Deliberately NOT GEMINI_VISION_MODEL: measured on 8
+  // hand-labeled real results x 3 runs each, gemini-3.8-flash agreed with the
+  // human label 24/24, while the cheap lite model above wavered on one case
+  // (and, with the original one-line yes/no prompt, confidently PASSED a
+  // result that had kept the template model's face and hair). This gate is
+  // what decides whether a generation ships, so it gets the stronger model;
+  // it's still a per-token text call, a small fraction of one image's cost.
+  GEMINI_JUDGE_MODEL: z.string().default('gemini-3.8-flash'),
 
   // Hugging Face Inference Providers — a free, fine-grained token scoped to
   // "Make calls to Inference Providers" only (huggingface.co/settings/tokens).
