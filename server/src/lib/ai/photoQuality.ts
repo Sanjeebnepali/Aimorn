@@ -9,6 +9,8 @@ Check exactly these things:
 2. hasClearFace: true if there is at least one real human face, reasonably sized in the frame (not a tiny distant figure), with visible facial features.
 3. tooLowQuality: true if the image is so heavily pixelated, compressed, or low-resolution that fine facial detail is lost, independent of blur.
 
+One narrow exception, and it changes NOTHING else above: eyeglasses or sunglasses (even dark or tinted ones) on an otherwise sharp, clearly visible face must never by themselves cause hasClearFace to be false or be cited as the reason — the app reproduces eyewear exactly. Judge blur (check 1) and low quality (check 3) exactly as strictly as you would for a person with no glasses; this exception is only about glasses hiding the eyes.
+
 Respond with ONLY compact JSON, no markdown fences, no explanation outside the JSON: {"blurry": boolean, "hasClearFace": boolean, "tooLowQuality": boolean, "reason": "one short sentence naming the worst issue, or empty string if none"}`;
 
 export type PhotoQualityResult = {
@@ -41,6 +43,14 @@ export type PhotoQualityResult = {
  * off day, which is a strictly worse failure mode for an app people are
  * actually trying to use.
  */
+// The eyeglass/sunglass carve-out in QUALITY_PROMPT's check #2 was added
+// 2026-09-26 after a real on-device test: a clear, sharp selfie of a man in
+// dark tinted aviator glasses was blocked 3 runs out of 3 ("eyes are obscured
+// by dark sunglasses"), while forcing a real generation from that exact photo
+// produced a faithful result — same haircut, face shape, jacket, and the same
+// glasses. The gate was rejecting a photo the generator handles fine, and
+// wearing glasses is common enough that a blanket rejection would lock out a
+// real share of users. Blur and no-face rejections are unchanged.
 export async function assessPhotoQuality(bytes: Buffer, mimeType: string): Promise<PhotoQualityResult> {
   if (!env.GEMINI_API_KEY) return { usable: true, reason: '' };
 
