@@ -16,6 +16,7 @@ import { userSafeMessage } from '../lib/generationErrors.js';
 import { templateModeFor } from '../lib/templateMode.js';
 import { resolveLook } from '../lib/styleLook.js';
 import { sceneBriefFor } from '../lib/sceneBrief.js';
+import { GENERATION_CREDITS, REGENERATE_COUPLE_TOGETHER_CREDITS } from '../lib/creditsConfig.js';
 
 export const generationsRegenerateRouter = Router();
 
@@ -99,13 +100,18 @@ generationsRegenerateRouter.post('/generations/:id/regenerate', requireUser, asy
     return;
   }
 
-  // One image = one credit, the same real cost a SOLO generation charges —
-  // regardless of which slot (together/a/b) is being redone, it's still
-  // exactly one paid Gemini call (plus, for a templated together shot, the
-  // same 2-step composite a fresh one would run). Same self-vs-partner
-  // subsidized-credit resolution as generations.ts's own POST, so a
-  // subscribed partner's shared pool still covers this the same way.
-  const creditCost = 1;
+  // See creditsConfig.ts's GENERATION_CREDITS doc comment for why this
+  // branches on subjectMode FIRST, not just `part`: 'together' is a slot
+  // name, not a mode — it's also the only slot a plain SOLO or GROUP
+  // generation has, so it must NOT always mean "the expensive couple
+  // composite". Same self-vs-partner subsidized-credit resolution as
+  // generations.ts's own POST, so a subscribed partner's shared pool still
+  // covers this the same way.
+  const creditCost = generation.subjectMode === 'COUPLE'
+    ? (part === 'together' ? REGENERATE_COUPLE_TOGETHER_CREDITS : GENERATION_CREDITS.SOLO)
+    : generation.subjectMode === 'GROUP'
+      ? GENERATION_CREDITS.GROUP
+      : GENERATION_CREDITS.SOLO;
   const user = (await db.user.findUniqueOrThrow({ where: { id: userId }, include: { partner: true } })) as any;
   const isSelfSubscribed = !!(user.subscriptionTier && user.subscriptionTier !== 'FREE' &&
     (!user.subscriptionExpiresAt || new Date(user.subscriptionExpiresAt) > new Date()));

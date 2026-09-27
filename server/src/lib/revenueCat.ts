@@ -4,6 +4,7 @@ import {
   CREDIT_PACKS,
   SUBSCRIPTION_PLANS,
   REVENUECAT_PRODUCT_MAP,
+  toBaseProductId,
   type RevenueCatProductId,
 } from './creditsConfig.js';
 
@@ -50,7 +51,11 @@ export async function applyPurchase(params: {
    * grace period. */
   expiresAt?: Date;
 }): Promise<{ creditsGranted: number; alreadyProcessed: boolean }> {
-  const mapping = REVENUECAT_PRODUCT_MAP[params.productId as RevenueCatProductId] as
+  // Normalized once here so every caller (webhook, /iap/sync) gets Google's
+  // "<sub>:<basePlan>" ids handled the same way, and the id stored in
+  // ProcessedPurchase below is the same bare id the rest of the app uses.
+  const productId = toBaseProductId(params.productId);
+  const mapping = REVENUECAT_PRODUCT_MAP[productId as RevenueCatProductId] as
     | (typeof REVENUECAT_PRODUCT_MAP)[RevenueCatProductId]
     | undefined;
   if (!mapping) {
@@ -60,6 +65,7 @@ export async function applyPurchase(params: {
     // whole webhook handler down for every OTHER user's real purchase in
     // the same delivery batch.
     console.error(`RevenueCat: unrecognized product id "${params.productId}" — not in REVENUECAT_PRODUCT_MAP`);
+    // (logs the RAW id on purpose — if it's a new base plan shape we didn't expect, we want to see exactly what arrived)
     return { creditsGranted: 0, alreadyProcessed: false };
   }
 
@@ -76,7 +82,7 @@ export async function applyPurchase(params: {
       data: {
         transactionId: params.transactionId,
         userId: params.userId,
-        productId: params.productId,
+        productId,
         creditsGranted: credits,
       },
     });

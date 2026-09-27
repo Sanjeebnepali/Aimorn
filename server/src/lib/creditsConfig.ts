@@ -34,6 +34,57 @@
 export const ESTIMATED_COST_PER_CREDIT_USD = 0.10;
 export const ESTIMATED_COST_PER_TOGETHER_CREDIT_USD = 0.18;
 
+/**
+ * How many credits one NEW generation costs, by subjectMode — and how many
+ * credits REGENERATING a single already-generated part costs (see
+ * routes/generations.ts and routes/generationsRegenerate.ts, the only two
+ * places that read these). Centralized here (2026-09-28) instead of an
+ * inline ternary in each route, specifically so the price and the real cost
+ * it's covering sit next to each other — the previous inline version had no
+ * link back to the cost-basis comment above it and quietly drifted out of
+ * sync with reality.
+ *
+ * COUPLE moved from 3 credits to 6 after a real worst-case check (2026-09-28
+ * session): a templated together shot is genuinely 2 raw model calls
+ * (~$0.178 with the retry rate above) plus two solos (~$0.089 each) = ~$0.356
+ * real cost for one couple session. At 3 credits that's $0.119/credit —
+ * ABOVE what the Mega pack and both subscription tiers actually clear per
+ * credit (worked example: 1000 Mega-pack buyers who each spend their whole
+ * 150 credits on templated couple photos would net the business roughly
+ * -$810; 1000 monthly subscribers doing the same, roughly -$830). At 6
+ * credits the real cost drops to ~$0.059/credit, safely under every tier's
+ * per-credit revenue.
+ *
+ * SOLO/GROUP were already comfortably profitable at their old prices (a
+ * solo's ~$0.089 real cost is under even the Mega pack's worst per-credit
+ * rate) — doubled anyway per an explicit ask, so every tier moves by the
+ * same 2x factor and the whole scale stays simple to reason about (1:2:3
+ * ratio preserved, just at double the old numbers). This is extra safety
+ * margin, not a cost-driven necessity for these two.
+ *
+ * REGENERATE pricing mirrors these exactly, with one real distinction: the
+ * `part` a client sends ('together'/'a'/'b') is really a SLOT name, not a
+ * subjectMode — a plain SOLO or GROUP generation's only image is ALSO
+ * addressed as part='together' (there is no 'a'/'b' for them), so charging
+ * every 'together' regenerate the couple-together rate would silently
+ * overcharge a Solo/Group "Quick Redo" for work it never did. The route
+ * must branch on `generation.subjectMode` first, THEN on `part`:
+ *   - COUPLE + part='together' -> the real 2-step composite -> COUPLE_TOGETHER
+ *   - COUPLE + part='a'|'b'    -> one solo portrait, same real cost as a
+ *                                 fresh SOLO generation -> GENERATION_CREDITS.SOLO
+ *   - GROUP  + part='together' -> the only slot GROUP has -> GENERATION_CREDITS.GROUP
+ *   - SOLO   + part='together' -> the only slot SOLO has -> GENERATION_CREDITS.SOLO
+ */
+export const GENERATION_CREDITS = {
+  SOLO: 2,
+  GROUP: 4,
+  COUPLE: 6,
+} as const;
+
+/** The one regenerate price that ISN'T just a GENERATION_CREDITS lookup —
+ * see the big comment above for why. */
+export const REGENERATE_COUPLE_TOGETHER_CREDITS = 3;
+
 /** Assumed store commission for pricing math below — 15%, not the 30%
  * headline rate, because Apple's and Google's Small Business Program (both
  * one-time and subscription purchases) drops to 15% for any developer under
@@ -154,3 +205,21 @@ export const REVENUECAT_PRODUCT_MAP = {
 >;
 
 export type RevenueCatProductId = keyof typeof REVENUECAT_PRODUCT_MAP;
+
+/**
+ * Strips Google Play's base-plan suffix from a RevenueCat product id.
+ *
+ * Why this exists: on Google Play a subscription is a subscription id PLUS a
+ * base plan, and RevenueCat reports it as `<subscription_id>:<base_plan_id>`
+ * (RevenueCat docs, "Event types and fields" → product_id: "For Google Play
+ * products set up in RevenueCat after February 2023, this identifier has the
+ * format `<subscription_id>:<base_plan_id>`"), e.g. "amora_pro_weekly:weekly".
+ * REVENUECAT_PRODUCT_MAP — and the client's PRODUCT_IDS — are keyed on the
+ * bare subscription id, so without this every Google subscription webhook
+ * would miss the map, log "unrecognized product id", and grant nothing.
+ * One-time products and App Store ids have no ":" so pass through unchanged.
+ */
+export function toBaseProductId(rawProductId: string): string {
+  const colon = rawProductId.indexOf(':');
+  return colon === -1 ? rawProductId : rawProductId.slice(0, colon);
+}

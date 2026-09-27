@@ -5,7 +5,7 @@ import { asyncHandler } from '../lib/asyncHandler.js';
 import { toProfileJson } from './profile.js';
 import { db } from '../lib/db.js';
 import { applyPurchase, fetchSubscriberFromRevenueCat, isRevenueCatConfigured } from '../lib/revenueCat.js';
-import { REVENUECAT_PRODUCT_MAP, type RevenueCatProductId } from '../lib/creditsConfig.js';
+import { REVENUECAT_PRODUCT_MAP, toBaseProductId, type RevenueCatProductId } from '../lib/creditsConfig.js';
 
 export const iapSyncRouter = Router();
 
@@ -42,7 +42,8 @@ iapSyncRouter.post(
     // that was offline through a renewal would otherwise look expired here
     // even though the store already billed it).
     for (const [productId, sub] of Object.entries(subscriber.subscriptions)) {
-      const mapping = REVENUECAT_PRODUCT_MAP[productId as RevenueCatProductId];
+      // toBaseProductId: Google keys can be "<sub>:<basePlan>" (see its doc).
+      const mapping = REVENUECAT_PRODUCT_MAP[toBaseProductId(productId) as RevenueCatProductId];
       if (!mapping || mapping.kind !== 'subscription') continue;
       const expiresAt = sub.expires_date ? new Date(sub.expires_date) : undefined;
       if (expiresAt && expiresAt.getTime() < Date.now()) continue; // lapsed — let expireSubscription (webhook) handle it
@@ -61,7 +62,7 @@ iapSyncRouter.post(
     // prior sync or the webhook is a guaranteed no-op via applyPurchase's
     // idempotency, not re-checked here).
     for (const [productId, purchases] of Object.entries(subscriber.non_subscriptions)) {
-      const mapping = REVENUECAT_PRODUCT_MAP[productId as RevenueCatProductId];
+      const mapping = REVENUECAT_PRODUCT_MAP[toBaseProductId(productId) as RevenueCatProductId];
       if (!mapping || mapping.kind !== 'consumable') continue;
       for (const purchase of purchases) {
         await applyPurchase({ userId, productId, transactionId: purchase.id, isSubscription: false });

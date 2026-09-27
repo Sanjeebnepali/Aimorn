@@ -13,6 +13,7 @@ import type { ImageFusionProvider } from '../lib/ai/provider.js';
 import { asyncHandler } from '../lib/asyncHandler.js';
 import { userSafeMessage } from '../lib/generationErrors.js';
 import { templateModeFor } from '../lib/templateMode.js';
+import { GENERATION_CREDITS } from '../lib/creditsConfig.js';
 
 export const generationsRouter = Router();
 
@@ -133,17 +134,11 @@ generationsRouter.post('/generations', requireUser, asyncHandler(async (req, res
     return;
   }
 
-  // COUPLE is 3 images (together + 2 solos) for one credit-cost decision;
-  // SOLO stays 1. Mirrors the real unit-economics multiplier a 3-image
-  // session actually costs, rather than under-charging couple sessions at
-  // the same price as a single solo image. GROUP (added 2026-09-12) is
-  // still only ONE output image (the user's own explicit choice — just the
-  // group photo, no per-person solos, to keep it fast/cheap), so it isn't
-  // priced by output-image count the way COUPLE is; 2 credits reflects the
-  // real extra AI-side difficulty/retry-risk of fusing 2-4 distinct
-  // identities into one coherent scene instead of one or two, without
-  // charging SOLO-level pricing for a harder task.
-  const creditCost = input.subjectMode === 'COUPLE' ? 3 : input.subjectMode === 'GROUP' ? 2 : 1;
+  // See creditsConfig.ts's GENERATION_CREDITS doc comment for the real
+  // dollar math behind each of these three numbers.
+  const creditCost = input.subjectMode === 'COUPLE' ? GENERATION_CREDITS.COUPLE
+    : input.subjectMode === 'GROUP' ? GENERATION_CREDITS.GROUP
+    : GENERATION_CREDITS.SOLO;
 
   const user = (await db.user.findUniqueOrThrow({
     where: { id: userId },
