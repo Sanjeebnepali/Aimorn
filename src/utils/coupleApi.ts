@@ -43,16 +43,5 @@ export function buildCoupleApi(getToken: GetToken) {
     unlinkCouple(): Promise<void> {
       return getToken().then((token) => request('/couple/unlink', token, { method: 'POST' }));
     },
-    /**
-     * Stub — no server route exists yet (see server/src/routes/couple.ts's
-     * closing comment). Left wired so the UI scaffolding is real, not
-     * pretending to work: this rejects with "Request failed (404)" if
-     * actually called, same as any other unimplemented route would.
-     */
-    reportPartner(reason: string): Promise<void> {
-      return getToken().then((token) =>
-        request('/couple/report', token, { method: 'POST', body: JSON.stringify({ reason }) }),
-      );
-    },
   };
 }

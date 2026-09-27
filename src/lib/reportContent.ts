@@ -25,9 +25,7 @@ export type ReportContext = {
  * posted to a fake `supabase.from('reports').insert(...)` stub — the mock
  * client in the now-deleted `lib/supabase.ts` always returned `{ error: null }`,
  * so every report silently "succeeded" with a ✓ toast and nothing was ever
- * saved anywhere. Real endpoint for the one surface actually wired up today
- * (`couple_partner`) is `POST /couple/report` via `useApi().reportPartner()` —
- * honestly unimplemented server-side (see `server/src/routes/couple.ts`'s
- * closing comment) until a moderation queue exists, so it 404s instead of
- * lying about success.
+ * saved anywhere. Real endpoint as of 2026-09-27 is `POST /reports`
+ * (server routes/reports.ts) via `useApi().submitReport()`, for all three
+ * surfaces below — a real `Report` row is written every time.
  */

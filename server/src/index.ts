@@ -18,6 +18,7 @@ import { iapSyncRouter } from './routes/iapSync.js';
 import { notificationsRouter } from './routes/notifications.js';
 import { postsRouter } from './routes/posts.js';
 import { profileRouter } from './routes/profile.js';
+import { reportsRouter } from './routes/reports.js';
 import { revenueCatWebhookRouter } from './routes/revenueCatWebhook.js';
 import { uploadsRouter } from './routes/uploads.js';
 
@@ -73,6 +74,7 @@ app.use(iapSyncRouter);
 app.use(accountDeleteRouter);
 app.use(adminRouter);
 app.use(notificationsRouter);
+app.use(reportsRouter);
 
 // Catches whatever asyncHandler.ts's per-route wrapping forwards via
 // next(err) — the actual fix for the crash above, at the level it should

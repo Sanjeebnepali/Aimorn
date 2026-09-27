@@ -24,6 +24,7 @@ import { useAppOpenAdOnForeground } from '@/ads/useAppOpenAdOnForeground';
 import { BrandSplash } from '@/components/brandSplash/BrandSplash';
 import { ThemedAlertHost } from '@/components/primitives/themed-alert';
 import { PremiumAlertHost } from '@/components/PremiumAlert';
+import { ReportContentHost } from '@/components/ReportContentModal';
 import { bootstrapCoupleFeature, teardownCoupleFeature } from '@/couple/bootstrap';
 import { useGalleryStore } from '@/data/gallery-store';
 import { configurePurchases, loginPurchases, logoutPurchases } from '@/iap/purchases';
@@ -230,6 +231,11 @@ export default function RootLayout() {
            * silently no-op'd — the button's onPress fired fine, the call just
            * had no host to show anything on. */}
           <PremiumAlertHost />
+          {/* Same class of bug as PremiumAlertHost above, found 2026-09-27:
+           * ReportContentModal.tsx's reportContent() had zero effect anywhere
+           * in the app — including the couple dashboard's existing "Report
+           * Partner" button — because this host was never mounted. */}
+          <ReportContentHost />
           {showIntro && <BrandSplash onFinish={() => setShowIntro(false)} />}
         </ThemeProvider>
       </GestureHandlerRootView>

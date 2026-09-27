@@ -19,6 +19,7 @@ import { request } from './apiClient';
 import { buildAdminApi } from './adminApi';
 import { buildCoupleApi } from './coupleApi';
 import { buildNotificationsApi } from './notificationsApi';
+import { buildReportApi } from './reportApi';
 
 // Re-exported so every existing `import { ProfileResponse } from '.../utils/api'`
 // keeps working — the types themselves now live in apiTypes.ts (split out
@@ -314,6 +315,8 @@ export function useApi() {
     ...buildAdminApi(getToken),
     // ─── Notification History ───────────────────────────────────────────
     ...buildNotificationsApi(getToken),
+    // ─── Content/person reporting ───────────────────────────────────────
+    ...buildReportApi(getToken),
 
     // ─── Account ────────────────────────────────────────────────────────
     /**

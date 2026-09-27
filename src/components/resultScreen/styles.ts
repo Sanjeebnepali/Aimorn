@@ -62,6 +62,7 @@ export const styles = StyleSheet.create({
     paddingTop: 8,
   },
   topTitle: { fontFamily: fonts.bodyBold, fontSize: 14, letterSpacing: 0.3 },
+  topBarRightGroup: { flexDirection: 'row', alignItems: 'center', gap: 10 },
   tagPill: {
     flexDirection: 'row',
     alignItems: 'center',

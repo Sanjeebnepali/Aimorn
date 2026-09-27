@@ -134,6 +134,13 @@ model User {
   /// Null means "never opened it" — every notification is unread.
   notificationsViewedAt DateTime?
   notifications         Notification[]
+
+  /// Reports this account has FILED (see Report.reporterId) and reports
+  /// filed AGAINST it (Report.targetUserId, only ever set for a
+  /// couple_partner report) — two distinct relations to the same model, so
+  /// each needs its own `@relation` name or Prisma can't tell them apart.
+  reportsFiled    Report[] @relation("ReportsFiled")
+  reportsReceived Report[] @relation("ReportsReceived")
 }
 
 enum NotificationScope {
@@ -406,4 +413,39 @@ model Post {
 
   @@index([createdAt])
   @@index([regenerationCount])
+}
+
+/// A user-submitted report of AI-generated content or another account's
+/// behavior — the actual capability behind Google Play's AI-Generated
+/// Content policy requirement (in-app reporting, reachable without leaving
+/// the app). `surface`/`reason` are plain strings, not enums, deliberately
+/// mirroring src/lib/reportContent.ts's ReportSurface/ReportReason string
+/// unions on the client — that file (plus routes/reports.ts's own zod
+/// schema) is the one source of truth for valid values, so adding a new
+/// reason or surface later is a client+route change, not a migration.
+model Report {
+  id         String @id @default(cuid())
+  reporterId String
+  reporter   User   @relation("ReportsFiled", fields: [reporterId], references: [id])
+  surface    String
+  reason     String
+  details    String?
+
+  /// Set only for a couple_partner report — the account being reported.
+  targetUserId String?
+  target       User?   @relation("ReportsReceived", fields: [targetUserId], references: [id])
+
+  /// Set only for ai_preview/wallpaper_menu — the Generation or Post this
+  /// report is about. A plain id, not a foreign key: which table it points
+  /// into depends on `surface`, and the report must stay readable even if
+  /// that row is later deleted.
+  contentId String?
+  prompt    String?
+  provider  String?
+  model     String?
+
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+  @@index([targetUserId])
 }

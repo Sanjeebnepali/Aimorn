@@ -15,6 +15,7 @@ import { IconButton } from '@/components/primitives/icon-button';
 import { STYLE_OPTIONS } from '@/components/primitives/style-swatch';
 import { ActionButton, PaneThumb, WallpaperBackground } from '@/components/resultScreen/parts';
 import { RegenerateProgressOverlay } from '@/components/regenerateScreen/ProgressOverlay';
+import { reportContent } from '@/components/ReportContentModal';
 import { styles } from '@/components/resultScreen/styles';
 import { useQuickRegenerate } from '@/components/resultScreen/useQuickRegenerate';
 import { refreshCoupleState } from '@/couple/bootstrap';
@@ -242,7 +243,14 @@ export default function ResultScreen() {
               strong
             />
             <Text style={[styles.topTitle, { color: theme.ink }]}>Your Wallpaper</Text>
-            <IconButton name="download" onPress={handleDownload} disabled={!!busyAction} strong />
+            <View style={styles.topBarRightGroup}>
+              <IconButton
+                name="flag"
+                onPress={() => reportContent({ surface: 'ai_preview', wallpaperId: item?.id, prompt: item?.prompt })}
+                strong
+              />
+              <IconButton name="download" onPress={handleDownload} disabled={!!busyAction} strong />
+            </View>
           </View>
 
           {isSolo ? (

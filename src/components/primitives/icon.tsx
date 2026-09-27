@@ -55,7 +55,8 @@ export type IconName =
   | 'styleCyberpunk'
   | 'styleWatercolor'
   | 'style3d'
-  | 'styleVintage';
+  | 'styleVintage'
+  | 'flag';
 
 type IconProps = {
   name: IconName;
@@ -344,6 +345,17 @@ export function Icon({ name, size = 20, color = '#fff2ef', strokeWidth = 1.8 }: 
                 <Path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z" {...stroke} strokeLinejoin="round" />
                 <Path d="M4 7.5 12 12l8-4.5" {...stroke} />
                 <Path d="M12 12v9" {...stroke} />
+              </>
+            );
+          case 'flag':
+            // Not from the design canvas like the rest of this file (no
+            // matching mockup existed yet — reporting is a new feature) — a
+            // plain flag-on-a-pole outline in the same stroke style, swap
+            // for a canvas-sourced version later.
+            return (
+              <>
+                <Path d="M6 21V4" {...stroke} />
+                <Path d="M6 4h12l-3 4 3 4H6" {...stroke} strokeLinejoin="round" />
               </>
             );
           case 'styleVintage':

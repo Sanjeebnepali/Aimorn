@@ -23,11 +23,11 @@ import { PremiumSheet } from './PremiumSheet';
  *   reportContent({ surface: 'couple_partner', targetUserId: link.partner?.id });
  *
  * Fire-and-forget from the caller's side — the modal owns reason
- * selection, submission, and the success/failure toast internally. Only
- * `couple_partner` has a real (if still unimplemented — see `useApi().
- * reportPartner`'s doc comment) endpoint behind it today; the other two
- * surfaces have no caller anywhere in the app yet, so they honestly fail
- * rather than pretending to submit.
+ * selection, submission, and the success/failure toast internally. All
+ * three surfaces submit to the same real endpoint (`useApi().submitReport`
+ * -> server `POST /reports`, see reportApi.ts/routes/reports.ts) as of
+ * 2026-09-27 — `ai_preview` (result screen) and `wallpaper_menu` (community
+ * post) got their first actual callers wired up the same day.
  *
  * `ReportContentHost` must be mounted once at the app root (see
  * `PremiumAlertHost` for the same pattern).
@@ -83,19 +83,16 @@ export function ReportContentHost() {
   const onSubmit = useCallback(async () => {
     if (!ctx || !reason || submitting) return;
     setSubmitting(true);
-    // Only couple_partner has a real endpoint behind it — see the file doc
-    // comment above. The other two surfaces have no caller anywhere in the
-    // app today; rather than silently "succeeding" against nothing (the old
-    // fake-Supabase behavior), they honestly report as not-yet-available.
+    // All three surfaces now hit the same real endpoint (server
+    // routes/reports.ts) — see the file doc comment above for why this
+    // used to only work for couple_partner.
     let ok = false;
-    let message = 'Reporting isn’t available for this yet';
-    if (ctx.surface === 'couple_partner') {
-      try {
-        await api.reportPartner(reason + (details.trim() ? `: ${details.trim()}` : ''));
-        ok = true;
-      } catch (err) {
-        message = err instanceof Error ? err.message : 'Could not submit report — try again';
-      }
+    let message = 'Could not submit report — try again';
+    try {
+      await api.submitReport(ctx, reason, details);
+      ok = true;
+    } catch (err) {
+      message = err instanceof Error ? err.message : message;
     }
     setSubmitting(false);
     sheetRef.current?.dismiss();

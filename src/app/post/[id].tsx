@@ -8,6 +8,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { GradientButton } from '@/components/primitives/gradient-button';
 import { Icon } from '@/components/primitives/icon';
 import { IconButton } from '@/components/primitives/icon-button';
+import { reportContent } from '@/components/ReportContentModal';
 import { connectPostSocket } from '@/posts/socket';
 import { fonts } from '@/theme/tokens';
 import { useAppTheme } from '@/theme/use-app-theme';
@@ -137,6 +138,13 @@ export default function PostDetailScreen() {
               <Icon name="sparkleDouble" size={20} color={theme.accent1} strokeWidth={1.8} />
             </View>
             <Text style={[styles.statLabel, { color: theme.ink }]}>{formatCount(regenerationCount)}</Text>
+          </View>
+          <View style={styles.statItem}>
+            <IconButton
+              name="flag"
+              onPress={() => reportContent({ surface: 'wallpaper_menu', wallpaperId: post.id, prompt: post.caption ?? undefined })}
+              strong
+            />
           </View>
         </View>
 

@@ -337,9 +337,6 @@ coupleRouter.post('/couple/unlink', requireUser, asyncHandler(async (req, res) =
   res.status(204).end();
 }));
 
-// ─── Report partner ─────────────────────────────────────────────────────
-// Intentionally NOT implemented yet — the client's Report Partner button
-// (per the scoped decision to port that UI as an inert stub) calls
-// POST /couple/report and gets Express's default 404. That's deliberate,
-// not a missed route: wire this up when there's an actual moderation queue
-// behind it, rather than pretending one exists today.
+// Reporting a partner now goes through the generic POST /reports
+// (routes/reports.ts, ReportContentModal.tsx) rather than a couple-specific
+// route — see that file's own doc comment.
